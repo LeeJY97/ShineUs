@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 
 const StyledMyPageContentContainer = styled.div`
@@ -23,22 +23,22 @@ const MyPage = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const users = [
-    {
-      id: 0,
-      name: "김르탄",
-      email: "testEmail1@example.com",
-      avatar: "../assets/images/avatar1.jpg",
-      password: ""
-    },
-    {
-      id: 1,
-      name: "홍길동",
-      email: "testEmail2@example.com",
-      avatar: "../assets/images/avatar2.jpg",
-      password: ""
-    }
-  ];
+  // const users = [
+  //   {
+  //     id: 0,
+  //     name: "김르탄",
+  //     email: "testEmail1@example.com",
+  //     avatar: "../assets/images/avatar1.jpg",
+  //     password: ""
+  //   },
+  //   {
+  //     id: 1,
+  //     name: "홍길동",
+  //     email: "testEmail2@example.com",
+  //     avatar: "../assets/images/avatar2.jpg",
+  //     password: ""
+  //   }
+  // ];
 
   const handleEditClick = () => {
     setIsEditing(true);
