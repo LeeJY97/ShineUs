@@ -2,11 +2,10 @@ import { createContext, useContext, useState } from "react";
 
 export const ShineContext = createContext(null);
 
-
 const initialUserData = {
   session: {},
-  user: {},
-}
+  user: {}
+};
 
 export function useShine() {
   return useContext(ShineContext);
@@ -17,22 +16,20 @@ export function ShineProvider({ children }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(initialUserData);
 
+  // 저장하기
+
   // 로그인 핸들러
-  const handleLogin = (auth) => {
-    setUser({ ...auth });
+  const handleLogin = (data) => {
+    setUser({ ...data });
     setIsLoggedIn(true);
   };
 
   const handleLogout = () => {
     setUser(initialUserData);
     setIsLoggedIn(false);
-  }
+  };
 
   return (
-    <ShineContext.Provider
-      value={{ isLoggedIn, user, handleLogin, handleLogout }}
-    >
-      {children}
-    </ShineContext.Provider>
+    <ShineContext.Provider value={{ isLoggedIn, user, handleLogin, handleLogout }}>{children}</ShineContext.Provider>
   );
 }

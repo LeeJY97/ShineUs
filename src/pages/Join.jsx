@@ -1,6 +1,8 @@
 import { useState } from "react";
 import styled from "styled-components";
 import supabase from "../supabaseClient";
+import { useShine } from "../context/ShineContext";
+import { useNavigate } from "react-router-dom";
 
 const StyledContainer = styled.div`
   display: flex;
@@ -11,35 +13,41 @@ const StyledButtonBox = styled.div`
   display: flex;
 `;
 
-const password = "example-password";
-
-const signUp = async (email) => {
-  const { user, error } = await supabase.auth.signUp({
-    email,
-    password
-  });
-
-  if (error) {
-    alert("실패");
-  }
-};
-
-const signIn = async (email) => {
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email,
-    password
-  });
-
-  if (error) {
-    alert("실패");
-  }
-
-  console.log("data", data);
-};
-
 const Join = () => {
+  const { handleLogin } = useShine();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+  const signUp = async (email) => {
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password: "example-password"
+    });
+
+    if (error) {
+      alert("실패");
+    } else {
+      handleLogin(data);
+      navigate("/");
+    }
+  };
+
+  const signIn = async (email) => {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password: "example-password"
+    });
+
+    if (error) {
+      alert("실패");
+    } else {
+      handleLogin(data);
+      navigate("/");
+    }
+
+    console.log("data", data);
+  };
 
   return (
     <StyledContainer>
