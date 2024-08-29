@@ -19,6 +19,8 @@ export function ShineProvider({ children }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(initialUserData);
 
+  // 유저의 auth 상태가 변경되면
+
   useEffect(() => {
     const { data } = supabase.auth.onAuthStateChange((event, session) => {
       console.log(event, session); // session : user;
