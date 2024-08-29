@@ -1,7 +1,10 @@
-import Router from "./shared/Router";
+import MyFeed from "./components/MyFeed";
 
 function App() {
-  return <Router />;
+  return (
+    <>
+      <MyFeed />
+    </>
+  );
 }
-
 export default App;
