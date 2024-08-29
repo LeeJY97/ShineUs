@@ -1,14 +1,51 @@
+import { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
+
 const MainPagePosts = ({ posts }) => {
+  const [displayedPosts, setDisplayedPosts] = useState(posts.slice(0, 10)); // 처음에 10개만 표시
+  const [page, setPage] = useState(1); // 현재 페이지 상태
+
+  const observerRef = useRef(); // 마지막 dom요소를 추적할 ref
+
+  // loadMorePosts 함수 선언 - 새로운 포스트 로드
+  const loadMorePosts = () => {
+    const nextPage = page + 1;
+    const newPosts = posts.slice(0, nextPage * 10);
+    setDisplayedPosts(newPosts);
+    setPage(nextPage);
+  };
+
+  useEffect(() => {
+    if (observerRef.current) observerRef.current.disconnect?.();
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          loadMorePosts();
+        }
+      },
+      { threshold: 1 }
+    );
+
+    if (observerRef.current) observer.observe(observerRef.current);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [displayedPosts]);
+
+  // ref로 마지막 요소 감지 함수
+  const getObserverRef = (index, displayedPosts, observerRef) => {
+    return index === displayedPosts.length - 1 ? observerRef : null;
+  };
+
   return (
     <StyledContainer>
-      {posts.map((post) => (
-        <StyledPostBox key={post.id}>
+      {displayedPosts.map((post, index) => (
+        <StyledPostBox key={post.id} ref={getObserverRef(index, displayedPosts, observerRef)}>
           <h2>{post.user}</h2>
           <p>{post.text}</p>
-          <div className="img-box">
-            <img src={post.img_url} alt="" />
-          </div>
+          {post.img_url && <StyledImage src={post.img_url} />}
         </StyledPostBox>
       ))}
     </StyledContainer>
@@ -32,17 +69,15 @@ const StyledPostBox = styled.div`
   border-radius: 5px;
   cursor: default;
 
-  img-box {
-    width: 200px;
-    height: 500px;
-  }
-  img {
-    width: 100%;
-    margin-top: 20px;
-  }
-
   &:hover {
     transition: 0.3s;
     transform: scale(1.02);
   }
+`;
+const StyledImage = styled.img`
+  width: 100%;
+  max-height: 400px;
+  object-fit: cover;
+  margin-top: 15px;
+  border-radius: 5px;
 `;
