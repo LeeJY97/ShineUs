@@ -1,4 +1,5 @@
 import { useState } from "react";
+import styled from "styled-components";
 
 const MainPageInput = ({ addPosthandler }) => {
   const [postContent, setPostContent] = useState("");
@@ -21,7 +22,7 @@ const MainPageInput = ({ addPosthandler }) => {
   };
 
   return (
-    <>
+    <StyledContainer>
       <form method="post" onSubmit={handleSubmit}>
         <label>
           <textarea
@@ -33,11 +34,43 @@ const MainPageInput = ({ addPosthandler }) => {
               setPostContent(e.target.value);
             }}
           />
+          <button type="submit">자랑하기</button>
         </label>
-        <button type="submit">자랑하기</button>
       </form>
-    </>
+    </StyledContainer>
   );
 };
 
 export default MainPageInput;
+
+const StyledContainer = styled.div`
+  margin: 30px 0 20px;
+  display: flex;
+  justify-content: center;
+
+  form {
+    display: flex;
+    align-items: end;
+    gap: 20px;
+  }
+
+  label {
+    position: relative;
+  }
+
+  textarea {
+    width: 600px;
+    border: 1px solid #eeeeee;
+    outline: none;
+    resize: none;
+    border-radius: 10px;
+  }
+  button {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    height: 40px;
+    border-radius: 30px;
+    transition: 0.3s;
+  }
+`;
