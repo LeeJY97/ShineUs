@@ -1,11 +1,11 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Join from "../pages/Join";
+import Home from "../pages/Home";
 
 const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Join />} />
+        <Route path="/" element={<Home />} />
       </Routes>
     </BrowserRouter>
   );

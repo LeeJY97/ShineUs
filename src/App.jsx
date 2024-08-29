@@ -1,9 +1,11 @@
-import MyFeed from "./components/MyFeed";
+import Router from "./assets/shared/Router";
+import GlobalStyled from "./shared/GlobalStyled";
 
 function App() {
   return (
     <>
-      <MyFeed />
+      <GlobalStyled />
+      <Router />
     </>
   );
 }
