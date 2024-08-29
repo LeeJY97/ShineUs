@@ -11,9 +11,9 @@ const StyledButtonBox = styled.div`
   display: flex;
 `;
 
-const signUp = async (email, password) => {
-  console.log("email", email);
-  console.log("password", password);
+const password = "example-password";
+
+const signUp = async (email) => {
   const { user, error } = await supabase.auth.signUp({
     email,
     password
@@ -24,8 +24,8 @@ const signUp = async (email, password) => {
   }
 };
 
-const signIn = async (email, password) => {
-  const { data, session, error } = await supabase.auth.signInWithPassword({
+const signIn = async (email) => {
+  const { data, error } = await supabase.auth.signInWithPassword({
     email,
     password
   });
@@ -33,6 +33,8 @@ const signIn = async (email, password) => {
   if (error) {
     alert("실패");
   }
+
+  console.log("data", data);
 };
 
 const Join = () => {
