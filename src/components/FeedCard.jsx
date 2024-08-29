@@ -1,11 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
+import { FaHeart } from "react-icons/fa";
 import styled from "styled-components";
 
 const FeedCard = ({ data }) => {
+  const [isFilled, setIsFilled] = useState(false);
+
+  const toggleHeart = () => {
+    setIsFilled(!isFilled);
+  };
+
   return (
     <StyledContainer>
       <div>
-        <h6>{data.category}</h6>
+        <h6>
+          {data.category}
+          <HeartIcon onClick={toggleHeart} isFilled={isFilled} />
+        </h6>
+
         <img src={data.img_url} alt={data.title} />
         <h2>{data.title} </h2>
         <p>{data.text}</p>
@@ -26,7 +37,7 @@ const StyledContainer = styled.div`
   justify-content: center;
   flex-direction: column;
   gap: 30px;
-  padding: 20px;
+  padding: 30px;
   background-color: white;
   width: 300px;
   height: 400px;
@@ -34,9 +45,13 @@ const StyledContainer = styled.div`
   border-radius: 8px;
 
   h6 {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     color: #ffc966;
-    margin-bottom: 20px;
     text-align: justify;
+    margin: 20px 0px 20px 0px;
+    width: 100%;
   }
 
   img {
@@ -48,7 +63,6 @@ const StyledContainer = styled.div`
   }
 
   h2 {
-    font-weight: bold;
     margin-bottom: 10px;
   }
 
@@ -60,7 +74,9 @@ const StyledContainer = styled.div`
   .buttonStyle {
     display: flex;
     justify-content: flex-end;
-    gap: 20px;
+    gap: 10px;
+    margin-bottom: 20px;
+    width: 100%;
 
     button {
       background-color: transparent;
@@ -72,4 +88,11 @@ const StyledContainer = styled.div`
       }
     }
   }
+`;
+
+const HeartIcon = styled(FaHeart)`
+  font-size: 20px;
+  color: ${({ isFilled }) => (isFilled ? "#ffc966" : "gray")};
+  cursor: pointer;
+  transition: color 0.3s ease;
 `;

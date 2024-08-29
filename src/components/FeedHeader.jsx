@@ -19,4 +19,30 @@ const StyledContainer = styled.div`
   flex-direction: row;
   gap: 30px;
   margin-top: 20px;
+  cursor: pointer;
+
+  h5,
+  h4 {
+    &:hover {
+      font-weight: bold;
+      /* color: #ffc966; */
+      position: relative;
+    }
+    &:hover::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -3px;
+      width: 100%;
+      height: 4px;
+      background-color: #ffc966;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s ease-in-out;
+    }
+
+    &:hover::after {
+      transform: scaleX(1); /* 호버 시 라인이 좌우로 확장 */
+    }
+  }
 `;
