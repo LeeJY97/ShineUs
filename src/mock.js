@@ -357,6 +357,78 @@ const SHINE_DATA = [
     id: 50,
     text: "오늘은 가까운 산에 올라 자연을 만끽했어요. 정상에서 바라보는 경치가 너무 아름다웠답니다. 자연과 함께하는 운동, 정말 힐링이 되는 시간이었어요!",
     category: "fitness"
+  },
+
+  // DIARY_DATA
+  {
+    img_url: "/src/assets/images/diary1.jpg",
+    title: "오늘의 다이어리 꾸미기!",
+    id: 51,
+    text: "오늘은 다이어리를 예쁘게 꾸며봤어요. 다양한 스티커와 마스킹 테이프를 사용해서 내 마음을 표현해봤답니다. 다이어리 꾸미는 시간은 정말 힐링이에요!",
+    category: "diary"
+  },
+  {
+    img_url: "/src/assets/images/diary2.jpg",
+    title: "새로운 스티커 도착!",
+    id: 52,
+    text: "기다리던 스티커가 드디어 도착했어요! 이 스티커들로 다이어리를 꾸미면 더 예뻐질 것 같아요. 다이어리 꾸미기, 언제 해도 즐거워요!",
+    category: "diary"
+  },
+  {
+    img_url: "/src/assets/images/diary3.jpg",
+    title: "빈티지 느낌으로 꾸며봤어요",
+    id: 53,
+    text: "오늘은 빈티지 스타일로 다이어리를 꾸며봤어요. 오래된 사진과 레터링 스티커를 사용하니, 정말 멋진 분위기가 연출되었답니다. 만족스러운 하루!",
+    category: "diary"
+  },
+  {
+    img_url: "/src/assets/images/diary4.jpg",
+    title: "내 마음을 담은 다이어리",
+    id: 54,
+    text: "다이어리에 오늘의 기분을 가득 담아봤어요. 기쁜 일도, 슬픈 일도 모두 적어두니 마음이 편해지는 것 같아요. 다이어리 꾸미기는 제 일상의 중요한 부분이에요.",
+    category: "diary"
+  },
+  {
+    img_url: "/src/assets/images/diary5.jpg",
+    title: "새로운 마스킹 테이프!",
+    id: 55,
+    text: "다이어리를 꾸밀 때 꼭 필요한 마스킹 테이프! 새롭게 구입한 마스킹 테이프로 더 다채로운 다이어리를 만들어봤어요. 너무 예쁘죠?",
+    category: "diary"
+  },
+  {
+    img_url: "/src/assets/images/diary6.jpg",
+    title: "계절에 맞게 꾸미기",
+    id: 56,
+    text: "계절의 변화에 맞춰 다이어리도 꾸며봤어요. 봄을 닮은 꽃무늬 스티커와 상큼한 색감으로 가득 채우니, 다이어리 속에서도 봄이 느껴지네요!",
+    category: "diary"
+  },
+  {
+    img_url: "/src/assets/images/diary7.jpg",
+    title: "오늘의 행복을 기록해요",
+    id: 57,
+    text: "오늘은 정말 행복한 하루였어요! 이 기분을 오래 기억하고 싶어서 다이어리에 기록해봤답니다. 다이어리를 보며 행복했던 순간들을 다시 떠올릴 수 있어요.",
+    category: "diary"
+  },
+  {
+    img_url: "/src/assets/images/diary8.jpg",
+    title: "다이어리 속 여행 추억",
+    id: 58,
+    text: "여행 중에 찍은 사진들과 티켓들을 모아 다이어리에 붙였어요. 추억을 떠올리며 꾸미는 이 시간이 정말 소중하게 느껴지네요. 여행의 기억을 다이어리 속에 담았답니다.",
+    category: "diary"
+  },
+  {
+    img_url: "/src/assets/images/diary9.jpg",
+    title: "친구와 함께 다이어리 꾸미기",
+    id: 59,
+    text: "친구와 함께 다이어리를 꾸며봤어요! 서로의 아이디어를 공유하면서 꾸미니 더 재미있었답니다. 이런 시간을 함께할 수 있어 정말 행복해요!",
+    category: "diary"
+  },
+  {
+    img_url: "/src/assets/images/diary10.jpg",
+    title: "내 다이어리, 내 스타일!",
+    id: 60,
+    text: "다이어리 꾸미기, 역시 내 스타일대로 하는 게 제일 좋아요! 자유롭게 꾸민 다이어리를 보니 뿌듯하네요. 이 다이어리가 나만의 소중한 공간이에요.",
+    category: "diary"
   }
 ];
 
