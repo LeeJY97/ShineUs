@@ -6,6 +6,9 @@ const MainPagePosts = ({ posts }) => {
         <StyledPostBox key={post.id}>
           <h2>{post.user}</h2>
           <p>{post.text}</p>
+          <div className="img-box">
+            <img src={post.img_url} alt="" />
+          </div>
         </StyledPostBox>
       ))}
     </StyledContainer>
@@ -28,6 +31,15 @@ const StyledPostBox = styled.div`
   text-align: start;
   border-radius: 5px;
   cursor: default;
+
+  img-box {
+    width: 200px;
+    height: 500px;
+  }
+  img {
+    width: 100%;
+    margin-top: 20px;
+  }
 
   &:hover {
     transition: 0.3s;
