@@ -1,5 +1,13 @@
+import Router from "./assets/shared/Router";
+import GlobalStyled from "./shared/GlobalStyled";
+
 function App() {
-  return <></>;
+  return (
+    <>
+      <GlobalStyled />
+      <Router />
+    </>
+  );
 }
 
 export default App;
