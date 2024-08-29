@@ -12,6 +12,8 @@ export function useShine() {
   return useContext(ShineContext);
 }
 
+addEventListener("auth", () => {});
+
 export function ShineProvider({ children }) {
   // user
   const [isLoggedIn, setIsLoggedIn] = useState(false);
