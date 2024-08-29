@@ -9,24 +9,20 @@ const GlobalStyled = createGlobalStyle`
     min-width: 320px;
     min-height: 100vh;
   }
-
   #root {
     max-width: 1280px;
     width: 100%;
     margin: 0 auto;
     text-align: center;
   }
-
   a {
   text-decoration: none;
   color: #333;
   }
-
   h2 {
   font-size: 1.5em;
   font-weight: bold;
   }
-
   button {
     background-color: #FFC966;
     border:none;
