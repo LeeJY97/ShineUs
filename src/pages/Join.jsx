@@ -28,7 +28,7 @@ const Join = () => {
     if (error) {
       alert("실패");
     } else {
-      handleLogin(data);
+      // handleLogin(data);
       navigate("/");
     }
   };
@@ -42,9 +42,23 @@ const Join = () => {
     if (error) {
       alert("실패");
     } else {
+      const {
+        data: { user }
+      } = await supabase.auth.getUser();
       handleLogin(data);
       navigate("/");
     }
+
+    console.log("data", data);
+  };
+
+  const createPost = async () => {
+    const { data } = await supabase
+      .from("posts")
+      .insert({
+        contents: "내용"
+      })
+      .select("*");
 
     console.log("data", data);
   };
@@ -57,6 +71,7 @@ const Join = () => {
       <StyledButtonBox>
         <button onClick={() => signIn(email, password)}>로그인</button>
         <button onClick={() => signUp(email, password)}>회원가입</button>
+        <button onClick={createPost}>작성</button>
       </StyledButtonBox>
     </StyledContainer>
   );
