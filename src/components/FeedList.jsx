@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import FeedCard from "./FeedCard";
 import SHINE_DATA from "../mock";
@@ -21,7 +20,6 @@ const StyledContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 20px;
-  /* background-color: white; */
   max-width: 100%;
   padding: 20px;
 `;

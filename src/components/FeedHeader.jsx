@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 
 const FeedHeader = () => {
@@ -42,7 +41,7 @@ const StyledContainer = styled.div`
     }
 
     &:hover::after {
-      transform: scaleX(1); /* 호버 시 라인이 좌우로 확장 */
+      transform: scaleX(1);
     }
   }
 `;

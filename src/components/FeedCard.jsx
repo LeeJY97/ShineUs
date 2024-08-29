@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { FaHeart } from "react-icons/fa";
 import styled from "styled-components";
 
@@ -13,7 +13,7 @@ const FeedCard = ({ data }) => {
     <StyledContainer>
       <div>
         <h6>
-          {data.category}
+          #{data.category}
           <HeartIcon onClick={toggleHeart} isFilled={isFilled} />
         </h6>
 
