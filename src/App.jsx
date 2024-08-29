@@ -1,5 +1,11 @@
+import MyFeed from "./components/MyFeed";
+
 function App() {
-  return <></>;
+  return (
+    <>
+      <MyFeed />
+    </>
+  );
 }
 
 export default App;
