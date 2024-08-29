@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Router from "./shared/Router";
 import GlobalStyled from "./shared/GlobalStyled";
+import { ShineProvider } from "./context/ShineContext";
 
 // 전체 (nav) div
 const StyledLoginBar = styled.div`
@@ -55,9 +56,10 @@ function App() {
       </StyledLoginBar>
 
       <GlobalStyled />
-      <Router />
+      <ShineProvider>
+        <Router />
+      </ShineProvider>
     </>
   );
 }
-
 export default App;
