@@ -1,6 +1,6 @@
 import { createGlobalStyle } from "styled-components";
 const GlobalStyled = createGlobalStyle`
-body {
+ body {
     background-color: #FFF3DC;
     font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
     display:flex;
