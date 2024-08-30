@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
-// import { ShineContext } from "../context/ShineContext";
 import supabase from "../supabaseClient";
 
 const MainPageInput = ({ addPosthandler }) => {
