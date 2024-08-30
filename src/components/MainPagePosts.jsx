@@ -15,6 +15,7 @@ const MainPagePosts = ({ posts }) => {
     setPage(nextPage);
   };
 
+  //displayedPosts 올리면 실행
   useEffect(() => {
     if (observerRef.current) observerRef.current.disconnect?.();
 
@@ -32,7 +33,12 @@ const MainPagePosts = ({ posts }) => {
     return () => {
       observer.disconnect();
     };
-  }, [displayedPosts]);
+  }, [displayedPosts, page]);
+
+  // 새 포스트 업로드 되면 렌더링
+  useEffect(() => {
+    setDisplayedPosts(posts.slice(0, page * 10));
+  }, [posts, page]);
 
   // ref로 마지막 요소 감지 함수
   const getObserverRef = (index, displayedPosts, observerRef) => {
