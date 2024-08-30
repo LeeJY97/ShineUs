@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
+// import { ShineContext } from "../context/ShineContext";
+import supabase from "../supabaseClient";
 
 const MainPageInput = ({ addPosthandler }) => {
   const [postContent, setPostContent] = useState("");
@@ -17,7 +19,7 @@ const MainPageInput = ({ addPosthandler }) => {
   //********* Supabase Storage에 이미지를 업로드하고 URL을 받아온 후 생성
 
   // 업로드
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // 이미지 FormData
@@ -26,15 +28,19 @@ const MainPageInput = ({ addPosthandler }) => {
     formData.append("user", "익명");
     formData.append("image", selectedImage);
 
-    // 새로운 포스트 생성(임시)
-    const newPost = {
-      id: crypto.randomUUID(),
-      text: postContent,
-      user: "익명",
-      img_url: previewImage
-    };
+    let img_url = null;
 
-    addPosthandler(newPost);
+    const { data } = await supabase
+      .from("posts")
+      .insert({
+        contents: postContent,
+        img_url
+      })
+      .select("*");
+
+    // console.log("data", data);
+
+    addPosthandler(data[0]);
 
     setPostContent("");
     setPreviewImage(null);
@@ -42,6 +48,17 @@ const MainPageInput = ({ addPosthandler }) => {
 
     alert("업로드 되었습니다.");
   };
+
+  useEffect(() => {
+    const testUser = async () => {
+      const {
+        data: { user }
+      } = await supabase.auth.getUser();
+
+      console.log("user", user);
+    };
+    testUser();
+  }, []);
 
   return (
     <StyledContainer>
