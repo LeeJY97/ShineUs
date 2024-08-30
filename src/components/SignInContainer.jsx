@@ -2,6 +2,7 @@ import { useState } from "react";
 import supabase from "../supabaseClient";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { showInputError } from "../common/utils";
 
 const StyledContainer = styled.div`
   display: flex;
@@ -44,14 +45,10 @@ const SignInContainer = () => {
 
   const navigate = useNavigate();
 
-  const signIn = async (email) => {
+  const signIn = async () => {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
 
-    if (error) {
-      alert("실패");
-    } else {
-      navigate("/");
-    }
+    error ? showInputError(error, email, password) : navigate("/");
   };
 
   // 글 작성 예시 코드
@@ -59,7 +56,7 @@ const SignInContainer = () => {
     const { data } = await supabase
       .from("posts")
       .insert({
-        contents: "내용d어저라고"
+        contents: "아무 내용이나 입력해보세요"
       })
       .select("*");
 
@@ -68,7 +65,7 @@ const SignInContainer = () => {
 
   // 글 조회
   const selectPost = async () => {
-    const { data, error } = await supabase.from("posts").select().eq("id", 3);
+    const { data, error } = await supabase.from("posts").select().eq("id", 8);
 
     console.log("data", data);
   };
@@ -80,17 +77,6 @@ const SignInContainer = () => {
     console.log("data", data);
     console.log("error", error);
   };
-
-  // 회원정보 가져오기 예시 코드
-  // useEffect(() => {
-  //   const testUser = async () => {
-  //     const {
-  //       data: { user }
-  //     } = await supabase.auth.getUser();
-
-  //     console.log("user", user);
-  //   };
-  // }, []);
 
   return (
     <StyledContainer>

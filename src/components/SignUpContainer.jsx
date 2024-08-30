@@ -3,6 +3,7 @@ import supabase from "../supabaseClient";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import generateRandomNickname from "../common/nicknameConstants";
+import { showInputError } from "../common/utils";
 
 const StyledContainer = styled.div`
   display: flex;
@@ -45,7 +46,7 @@ const SignUpContainer = () => {
 
   const navigate = useNavigate();
 
-  const signUp = async (email) => {
+  const signUp = async () => {
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
@@ -56,14 +57,24 @@ const SignUpContainer = () => {
       }
     });
 
-    if (error) {
-      // alert("실패");
-      console.log("error", error);
-    } else {
-      // handleLogin(data);
-      console.log("data", data);
-      navigate("/");
-    }
+    // 회원가입 실패시
+    error ? showInputError(error, email, password) : navigate("/");
+
+    // if (error) {
+    //   console.log("error.message", error.message);
+    //   if (error.message.includes("6")) {
+    //     alert("비밀번호는 7자 이상");
+    //   } else if (error.message.includes("valid password")) {
+    //     alert("비밀번호를 입력하슈");
+    //   } else if (error.message.includes("already")) {
+    //     alert("이메일이 이미 있슈");
+    //   } else if (error.message.includes("validate email")) {
+    //     alert("이메일 형식을 확인하쇼");
+    //   }
+    // } else {
+    //   console.log("data", data);
+    //   navigate("/");
+    // }
   };
 
   return (

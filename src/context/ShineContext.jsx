@@ -12,17 +12,23 @@ export function useShine() {
   return useContext(ShineContext);
 }
 
-addEventListener("auth", () => {});
-
 export function ShineProvider({ children }) {
-  // user
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [user, setUser] = useState(initialUserData);
+  // const [user, setUser] = useState(initialUserData);
+  // 회원정보 가져오기 예시 코드
+  // useEffect(() => {
+  //   const testUser = async () => {
+  //     const {
+  //       data: { user }
+  //     } = await supabase.auth.getUser();
+
+  //     console.log("user", user);
+  //   };
+  // }, []);
 
   // 유저의 auth 상태가 변경되면
-
   useEffect(() => {
-    const { data } = supabase.auth.onAuthStateChange((event, session) => {
+    const { data } = supabase.auth.onAuthStateChange(async (event, session) => {
       console.log(event, session); // session : user;
 
       if (event === "INITIAL_SESSION") {
@@ -31,7 +37,7 @@ export function ShineProvider({ children }) {
         // handle sign in event
         setIsLoggedIn(true);
       } else if (event === "SIGNED_OUT") {
-        // handle sign out event
+        await supabase.auth.signOut();
         setIsLoggedIn(false);
       } else if (event === "PASSWORD_RECOVERY") {
         // handle password recovery event
@@ -50,17 +56,15 @@ export function ShineProvider({ children }) {
   // 저장하기
 
   // 로그인 핸들러
-  const handleLogin = (data) => {
-    setUser({ ...data });
-    // setIsLoggedIn(true);
-  };
+  // const handleLogin = (data) => {
+  //   setUser({ ...data });
+  //   // setIsLoggedIn(true);
+  // };
 
-  const handleLogout = () => {
-    setUser(initialUserData);
-    // setIsLoggedIn(false);
-  };
+  // const handleLogout = () => {
+  //   setUser(initialUserData);
+  //   // setIsLoggedIn(false);
+  // };
 
-  return (
-    <ShineContext.Provider value={{ isLoggedIn, user, handleLogin, handleLogout }}>{children}</ShineContext.Provider>
-  );
+  return <ShineContext.Provider value={{ isLoggedIn }}>{children}</ShineContext.Provider>;
 }
