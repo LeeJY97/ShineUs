@@ -10,8 +10,7 @@ const Home = () => {
   // 포스팅 한  DB (이미지 X)
   useEffect(() => {
     const fetchPosts = async () => {
-      const { data, error } = await supabase.from("posts").select("*");
-
+      const { data, error } = await supabase.from("posts").select("*").order("created_at", { ascending: false });
       if (error) {
         console.error("Error fetching posts:", error.message);
       } else {
