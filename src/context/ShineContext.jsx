@@ -35,6 +35,7 @@ export function ShineProvider({ children }) {
         // handle initial session
       } else if (event === "SIGNED_IN") {
         // handle sign in event
+        console.log("SIGNEND_In");
         setIsLoggedIn(true);
       } else if (event === "SIGNED_OUT") {
         await supabase.auth.signOut();

@@ -3,9 +3,14 @@ import { useState, useEffect } from "react";
 import MainPageInput from "../components/MainPageInput";
 import MainPagePosts from "../components/MainPagePosts";
 import supabase from "../supabaseClient";
+import { Link } from "react-router-dom";
+import { useShine } from "../context/ShineContext";
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
+  const { isLoggedIn } = useShine();
+
+  console.log("isLoggedIn", isLoggedIn);
 
   // 포스팅 한  DB (이미지 X)
   useEffect(() => {
@@ -24,8 +29,17 @@ const Home = () => {
   const addPosthandler = (data) => {
     setPosts([data, ...posts]);
   };
+
+  const testLogout = async () => {
+    await supabase.auth.signOut();
+  };
   return (
     <>
+      <Link to="/signin">로그인 </Link>
+      <Link to="/signup">회원가입 </Link>
+      <Link to="/mypage">마이페이지 </Link>
+      <Link to="/myfeed">마이피드 </Link>
+      <button onClick={testLogout}>로그아웃 </button>
       <MainPageInput addPosthandler={addPosthandler} />
       <MainPagePosts posts={posts} />
     </>
