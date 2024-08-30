@@ -2,7 +2,6 @@ import { useState } from "react";
 import supabase from "../supabaseClient";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import generateRandomNickname from "../common/nicknameConstants";
 import { showInputError } from "../common/utils";
 
 const StyledContainer = styled.div`
@@ -40,55 +39,60 @@ const StyledMiddleBox = styled.div`
   }
 `;
 
-const SignUpContainer = () => {
+const SignInContainer = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
 
-  const signUp = async () => {
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: {
-          nickname: generateRandomNickname()
-        }
-      }
-    });
+  const signIn = async () => {
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
 
-    // 회원가입 실패시
     error ? showInputError(error, email, password) : navigate("/");
+  };
 
-    // if (error) {
-    //   console.log("error.message", error.message);
-    //   if (error.message.includes("6")) {
-    //     alert("비밀번호는 7자 이상");
-    //   } else if (error.message.includes("valid password")) {
-    //     alert("비밀번호를 입력하슈");
-    //   } else if (error.message.includes("already")) {
-    //     alert("이메일이 이미 있슈");
-    //   } else if (error.message.includes("validate email")) {
-    //     alert("이메일 형식을 확인하쇼");
-    //   }
-    // } else {
-    //   console.log("data", data);
-    //   navigate("/");
-    // }
+  // 글 작성 예시 코드
+  const createPost = async () => {
+    const { data } = await supabase
+      .from("posts")
+      .insert({
+        contents: "아무 내용이나 입력해보세요"
+      })
+      .select("*");
+
+    console.log("data", data);
+  };
+
+  // 글 조회
+  const selectPost = async () => {
+    const { data, error } = await supabase.from("posts").select().eq("id", 8);
+
+    console.log("data", data);
+  };
+
+  // 글 삭제 예시 코드 (post id만 넣어주면 user id랑 알아서 비교해서 삭제됨 (db 설정 (related)))
+  const deletePost = async () => {
+    const { data, error } = await supabase.from("posts").delete().eq("id", 4);
+
+    console.log("data", data);
+    console.log("error", error);
   };
 
   return (
     <StyledContainer>
       <StyledTopBox>
-        <h2>§ 빈대떡 §</h2>
+        <h2>§ 빈날이 §</h2>
       </StyledTopBox>
       <StyledMiddleBox>
         <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="이메일" />
         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="비밀번호" />
       </StyledMiddleBox>
-      <button onClick={() => signUp(email, password)}>회원가입</button>
+      <button onClick={() => signIn(email, password)}>로그인</button>
+      <button onClick={createPost}>작성</button>
+      <button onClick={selectPost}>조회</button>
+      <button onClick={deletePost}>삭제</button>
     </StyledContainer>
   );
 };
 
-export default SignUpContainer;
+export default SignInContainer;
