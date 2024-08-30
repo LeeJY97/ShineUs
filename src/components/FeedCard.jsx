@@ -5,10 +5,23 @@ import styled from "styled-components";
 const FeedCard = ({ data, onDelete, onEdit }) => {
   const [isFilled, setIsFilled] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [newText, setNewText] = useState(data.text);
+  const [newContents, setNewContents] = useState(data.contents);
+  const [newImage, setNewImage] = useState(data.img_url);
 
   const toggleHeart = () => {
     setIsFilled(!isFilled);
+  };
+
+  // 이미지 선택 처리
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setNewImage(event.target.result);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   // 삭제
@@ -22,7 +35,7 @@ const FeedCard = ({ data, onDelete, onEdit }) => {
     setIsEditing(true);
   };
   const handleSaveClick = () => {
-    onEdit(data.id, newText);
+    onEdit(data.id, newContents, newImage);
     setIsEditing(false);
   };
 
@@ -35,13 +48,21 @@ const FeedCard = ({ data, onDelete, onEdit }) => {
         </h6>
 
         {isEditing ? (
-          <textarea value={newText} onChange={(e) => setNewText(e.target.value)} rows="4" cols="34" />
+          <textarea value={newContents} onChange={(e) => setNewContents(e.target.value)} rows="4" cols="34" />
         ) : (
-          <p>{data.text}</p>
+          <p>{data.contents}</p>
         )}
       </div>
 
-      <img src={data.img_url} alt={data.title} />
+      <ImageContainer>
+        {isEditing && (
+          <ImageUploadButton>
+            <input type="file" accept="image/*" onChange={handleImageChange} />
+            <OverlayText>사진을 수정하세요</OverlayText>
+          </ImageUploadButton>
+        )}
+        <img src={newImage} alt={data.title} />
+      </ImageContainer>
 
       <div className="buttonStyle">
         {isEditing ? (
@@ -82,13 +103,6 @@ const StyledContainer = styled.div`
     width: 100%;
   }
 
-  img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 8px;
-  }
-
   p {
     text-align: justify;
     line-height: 1.3;
@@ -120,4 +134,46 @@ const HeartIcon = styled(FaHeart).attrs(({ filled }) => ({
   color: ${({ isFilled }) => (isFilled ? "#ffc966" : "gray")};
   cursor: pointer;
   transition: color 0.3s ease;
+`;
+
+const ImageContainer = styled.div`
+  position: relative;
+  width: 100%;
+  height: 200px;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+`;
+
+const ImageUploadButton = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(102, 102, 102, 0.5);
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+
+  input[type="file"] {
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+  }
+`;
+
+const OverlayText = styled.div`
+  position: absolute;
+  color: white;
+  font-size: 13px;
+  opacity: 1;
 `;
