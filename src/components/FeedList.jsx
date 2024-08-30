@@ -1,15 +1,26 @@
 import styled from "styled-components";
 import FeedCard from "./FeedCard";
 import SHINE_DATA from "../mock";
+import { useState } from "react";
 
 const FeedList = () => {
+  const [feedData, setFeedData] = useState(SHINE_DATA.sort(() => Math.random() - 0.5).slice(0, 10));
+
+  // 삭제
+  const handleDelete = (id) => {
+    setFeedData(feedData.filter((item) => item.id !== id));
+  };
+
+  // 수정
+  const handleEdit = (id, newText) => {
+    setFeedData(feedData.map((item) => (item.id === id ? { ...item, text: newText } : item)));
+  };
+
   return (
     <StyledContainer>
-      {SHINE_DATA.sort(() => Math.random() - 0.5)
-        .slice(0, 10)
-        .map((card) => (
-          <FeedCard key={card.id} data={card} />
-        ))}
+      {feedData.map((card) => (
+        <FeedCard key={card.id} data={card} onDelete={handleDelete} onEdit={handleEdit} />
+      ))}
     </StyledContainer>
   );
 };

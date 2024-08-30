@@ -2,11 +2,28 @@ import { useState } from "react";
 import { FaHeart } from "react-icons/fa";
 import styled from "styled-components";
 
-const FeedCard = ({ data }) => {
+const FeedCard = ({ data, onDelete, onEdit }) => {
   const [isFilled, setIsFilled] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [newText, setNewText] = useState(data.text);
 
   const toggleHeart = () => {
     setIsFilled(!isFilled);
+  };
+
+  // 삭제
+  const handleDelete = () => {
+    onDelete(data.id);
+    alert("삭제되었습니다.");
+  };
+
+  // 수정
+  const handleEditClick = () => {
+    setIsEditing(true);
+  };
+  const handleSaveClick = () => {
+    onEdit(data.id, newText);
+    setIsEditing(false);
   };
 
   return (
@@ -14,16 +31,27 @@ const FeedCard = ({ data }) => {
       <div>
         <h6>
           #{data.category}
-          <HeartIcon onClick={toggleHeart} isFilled={isFilled} />
+          <HeartIcon onClick={toggleHeart} filled={isFilled ? 1 : 0} />
         </h6>
 
-        <img src={data.img_url} alt={data.title} />
-        <h2>{data.title} </h2>
-        <p>{data.text}</p>
+        {isEditing ? (
+          <textarea value={newText} onChange={(e) => setNewText(e.target.value)} rows="4" cols="34" />
+        ) : (
+          <p>{data.text}</p>
+        )}
       </div>
+
+      <img src={data.img_url} alt={data.title} />
+
       <div className="buttonStyle">
-        <button>수정</button>
-        <button>삭제</button>
+        {isEditing ? (
+          <button onClick={handleSaveClick}>저장</button>
+        ) : (
+          <>
+            <button onClick={handleEditClick}>수정</button>
+            <button onClick={handleDelete}>삭제</button>
+          </>
+        )}
       </div>
     </StyledContainer>
   );
@@ -58,12 +86,7 @@ const StyledContainer = styled.div`
     width: 100%;
     height: 200px;
     object-fit: cover;
-    margin-bottom: 10px;
     border-radius: 8px;
-  }
-
-  h2 {
-    margin-bottom: 10px;
   }
 
   p {
@@ -75,7 +98,7 @@ const StyledContainer = styled.div`
     display: flex;
     justify-content: flex-end;
     gap: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     width: 100%;
 
     button {
@@ -90,7 +113,9 @@ const StyledContainer = styled.div`
   }
 `;
 
-const HeartIcon = styled(FaHeart)`
+const HeartIcon = styled(FaHeart).attrs(({ filled }) => ({
+  color: filled ? "#ffc966" : "gray"
+}))`
   font-size: 20px;
   color: ${({ isFilled }) => (isFilled ? "#ffc966" : "gray")};
   cursor: pointer;
