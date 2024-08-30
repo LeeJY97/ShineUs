@@ -69,6 +69,7 @@ const SignInContainer = () => {
   const selectPost = async () => {
     const { data, error } = await supabase.from("posts").select().eq("id", 8);
 
+    console.log("error", error);
     console.log("data", data);
   };
 
