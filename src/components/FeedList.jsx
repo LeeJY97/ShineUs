@@ -12,8 +12,8 @@ const FeedList = () => {
   };
 
   // 수정
-  const handleEdit = (id, newText) => {
-    setFeedData(feedData.map((item) => (item.id === id ? { ...item, text: newText } : item)));
+  const handleEdit = (id, newContents) => {
+    setFeedData(feedData.map((item) => (item.id === id ? { ...item, contents: newContents } : item)));
   };
 
   return (

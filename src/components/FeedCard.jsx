@@ -12,6 +12,16 @@ const FeedCard = ({ data, onDelete, onEdit }) => {
     setIsFilled(!isFilled);
   };
 
+  //글자 수 제한
+  const handleContentChange = (e) => {
+    const input = e.target.value;
+    if (input.length <= 80) {
+      setNewContents(input);
+    } else {
+      alert(`내용은 80자 이내로 작성해주세요.`);
+    }
+  };
+
   // 이미지 선택 처리
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -23,7 +33,6 @@ const FeedCard = ({ data, onDelete, onEdit }) => {
       reader.readAsDataURL(file);
     }
   };
-
   // 삭제
   const handleDelete = () => {
     onDelete(data.id);
@@ -48,7 +57,7 @@ const FeedCard = ({ data, onDelete, onEdit }) => {
         </h6>
 
         {isEditing ? (
-          <textarea value={newContents} onChange={(e) => setNewContents(e.target.value)} rows="4" cols="34" />
+          <textarea value={newContents} onChange={handleContentChange} rows="4" cols="34" maxLength={200} />
         ) : (
           <p>{data.contents}</p>
         )}
