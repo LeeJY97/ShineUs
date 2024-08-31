@@ -5,6 +5,7 @@ import MainPagePosts from "../components/MainPagePosts";
 import supabase from "../supabaseClient";
 import { Link } from "react-router-dom";
 import { useShine } from "../context/ShineContext";
+import Nav from "../components/Nav";
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
@@ -35,6 +36,7 @@ const Home = () => {
   };
   return (
     <>
+      <Nav></Nav>
       <Link to="/signin">로그인 </Link>
       <Link to="/signup">회원가입 </Link>
       <Link to="/mypage">마이페이지 </Link>
