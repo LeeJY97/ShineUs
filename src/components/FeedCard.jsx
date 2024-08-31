@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FaHeart } from "react-icons/fa";
 import styled from "styled-components";
-// import supabase from "../supabaseClient";
+import supabase from "../supabaseClient";
 
 const FeedCard = ({ data, onDelete, onEdit }) => {
   const [isFilled, setIsFilled] = useState(false);
@@ -36,19 +36,42 @@ const FeedCard = ({ data, onDelete, onEdit }) => {
       reader.readAsDataURL(file);
     }
   };
-  // 삭제
-  const handleDelete = () => {
-    onDelete(data.id);
-    alert("삭제되었습니다.");
+
+  // supabase삭제
+  const handleDelete = async () => {
+    const { error } = await supabase.from("posts").delete().eq("id", data.id);
+
+    if (error) {
+      console.error("Error deleting post:", error);
+      alert("삭제 중 오류가 발생했습니다.");
+    } else {
+      onDelete(data.id);
+      alert("삭제되었습니다.");
+    }
   };
 
-  // 수정
   const handleEditClick = () => {
     setIsEditing(true);
   };
-  const handleSaveClick = () => {
-    onEdit(data.id, newContents, newImage);
-    setIsEditing(false);
+
+  // supabase수정
+  const handleEditSaveClick = async () => {
+    const { error } = await supabase
+      .from("posts")
+      .update({
+        contents: newContents,
+        img_url: newImage
+      })
+      .eq("id", data.id);
+
+    if (error) {
+      console.error("Error =>:", error);
+      alert("업데이트 중 오류가 발생.");
+    } else {
+      onEdit(data.id, newContents, newImage);
+      setIsEditing(false);
+      alert("수정되었습니다.");
+    }
   };
 
   return (
@@ -56,6 +79,7 @@ const FeedCard = ({ data, onDelete, onEdit }) => {
       <div>
         <h6>
           {/* #{data.category} */}
+          @닉네임{data.nickname}
           <HeartIcon onClick={toggleHeart} filled={isFilled ? 1 : 0} />
         </h6>
 
@@ -78,7 +102,7 @@ const FeedCard = ({ data, onDelete, onEdit }) => {
 
       <div className="buttonStyle">
         {isEditing ? (
-          <button onClick={handleSaveClick}>저장</button>
+          <button onClick={handleEditSaveClick}>저장</button>
         ) : (
           <>
             <button onClick={handleEditClick}>수정</button>
@@ -98,7 +122,7 @@ const StyledContainer = styled.div`
   justify-content: center;
   flex-direction: column;
   gap: 30px;
-  padding: 30px;
+  padding: 0px 20px 0px 20px;
   background-color: white;
   width: 300px;
   height: 400px;
@@ -111,8 +135,8 @@ const StyledContainer = styled.div`
     justify-content: space-between;
     color: #ffc966;
     text-align: justify;
-    margin: 20px 0px 20px 0px;
-    width: 100%;
+    margin: 10px 0px 10px 0px;
+    width: 300px;
   }
 
   p {
