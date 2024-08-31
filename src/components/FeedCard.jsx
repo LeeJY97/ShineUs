@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FaHeart } from "react-icons/fa";
 import styled from "styled-components";
+// import supabase from "../supabaseClient";
 
 const FeedCard = ({ data, onDelete, onEdit }) => {
   const [isFilled, setIsFilled] = useState(false);
@@ -14,6 +15,7 @@ const FeedCard = ({ data, onDelete, onEdit }) => {
 
   //글자 수 제한
   const handleContentChange = (e) => {
+    e.preventDefault();
     const input = e.target.value;
     if (input.length <= 80) {
       setNewContents(input);
@@ -24,6 +26,7 @@ const FeedCard = ({ data, onDelete, onEdit }) => {
 
   // 이미지 선택 처리
   const handleImageChange = (e) => {
+    e.preventDefault();
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
@@ -52,7 +55,7 @@ const FeedCard = ({ data, onDelete, onEdit }) => {
     <StyledContainer>
       <div>
         <h6>
-          #{data.category}
+          {/* #{data.category} */}
           <HeartIcon onClick={toggleHeart} filled={isFilled ? 1 : 0} />
         </h6>
 
@@ -143,6 +146,8 @@ const HeartIcon = styled(FaHeart).attrs(({ filled }) => ({
   color: ${({ isFilled }) => (isFilled ? "#ffc966" : "gray")};
   cursor: pointer;
   transition: color 0.3s ease;
+  display: flex;
+  justify-content: flex-end;
 `;
 
 const ImageContainer = styled.div`
