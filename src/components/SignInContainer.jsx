@@ -51,6 +51,10 @@ const SignInContainer = () => {
     error ? showInputError(error, email, password) : navigate("/");
   };
 
+  const signOut = async () => {
+    await supabase.auth.signOut();
+  };
+
   // 글 작성 예시 코드
   const createPost = async () => {
     const { data } = await supabase
@@ -88,6 +92,7 @@ const SignInContainer = () => {
         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="비밀번호" />
       </StyledMiddleBox>
       <button onClick={() => signIn(email, password)}>로그인</button>
+      <button onClick={() => signOut(email, password)}>로그아웃</button>
       <button onClick={createPost}>작성</button>
       <button onClick={selectPost}>조회</button>
       <button onClick={deletePost}>삭제</button>
