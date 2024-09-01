@@ -49,7 +49,7 @@ const MainPagePosts = ({ posts }) => {
     <StyledContainer>
       {displayedPosts.map((post, index) => (
         <StyledPostBox key={post.id} ref={getObserverRef(index, displayedPosts, observerRef)}>
-          <h3>{post.nickname}</h3>
+          <h3>{post.userinfo.nickname}</h3>
           <p>{post.contents}</p>
           {post.img_url && <StyledImage src={post.img_url} />}
         </StyledPostBox>
