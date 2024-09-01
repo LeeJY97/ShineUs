@@ -31,17 +31,8 @@ const Home = () => {
     setPosts([data, ...posts]);
   };
 
-  const testLogout = async () => {
-    await supabase.auth.signOut();
-  };
   return (
     <>
-      <Nav></Nav>
-      <Link to="/signin">로그인 </Link>
-      <Link to="/signup">회원가입 </Link>
-      <Link to="/mypage">마이페이지 </Link>
-      <Link to="/myfeed">마이피드 </Link>
-      <button onClick={testLogout}>로그아웃 </button>
       <MainPageInput addPosthandler={addPosthandler} />
       <MainPagePosts posts={posts} />
     </>
