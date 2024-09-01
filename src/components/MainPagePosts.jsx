@@ -3,6 +3,7 @@ import styled from "styled-components";
 import supabase from "../supabaseClient";
 import { useShine } from "../context/ShineContext";
 import WriteCommentForm from "./WriteCommentForm";
+import CommentList from "./CommentList";
 
 const MainPagePosts = ({ posts }) => {
   const [displayedPosts, setDisplayedPosts] = useState(posts.slice(0, 5));
@@ -91,6 +92,7 @@ const MainPagePosts = ({ posts }) => {
           {post.img_url && <StyledImage src={post.img_url} />}
           <button onClick={() => toggleCommentForm(index)}>댓글 달기</button>
           {isCommentFormVisible === index && <WriteCommentForm postId={post.id} />}
+          <CommentList postId={post.id}></CommentList>
         </StyledPostBox>
       ))}
     </StyledContainer>

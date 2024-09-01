@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import supabase from "../supabaseClient";
 import { useShine } from "../context/ShineContext";
@@ -9,11 +9,11 @@ const StyledContainer = styled.div`
 `;
 
 const WriteCommentForm = ({ postId }) => {
-  const [comment, setComment] = useState("");
+  const [content, setContent] = useState("");
   const { user } = useShine();
 
-  const handleChangeComment = (e) => {
-    setComment(e.target.value);
+  const handleChangeContent = (e) => {
+    setContent(e.target.value);
   };
 
   const addComment = async () => {
@@ -22,7 +22,7 @@ const WriteCommentForm = ({ postId }) => {
       .insert({
         user_id: user.id,
         post_id: postId,
-        comment
+        content
       })
       .select("*");
 
@@ -36,7 +36,7 @@ const WriteCommentForm = ({ postId }) => {
   return (
     <StyledContainer>
       <h1>댓글달기</h1>
-      <textarea onChange={handleChangeComment} value={comment}></textarea>
+      <textarea onChange={handleChangeContent} value={content}></textarea>
       <button
         onClick={() => {
           addComment();
