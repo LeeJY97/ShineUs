@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 
 const MainPagePosts = ({ posts }) => {
-  const [displayedPosts, setDisplayedPosts] = useState(posts.slice(0, 10)); // 처음에 10개만 표시
+  const [displayedPosts, setDisplayedPosts] = useState(posts.slice(0, 5));
   const [page, setPage] = useState(1); // 현재 페이지 상태
 
   const observerRef = useRef(); // 마지막 dom요소를 추적할 ref
@@ -10,7 +10,7 @@ const MainPagePosts = ({ posts }) => {
   // loadMorePosts 함수 선언 - 새로운 포스트 로드
   const loadMorePosts = () => {
     const nextPage = page + 1;
-    const newPosts = posts.slice(0, nextPage * 10);
+    const newPosts = posts.slice(0, nextPage * 5);
     setDisplayedPosts(newPosts);
     setPage(nextPage);
   };
@@ -49,7 +49,7 @@ const MainPagePosts = ({ posts }) => {
     <StyledContainer>
       {displayedPosts.map((post, index) => (
         <StyledPostBox key={post.id} ref={getObserverRef(index, displayedPosts, observerRef)}>
-          <h2>{post.user}</h2>
+          <h3>{post.nickname}</h3>
           <p>{post.contents}</p>
           {post.img_url && <StyledImage src={post.img_url} />}
         </StyledPostBox>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import supabase from "../supabaseClient";
 
@@ -15,31 +15,42 @@ const MainPageInput = ({ addPosthandler }) => {
       setPreviewImage(URL.createObjectURL(imgFile));
     }
   };
-  //********* Supabase Storage에 이미지를 업로드하고 URL을 받아온 후 생성
 
   // 업로드
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // 이미지 FormData
-    const formData = new FormData();
-    formData.append("text", postContent);
-    formData.append("user", "익명");
-    formData.append("image", selectedImage);
-
     let img_url = null;
 
-    const { data } = await supabase
+    // 이미지가 선택 시 Supabase Storage에 업로드
+    if (selectedImage) {
+      const fileName = `post_img_${Date.now()}.png`;
+      const { data, error } = await supabase.storage.from("post_img").upload(fileName, selectedImage);
+
+      if (error) {
+        console.error("Error uploading image:", error.message);
+        return;
+      }
+
+      img_url = `https://pjctzvrxutdmmxvfjczt.supabase.co/storage/v1/object/public/${data.fullPath}`;
+    }
+
+    // 게시글 데이터 생성 및 Supabase에 저장
+    const { data: newPost, error: postError } = await supabase
       .from("posts")
       .insert({
         contents: postContent,
-        img_url
+        img_url: img_url
       })
-      .select("*");
+      .select("*")
+      .single();
 
-    // console.log("data", data);
+    if (postError) {
+      console.error("Error inserting post:", postError.message);
+      return;
+    }
 
-    addPosthandler(data[0]);
+    addPosthandler(newPost);
 
     setPostContent("");
     setPreviewImage(null);
@@ -47,17 +58,6 @@ const MainPageInput = ({ addPosthandler }) => {
 
     alert("업로드 되었습니다.");
   };
-
-  useEffect(() => {
-    const testUser = async () => {
-      const {
-        data: { user }
-      } = await supabase.auth.getUser();
-
-      console.log("user", user);
-    };
-    testUser();
-  }, []);
 
   return (
     <StyledContainer>
