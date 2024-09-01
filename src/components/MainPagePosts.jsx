@@ -2,11 +2,13 @@ import { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import supabase from "../supabaseClient";
 import { useShine } from "../context/ShineContext";
+import WriteCommentForm from "./WriteCommentForm";
 
 const MainPagePosts = ({ posts }) => {
   const [displayedPosts, setDisplayedPosts] = useState(posts.slice(0, 5));
   const [page, setPage] = useState(1); // 현재 페이지 상태
   const { user } = useShine();
+  const [isCommentFormVisible, setIsCommentFormVisible] = useState(-1);
 
   const observerRef = useRef(); // 마지막 dom요소를 추적할 ref
 
@@ -70,6 +72,10 @@ const MainPagePosts = ({ posts }) => {
     displayedPosts[index].is_like = !isLike;
   };
 
+  const toggleCommentForm = (index) => {
+    setIsCommentFormVisible(index);
+  };
+
   return (
     <StyledContainer>
       {displayedPosts.map((post, index) => (
@@ -83,6 +89,8 @@ const MainPagePosts = ({ posts }) => {
           </h3>
           <p>{post.contents}</p>
           {post.img_url && <StyledImage src={post.img_url} />}
+          <button onClick={() => toggleCommentForm(index)}>댓글 달기</button>
+          {isCommentFormVisible === index && <WriteCommentForm postId={post.id} />}
         </StyledPostBox>
       ))}
     </StyledContainer>
