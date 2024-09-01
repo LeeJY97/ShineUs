@@ -23,6 +23,7 @@ const Home = () => {
   //   fetchPosts();
   // }, []);
 
+  // 포스팅 한 DB (좋아요 누른 사람, 좋아요 개수 포함)
   useEffect(() => {
     const fetchPosts = async () => {
       const {
@@ -55,7 +56,8 @@ const Home = () => {
       // 3. 게시글에 좋아요 여부 추가하기
       const postsWithLikes = posts.map((post) => ({
         ...post,
-        is_like: likedPostIds.includes(post.id)
+        is_like: likedPostIds.includes(post.id),
+        like_count: post.likes.length
       }));
 
       setPosts(postsWithLikes);

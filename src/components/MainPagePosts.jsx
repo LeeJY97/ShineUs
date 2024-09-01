@@ -48,18 +48,19 @@ const MainPagePosts = ({ posts }) => {
     return index === displayedPosts.length - 1 ? observerRef : null;
   };
 
+  // 좋아요 핸들링 함수
   const handleLike = async (post, index) => {
     const isLike = post.is_like;
 
     if (isLike) {
       await supabase.from("likes").delete().match({ user_id: user.id, post_id: post.id });
-      displayedPosts[index].likes.pop();
+      displayedPosts[index].like_count += -1;
     } else {
       await supabase.from("likes").insert({
         user_id: user.id,
         post_id: post.id
       });
-      displayedPosts[index].likes.push("");
+      displayedPosts[index].like_count += 1;
     }
 
     // setDisplayedPosts((prevPosts = []) => {
@@ -67,9 +68,6 @@ const MainPagePosts = ({ posts }) => {
     // });
 
     displayedPosts[index].is_like = !isLike;
-    // displayedPosts[index].is_like = !isLike;
-
-    console.log("displayedPosts", displayedPosts);
   };
 
   return (
@@ -80,7 +78,7 @@ const MainPagePosts = ({ posts }) => {
             {post.nickname}
             <span onClick={() => handleLike(post, index)}>
               {post.is_like ? `♥` : `♡`}
-              {post.likes.length}
+              {post.like_count}
             </span>
           </h3>
           <p>{post.contents}</p>
