@@ -53,11 +53,13 @@ const MainPagePosts = ({ posts }) => {
 
     if (isLike) {
       await supabase.from("likes").delete().match({ user_id: user.id, post_id: post.id });
+      displayedPosts[index].likes.pop();
     } else {
       await supabase.from("likes").insert({
         user_id: user.id,
         post_id: post.id
       });
+      displayedPosts[index].likes.push("");
     }
 
     // setDisplayedPosts((prevPosts = []) => {
@@ -65,6 +67,9 @@ const MainPagePosts = ({ posts }) => {
     // });
 
     displayedPosts[index].is_like = !isLike;
+    // displayedPosts[index].is_like = !isLike;
+
+    console.log("displayedPosts", displayedPosts);
   };
 
   return (
@@ -72,7 +77,11 @@ const MainPagePosts = ({ posts }) => {
       {displayedPosts.map((post, index) => (
         <StyledPostBox key={post.id} ref={getObserverRef(index, displayedPosts, observerRef)}>
           <h3>
-            {post.nickname} <span onClick={() => handleLike(post, index)}>{post.is_like ? `♥` : `♡`}</span>
+            {post.nickname}
+            <span onClick={() => handleLike(post, index)}>
+              {post.is_like ? `♥` : `♡`}
+              {post.likes.length}
+            </span>
           </h3>
           <p>{post.contents}</p>
           {post.img_url && <StyledImage src={post.img_url} />}
