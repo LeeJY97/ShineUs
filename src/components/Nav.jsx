@@ -2,61 +2,83 @@ import styled from "styled-components";
 import { useShine } from "../context/ShineContext";
 
 // 전체 (nav) div
-const StyledContainer = styled.div`
-  border: 2px solid black;
-  display: inline-block;
-  position: fixed;
-  left: 0;
-  width: 300px;
+// const StyledContainer = styled.div`
+//   border: 2px solid black;
+//   display: inline-block;
+//   position: fixed;
+//   left: 0;
+//   width: 300px;
+// `;
 
-  h1 {
-    font-size: 3rem;
-    text-align: center;
-    text-align: center;
-    font-weight: bold;
-    padding: 15px 0px 25px 15px;
+// const StyledLogo = styled.div`
+//   /* width: 200px;
+//   height: 200px; */
+// `;
 
-    span {
-      font-size: 23px;
-      padding-right: 10px;
-    }
+// const StyledButtonBox = styled.div`
+//   display: flex;
+//   width: 60%;
+//   flex-direction: column;
+//   margin: 0 auto;
+//   /* background-color: black; */
+//   gap: 20px;
+//   align-items: center;
+// `;
+
+// const StyledButton = styled.button`
+//   width: 180px;
+//   height: 53px;
+//   cursor: pointer;
+// `;
+
+const StyledContainer = styled.nav`
+  width: 250px;
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+`;
+
+const StyledLogo = styled.div`
+  img {
+    height: 170px;
   }
 `;
 
 const StyledButtonBox = styled.div`
   display: flex;
-  width: 60%;
   flex-direction: column;
-  margin: 0 auto;
-  /* background-color: black; */
-  gap: 20px;
-  align-items: center;
-`;
+  gap: 10px;
 
-const StyledButton = styled.button`
-  width: 180px;
-  height: 53px;
-  cursor: pointer;
+  button {
+    width: 200px;
+    height: 60px;
+    border-radius: 20px;
+  }
 `;
 const Nav = () => {
   const { isLoggedIn } = useShine();
   return (
     <StyledContainer>
-      <h1>
-        빛나리<span>🌟</span>
-      </h1>
+      <StyledLogo>
+        <img src="./src/assets/images/shine-us-logo.png" alt="logo" />
+      </StyledLogo>
       <StyledButtonBox>
         {!isLoggedIn && (
           <>
-            <StyledButton>로그인</StyledButton>
-            <StyledButton>회원가입</StyledButton>
+            <button>로그인</button>
+            <button>회원가입</button>
           </>
         )}
-        <StyledButton>메인페이지</StyledButton>
+        <button>메인페이지</button>
         {isLoggedIn && (
           <>
-            <StyledButton>마이페이지</StyledButton>
-            <StyledButton>마이피드</StyledButton>
+            <button>마이페이지</button>
+            <button>마이피드</button>
           </>
         )}
       </StyledButtonBox>

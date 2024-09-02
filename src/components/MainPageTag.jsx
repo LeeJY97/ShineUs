@@ -1,4 +1,5 @@
 import { useState } from "react";
+import styled from "styled-components";
 
 const MainPageTag = ({ tags, setTags }) => {
   const [tag, setTag] = useState(""); // 개별 태그
@@ -19,6 +20,7 @@ const MainPageTag = ({ tags, setTags }) => {
   };
 
   const handleKeyPress = (e) => {
+    // console.log(e.key);
     if (e.key === "Enter") {
       e.preventDefault();
       onClickTagHandler();
@@ -27,7 +29,7 @@ const MainPageTag = ({ tags, setTags }) => {
 
   return (
     <>
-      {/* {tags.map((tag, index) => (
+      {tags.map((tag, index) => (
         <div key={index}>
           <span>#{tag}</span>
           <span
@@ -38,11 +40,23 @@ const MainPageTag = ({ tags, setTags }) => {
             ❌
           </span>
         </div>
-      ))} */}
+      ))}
 
-      <input onChange={(e) => addTag(e)} onKeyPress={(e) => handleKeyPress(e)} value={tag} />
+      <StyledTagInput onChange={(e) => addTag(e)} onKeyPress={(e) => handleKeyPress(e)} value={tag} />
     </>
   );
 };
 
 export default MainPageTag;
+
+const StyledTagInput = styled.input`
+  width: 200px;
+  height: 25px;
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  padding: 5px 10px;
+  border-radius: 10px;
+  outline: none;
+  border: 1px solid #ffb84d;
+`;

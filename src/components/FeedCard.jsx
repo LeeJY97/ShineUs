@@ -1,17 +1,18 @@
 import { useState } from "react";
-import { FaHeart } from "react-icons/fa";
+// import { FaHeart } from "react-icons/fa";
 import styled from "styled-components";
 import supabase from "../supabaseClient";
 
 const FeedCard = ({ data, onDelete, onEdit }) => {
-  const [isFilled, setIsFilled] = useState(false);
+  // const [isFilled, setIsFilled] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [newContents, setNewContents] = useState(data.contents);
   const [newImage, setNewImage] = useState(data.img_url);
 
-  const toggleHeart = () => {
-    setIsFilled(!isFilled);
-  };
+  //좋아요(기존)
+  // const toggleHeart = () => {
+  //   setIsFilled(!isFilled);
+  // };
 
   //글자 수 제한
   const handleContentChange = (e) => {
@@ -42,7 +43,7 @@ const FeedCard = ({ data, onDelete, onEdit }) => {
     const { error } = await supabase.from("posts").delete().eq("id", data.id);
 
     if (error) {
-      console.error("Error deleting post:", error);
+      console.error("Error=>", error);
       alert("삭제 중 오류가 발생했습니다.");
     } else {
       onDelete(data.id);
@@ -78,9 +79,8 @@ const FeedCard = ({ data, onDelete, onEdit }) => {
     <StyledContainer>
       <div>
         <h6>
-          {/* #{data.category} */}
-          @닉네임{data.nickname}
-          <HeartIcon onClick={toggleHeart} filled={isFilled ? 1 : 0} />
+          @{data.userinfo.nickname}
+          {/* <HeartIcon onClick={toggleHeart} filled={isFilled ? 1 : 0} /> */}
         </h6>
 
         {isEditing ? (
@@ -163,16 +163,16 @@ const StyledContainer = styled.div`
   }
 `;
 
-const HeartIcon = styled(FaHeart).attrs(({ filled }) => ({
-  color: filled ? "#ffc966" : "gray"
-}))`
-  font-size: 20px;
-  color: ${({ isFilled }) => (isFilled ? "#ffc966" : "gray")};
-  cursor: pointer;
-  transition: color 0.3s ease;
-  display: flex;
-  justify-content: flex-end;
-`;
+// const HeartIcon = styled(FaHeart).attrs(({ filled }) => ({
+//   color: filled ? "#ffc966" : "gray"
+// }))`
+//   font-size: 20px;
+//   color: ${({ isFilled }) => (isFilled ? "#ffc966" : "gray")};
+//   cursor: pointer;
+//   transition: color 0.3s ease;
+//   display: flex;
+//   justify-content: flex-end;
+// `;
 
 const ImageContainer = styled.div`
   position: relative;

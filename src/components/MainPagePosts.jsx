@@ -153,17 +153,17 @@ likePosts[postId]
     <StyledContainer>
       {displayedPosts.map((post, index) => (
         <StyledPostBox key={post.id} ref={getObserverRef(index, displayedPosts, observerRef)}>
-          {post.tags &&
-            typeof post.tags === "string" &&
-            post.tags.split(", ").map((tag, index) => <span key={index}>#{tag} </span>)}
-          <h3>
-            {post.nickname}
-            <span onClick={() => handleLike(index)}>
-              {detailPosts[index]?.is_like ? `♥` : `♡`}
-              {detailPosts[index]?.like_count}
-              {post.userinfo.nickname}
-            </span>
-          </h3>
+          <div className="display-post-tags">
+            {post.tags &&
+              typeof post.tags === "string" &&
+              post.tags.split(", ").map((tag, index) => <span key={index}>#{tag} </span>)}
+          </div>
+          <h3>{post.nickname}</h3>
+          <span onClick={() => handleLike(index)}>
+            {detailPosts[index]?.is_like ? `♥` : `♡`}
+            {detailPosts[index]?.like_count}
+            {post.userinfo.nickname}
+          </span>
           <p>{post.contents}</p>
           {post.img_url && <StyledImage src={post.img_url} />}
 
