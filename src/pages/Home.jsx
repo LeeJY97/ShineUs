@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import MainPageInput from "../components/MainPageInput";
 import MainPagePosts from "../components/MainPagePosts";
 import supabase from "../supabaseClient";
-// import Nav from "../components/Nav";
+import Nav from "../components/Nav";
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
