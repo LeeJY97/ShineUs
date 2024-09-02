@@ -59,7 +59,7 @@ const Home = () => {
 
   return (
     <>
-      <MainPageInput addPosthandler={addPostHandler} tags={tags} setTags={setTags} />
+      <MainPageInput addPostHandler={addPostHandler} tags={tags} setTags={setTags} />
       <MainPagePosts posts={posts} />
     </>
   );

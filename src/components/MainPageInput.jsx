@@ -40,7 +40,7 @@ const MainPageInput = ({ addPostHandler, tags, setTags }) => {
     const { data: newPost, error: postError } = await supabase
       .from("posts")
       .insert({
-        tags: JSON.stringify(tags),
+        tags: tags.join(", "),
         contents: postContent,
         img_url: img_url
       })
@@ -52,7 +52,7 @@ const MainPageInput = ({ addPostHandler, tags, setTags }) => {
       return;
     }
 
-    addPostHandler(newPost);
+    addPostHandler({ ...newPost });
 
     setPostContent("");
     setPreviewImage(null);

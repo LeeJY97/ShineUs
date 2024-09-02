@@ -82,7 +82,9 @@ const MainPagePosts = ({ posts }) => {
     <StyledContainer>
       {displayedPosts.map((post, index) => (
         <StyledPostBox key={post.id} ref={getObserverRef(index, displayedPosts, observerRef)}>
-          <h3>{post.userinfo.nickname}</h3>
+          {post.tags &&
+            typeof post.tags === "string" &&
+            post.tags.split(", ").map((tag, index) => <span key={index}>#{tag} </span>)}
           <h3>
             {post.userinfo.nickname}
             <span onClick={() => handleLike(post, index)}>
@@ -92,6 +94,7 @@ const MainPagePosts = ({ posts }) => {
           </h3>
           <p>{post.contents}</p>
           {post.img_url && <StyledImage src={post.img_url} />}
+
           <button onClick={() => toggleCommentForm(index)}>댓글 달기</button>
           {isCommentFormVisible === index && <WriteCommentForm postId={post.id} />}
           <CommentList postId={post.id}></CommentList>

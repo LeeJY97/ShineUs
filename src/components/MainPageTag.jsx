@@ -1,7 +1,6 @@
 import { useState } from "react";
 
 const MainPageTag = ({ tags, setTags }) => {
-  // const [tags, setTags] = useState([]); // 전체 태그 배열
   const [tag, setTag] = useState(""); // 개별 태그
 
   const removeTag = (index) => {
