@@ -6,9 +6,8 @@ import { useShine } from "../context/ShineContext";
 import WriteCommentForm from "./WriteCommentForm";
 import CommentList from "./CommentList";
 
-const MainPagePosts = ({ posts }) => {
+const MainPagePosts = ({ posts, likesAndComments, handleLike, handleComments }) => {
   const [displayedPosts, setDisplayedPosts] = useState(posts.slice(0, 5));
-  const [detailPosts, setDetailPosts] = useState(posts);
 
   const [page, setPage] = useState(1); // 현재 페이지 상태
   const { user } = useShine();
@@ -58,96 +57,9 @@ const MainPagePosts = ({ posts }) => {
     return index === displayedPosts.length - 1 ? observerRef : null;
   };
 
-  // 좋아요 핸들링 함수
-  const handleLike = async (index) => {
-    const isLike = detailPosts[index].is_like;
-    let likeCount = detailPosts[index].like_count;
-
-    console.log("likeCount", likeCount);
-
-    if (isLike) {
-      const { error: likesDeleteError } = await supabase
-        .from("likes")
-        .delete()
-        .match({ user_id: user.id, post_id: detailPosts[index].id });
-
-      if (likesDeleteError) {
-        console.error(likesDeleteError.message);
-      } else {
-        likeCount += -1;
-      }
-    } else {
-      const { error: likesInsertError } = await supabase.from("likes").insert({
-        user_id: user.id,
-        post_id: detailPosts[index].id
-      });
-
-      if (likesInsertError) {
-        console.error(likesInsertError.message);
-      } else {
-        likeCount += 1;
-      }
-    }
-
-    setDetailPosts((prevPosts = []) => {
-      return prevPosts.map((post, i) => (i === index ? { ...post, is_like: !isLike, like_count: likeCount } : post));
-    });
-  };
-
-  // 댓글 작성 함수
-  const handleComments = async ({ postId, index, content }) => {
-    const { data: newComments, error: commentsError } = await supabase
-      .from("comments")
-      .insert({
-        user_id: user.id,
-        post_id: postId,
-        content
-      })
-      .select("*");
-
-    if (commentsError) {
-      console.error("Error commentsError => ", commentsError.message);
-    }
-
-    console.log("newComments", newComments);
-    console.log("detailPosts", detailPosts);
-
-    setDetailPosts((prevPosts) => {
-      const newPosts = prevPosts.map((prev, i) => {
-        if (i === index) {
-          // return { ...prev, comment: [...prev.comment, ...newComments] } : prev)}
-          return { ...prev, comments: [...prev.comments, ...newComments] };
-        }
-        return prev;
-      });
-      return newPosts;
-    });
-  };
-
   const toggleCommentForm = (index) => {
     setIsCommentFormVisible(index);
   };
-
-  /**
-   *
-   * 
-  // {
-  //   [postId] : {
-  //   like_count
-  //   isLike
-  //   },
-  //  }
-
-  {
-"10": ~,
-"12": ~,
-"17": ~,
-}
-
-const likePosts = {}
-likePosts[postId]
-
-   */
 
   return (
     <StyledContainer>
@@ -159,9 +71,9 @@ likePosts[postId]
               post.tags.split(", ").map((tag, index) => <span key={index}>#{tag} </span>)}
           </div>
           <h3>{post.nickname}</h3>
-          <span onClick={() => handleLike(index)}>
-            {detailPosts[index]?.is_like ? `♥` : `♡`}
-            {detailPosts[index]?.like_count}
+          <span onClick={() => handleLike(post.id)}>
+            {likesAndComments[post.id]?.is_like ? `♥` : `♡`}
+            {likesAndComments[post.id]?.like_count}
             {post.userinfo.nickname}
           </span>
           <p>{post.contents}</p>
@@ -171,7 +83,7 @@ likePosts[postId]
           {isCommentFormVisible === index && ( // index -1 로 바꾸기, comment 내용 날리기
             <WriteCommentForm postId={post.id} handleComments={handleComments} index={index} />
           )}
-          <CommentList postId={post.id} comments={detailPosts[index].comments}></CommentList>
+          <CommentList postId={post.id} comments={likesAndComments[post.id]?.comments}></CommentList>
         </StyledPostBox>
       ))}
     </StyledContainer>

@@ -3,25 +3,74 @@ import MainPageInput from "../components/MainPageInput";
 import MainPagePosts from "../components/MainPagePosts";
 import supabase from "../supabaseClient";
 import Nav from "../components/Nav";
+import { useShine } from "../context/ShineContext";
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
   const [tags, setTags] = useState([]);
-  // 포스팅 한  DB (이미지 X)
-  // useEffect(() => {
-  //   const fetchPosts = async () => {
-  //     const { data, error } = await supabase
-  //       .from("posts")
-  //       .select("*, userinfo (*), likes (*)")
-  //       .order("created_at", { ascending: false });
-  //     if (error) {
-  //       console.error("Error fetching posts:", error.message);
-  //     } else {
-  //       setPosts(data);
-  //     }
-  //   };
-  //   fetchPosts();
-  // }, []);
+  const { user } = useShine();
+  const [likesAndComments, setLikesAndComments] = useState();
+
+  // 좋아요 핸들링 함수
+  const handleLike = async (postId) => {
+    const isLike = likesAndComments[postId].is_like;
+    let likeCount = likesAndComments[postId].like_count;
+
+    if (isLike) {
+      const { error: likesDeleteError } = await supabase
+        .from("likes")
+        .delete()
+        .match({ user_id: user.id, post_id: postId });
+
+      if (likesDeleteError) {
+        console.error(likesDeleteError.message);
+      } else {
+        likeCount += -1;
+      }
+    } else {
+      const { error: likesInsertError } = await supabase.from("likes").insert({
+        user_id: user.id,
+        post_id: postId
+      });
+
+      if (likesInsertError) {
+        console.error(likesInsertError.message);
+      } else {
+        likeCount += 1;
+      }
+    }
+
+    const newTest = {
+      ...likesAndComments,
+      [postId]: { ...likesAndComments[postId], is_like: !isLike, like_count: likeCount }
+    };
+    setLikesAndComments(newTest);
+  };
+
+  // 댓글 작성 함수
+  const handleComments = async ({ postId, content }) => {
+    const { data: newComments, error: commentsError } = await supabase
+      .from("comments")
+      .insert({
+        user_id: user.id,
+        post_id: postId,
+        content
+      })
+      .select("*");
+
+    if (commentsError) {
+      console.error("Error commentsError => ", commentsError.message);
+    }
+
+    const obj = {
+      ...likesAndComments,
+      [postId]: { ...likesAndComments[postId], comments: [...likesAndComments[postId].comments, newComments[0]] }
+    };
+
+    console.log("obj", obj);
+
+    setLikesAndComments(obj);
+  };
 
   // 포스팅 한 DB (좋아요 누른 사람, 좋아요 개수 포함)
   useEffect(() => {
@@ -62,9 +111,19 @@ const Home = () => {
         like_count: post.likes.length
       }));
 
-      console.log("postsWithLikes", postsWithLikes);
-
       setPosts(postsWithLikes);
+
+      const likesAndComments = {};
+
+      postsWithLikes.forEach((post) => {
+        likesAndComments[post.id] = {
+          is_like: post.is_like,
+          like_count: post.like_count,
+          comments: post.comments
+        };
+      });
+
+      return setLikesAndComments(likesAndComments);
     };
 
     fetchPosts();
@@ -76,7 +135,14 @@ const Home = () => {
   return (
     <>
       <MainPageInput addPostHandler={addPostHandler} tags={tags} setTags={setTags} />
-      {posts.length && <MainPagePosts posts={posts} />}
+      {posts.length && (
+        <MainPagePosts
+          posts={posts}
+          likesAndComments={likesAndComments}
+          handleLike={handleLike}
+          handleComments={handleComments}
+        />
+      )}
     </>
   );
 };
