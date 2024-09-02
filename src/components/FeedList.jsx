@@ -5,8 +5,8 @@ import supabase from "../supabaseClient";
 
 const FeedList = () => {
   const [myPosts, setMyPosts] = useState([]);
-  const [user, setUser] = useState(null);
   const [nickname, setNickname] = useState("");
+  const [checkType, setCheckType] = useState("like");
 
   useEffect(() => {
     // 현재 로그인한 사용자 정보 가져오기
@@ -16,27 +16,33 @@ const FeedList = () => {
         console.error("Error=>:", userError);
         return;
       }
-      setUser(userData.user);
+      // setUser(userData.user);
+      setNickname(userData.user.user_metadata.nickname);
 
-      // 로그인한 사용자의 포스트와 닉네임 가져오기
-      const { data: postsData, error: postsError } = await supabase
-        .from("posts")
-        .select("*, userinfo(nickname)")
-        .eq("user_id", userData.user.id);
+      if (checkType == "mine") {
+        // 로그인한 사용자의 포스트와 닉네임 가져오기
+        const { data: postsData, error: postsError } = await supabase
+          .from("posts")
+          .select("*, userinfo(nickname)")
+          .eq("user_id", userData.user.id);
 
-      if (postsError) {
-        console.error("Error=>:", postsError);
-      } else {
-        console.log(postsData);
-        setMyPosts(postsData);
-        if (postsData.length > 0) {
-          setNickname(postsData[0].userinfo.nickname);
+        if (postsError) {
+          console.error("Error=>:", postsError);
         }
+        setMyPosts(postsData);
+      } else {
+        const { data: postsData, error: postsError } = await supabase
+          .from("likes")
+          .select("post_id, posts(*),userinfo(nickname)")
+          .eq("user_id", userData.user.id);
+        if (postsError) {
+          console.error("Error=>:", postsError);
+        }
+        setMyPosts(postsData);
       }
     };
-
     fetchUserData();
-  }, []);
+  }, [checkType]);
 
   // 삭제
   const handleDelete = (id) => {
@@ -48,15 +54,21 @@ const FeedList = () => {
     setMyPosts(myPosts.map((item) => (item.id === id ? { ...item, contents: newContents } : item)));
   };
 
+  const changeType = (type) => {
+    console.log("내가 누른 헤더 >>> ");
+    console.log(type);
+    setCheckType(type);
+  };
+
   return (
     <div>
       <StyledHeaderContainer>
-        <h5>{nickname} 님의 글</h5>
-        <h5>좋아요</h5>
+        <h5 onClick={() => changeType("mine")}>{nickname} 님의 글</h5>
+        <h5 onClick={() => changeType("like")}>좋아요</h5>
       </StyledHeaderContainer>
       <StyledContainer>
         {myPosts.map((card) => (
-          <FeedCard key={card.id} data={card} onDelete={handleDelete} onEdit={handleEdit} />
+          <FeedCard key={card.id} data={card} onDelete={handleDelete} onEdit={handleEdit} type={checkType} />
         ))}
       </StyledContainer>
     </div>

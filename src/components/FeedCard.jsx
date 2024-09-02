@@ -1,13 +1,35 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // import { FaHeart } from "react-icons/fa";
 import styled from "styled-components";
 import supabase from "../supabaseClient";
 
-const FeedCard = ({ data, onDelete, onEdit }) => {
-  // const [isFilled, setIsFilled] = useState(false);
+const FeedCard = ({ data, onDelete, onEdit, type }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [newContents, setNewContents] = useState(data.contents);
-  const [newImage, setNewImage] = useState(data.img_url);
+  const [newImage, setNewImage] = useState("");
+  const [nickname, setNickname] = useState("");
+
+  useEffect(() => {
+    if (data) {
+      init();
+    }
+  }, [data]);
+
+  const init = () => {
+    // console.log("====");
+    // console.log(data);
+    if (type === "mine") {
+      setNickname(data.userinfo.nickname);
+      setNewImage(data.img_url);
+      setNewContents(data.contents);
+    } else {
+      if (data.posts) {
+        setNickname(data.posts.userinfo?.nickname);
+        setNewImage(data.posts.img_url);
+        setNewContents(data.posts.contents);
+      }
+    }
+  };
 
   //좋아요(기존)
   // const toggleHeart = () => {
@@ -74,19 +96,23 @@ const FeedCard = ({ data, onDelete, onEdit }) => {
       alert("수정되었습니다.");
     }
   };
+  console.log(">>>>>>");
+  console.log(data);
+  if (!data) {
+    return <p>데이터를 불러오는 중입니다...</p>;
+  }
 
   return (
     <StyledContainer>
       <div>
         <h6>
-          @{data.userinfo.nickname}
+          {nickname}
           {/* <HeartIcon onClick={toggleHeart} filled={isFilled ? 1 : 0} /> */}
         </h6>
-
         {isEditing ? (
           <textarea value={newContents} onChange={handleContentChange} rows="4" cols="34" maxLength={200} />
         ) : (
-          <p>{data.contents}</p>
+          <p>{newContents}</p>
         )}
       </div>
 
@@ -100,16 +126,18 @@ const FeedCard = ({ data, onDelete, onEdit }) => {
         <img src={newImage} alt={data.title} />
       </ImageContainer>
 
-      <div className="buttonStyle">
-        {isEditing ? (
-          <button onClick={handleEditSaveClick}>저장</button>
-        ) : (
-          <>
-            <button onClick={handleEditClick}>수정</button>
-            <button onClick={handleDelete}>삭제</button>
-          </>
-        )}
-      </div>
+      {type !== "like" && (
+        <div className="buttonStyle">
+          {isEditing ? (
+            <button onClick={handleEditSaveClick}>저장</button>
+          ) : (
+            <>
+              <button onClick={handleEditClick}>수정</button>
+              <button onClick={handleDelete}>삭제</button>
+            </>
+          )}
+        </div>
+      )}
     </StyledContainer>
   );
 };

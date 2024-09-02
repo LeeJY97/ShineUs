@@ -5,6 +5,7 @@ import supabase from "../supabaseClient";
 import { useShine } from "../context/ShineContext";
 import WriteCommentForm from "./WriteCommentForm";
 import CommentList from "./CommentList";
+import FeedList from "./FeedList";
 
 const MainPagePosts = ({ posts }) => {
   const [displayedPosts, setDisplayedPosts] = useState(posts.slice(0, 5));
