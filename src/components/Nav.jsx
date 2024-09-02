@@ -1,53 +1,66 @@
 import styled from "styled-components";
+import { useShine } from "../context/ShineContext";
 
 // 전체 (nav) div
-const StyledLoginBar = styled.div`
+const StyledContainer = styled.div`
   border: 2px solid black;
   display: inline-block;
+  position: fixed;
+  left: 0;
+  width: 300px;
+
+  h1 {
+    font-size: 3rem;
+    text-align: center;
+    text-align: center;
+    font-weight: bold;
+    padding: 15px 0px 25px 15px;
+
+    span {
+      font-size: 23px;
+      padding-right: 10px;
+    }
+  }
 `;
 
-// '빛나리' 문구
-const StyledLoginTitle = styled.h1`
-  font-size: 3rem;
-  text-align: center;
-  text-align: center;
-  font-weight: bold;
-  padding: 15px 0px 25px 15px;
-`;
-
-// 🌟 이모지
-const StyledLoginTitleStarImozi = styled.span`
-  font-size: 23px;
-  padding-right: 10px;
-`;
-
-// 로그인 버튼, 메인 페이지 버튼
-// 감싸는 div
-const StyledLoginAndMainPageDiv = styled.div`
+const StyledButtonBox = styled.div`
   display: flex;
+  width: 60%;
   flex-direction: column;
+  margin: 0 auto;
+  /* background-color: black; */
+  gap: 20px;
+  align-items: center;
 `;
 
-// 로그인 버튼
-const StyledLoginButton = styled.button`
+const StyledButton = styled.button`
   width: 180px;
   height: 53px;
   cursor: pointer;
 `;
 const Nav = () => {
+  const { isLoggedIn } = useShine();
   return (
-    <StyledLoginBar>
-      {/* 제목 */}
-      <StyledLoginTitle>
-        빛나리<StyledLoginTitleStarImozi>🌟</StyledLoginTitleStarImozi>
-      </StyledLoginTitle>
-      {/* 로그인 버튼*/}
-      <StyledLoginAndMainPageDiv>
-        <StyledLoginButton>로그인</StyledLoginButton>
-        {/* 메인페이지 버튼 */}
-        <StyledLoginButton>메인페이지</StyledLoginButton>
-      </StyledLoginAndMainPageDiv>
-    </StyledLoginBar>
+    <StyledContainer>
+      <h1>
+        빛나리<span>🌟</span>
+      </h1>
+      <StyledButtonBox>
+        {!isLoggedIn && (
+          <>
+            <StyledButton>로그인</StyledButton>
+            <StyledButton>회원가입</StyledButton>
+          </>
+        )}
+        <StyledButton>메인페이지</StyledButton>
+        {isLoggedIn && (
+          <>
+            <StyledButton>마이페이지</StyledButton>
+            <StyledButton>마이피드</StyledButton>
+          </>
+        )}
+      </StyledButtonBox>
+    </StyledContainer>
   );
 };
 

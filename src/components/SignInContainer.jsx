@@ -1,6 +1,6 @@
 import { useState } from "react";
 import supabase from "../supabaseClient";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { showInputError } from "../common/utils";
 
@@ -42,13 +42,15 @@ const StyledMiddleBox = styled.div`
 const SignInContainer = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const navigate = useNavigate();
+  const { state } = useLocation();
+  const path = state?.redirectedFrom || "/";
 
   const signIn = async () => {
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const { error } = await supabase.auth.signInWithPassword({ email: "te@te.com", password: "1234567" });
 
-    error ? showInputError(error, email, password) : navigate("/");
+    error ? showInputError(error, email, password) : navigate(path);
+    // error ? showInputError(error, email, password) : navigate("/");
   };
 
   // 글 작성 예시 코드
@@ -67,6 +69,7 @@ const SignInContainer = () => {
   const selectPost = async () => {
     const { data, error } = await supabase.from("posts").select().eq("id", 8);
 
+    console.log("error", error);
     console.log("data", data);
   };
 
