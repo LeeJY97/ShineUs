@@ -5,7 +5,6 @@ import supabase from "../supabaseClient";
 const ProfileContainer = styled.div`
   margin-bottom: 20px;
 `;
-
 const NoImageContainer = styled.div`
   width: 150px;
   height: 150px;
@@ -16,6 +15,13 @@ const NoImageContainer = styled.div`
   justify-content: center;
 `;
 
+const StyledProfileImage = styled.div`
+  margin: 20px 0;
+  img {
+    border-radius: 20px;
+    object-fit: cover;
+  }
+`;
 const MyPageProfile = () => {
   const [imgUrl, setImgUrl] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
@@ -82,7 +88,6 @@ const MyPageProfile = () => {
         return;
       }
 
-      // 업로드된 이미지의 공개 URL 가져오기
       const {
         data: { publicUrl },
         error: urlError
@@ -90,8 +95,16 @@ const MyPageProfile = () => {
       if (urlError) {
         console.error("공개 URL 가져오는 중 오류 발생:", urlError);
       } else {
-        setImgUrl(publicUrl);
-        alert("프로필 이미지 변경 완료");
+        // console.log("Data, ", data);
+        // console.log("Public URL:", publicURL); // 디버깅 로그
+        const { error: updateError } = await supabase.from("userinfo").update({ img_url: publicUrl }).eq("id", user.id);
+
+        if (updateError) {
+          console.error("프로필 이미지 URL 업데이트 중 오류 발생", updateError);
+        } else {
+          setImgUrl(publicUrl);
+          alert("프로필 이미지 변경 완료");
+        }
       }
     } catch (error) {
       console.error("이미지 업로드 중 예외 발생:", error);
@@ -104,18 +117,21 @@ const MyPageProfile = () => {
   return (
     <ProfileContainer>
       <h2>My Profile</h2>
-      {imgUrl ? (
-        <img src={imgUrl} alt="Avatar" width={150} height={150} />
-      ) : (
-        <NoImageContainer>
-          <img
-            src="https://pjctzvrxutdmmxvfjczt.supabase.co/storage/v1/object/public/avatars/avatars/59d0c974-47d1-41df-8ce2-6e1ad43166b1.jpg"
-            alt="No image"
-            width={150}
-            height={150}
-          />
-        </NoImageContainer>
-      )}
+      <StyledProfileImage>
+        {imgUrl ? (
+          <img src={imgUrl} alt="Avatar" width={150} height={150} />
+        ) : (
+          <NoImageContainer>
+            <img
+              src="https://pjctzvrxutdmmxvfjczt.supabase.co/storage/v1/object/public/avatars/avatars/59d0c974-47d1-41df-8ce2-6e1ad43166b1.jpg"
+              alt="No image"
+              width={150}
+              height={150}
+            />
+          </NoImageContainer>
+        )}
+      </StyledProfileImage>
+
       <div>
         <input type="file" accept="image/*" onChange={handleFileChange} disabled={uploading} />
         <button onClick={uploadAvatar} disabled={uploading || !selectedFile}>
