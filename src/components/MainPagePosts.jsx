@@ -7,6 +7,8 @@ import CommentList from "./CommentList";
 
 const MainPagePosts = ({ posts }) => {
   const [displayedPosts, setDisplayedPosts] = useState(posts.slice(0, 5));
+  const [detailPosts, setDetailPosts] = useState(posts);
+
   const [page, setPage] = useState(1); // 현재 페이지 상태
   const { user } = useShine();
   const [isCommentFormVisible, setIsCommentFormVisible] = useState(-1);
@@ -20,6 +22,10 @@ const MainPagePosts = ({ posts }) => {
     setDisplayedPosts(newPosts);
     setPage(nextPage);
   };
+
+  // useEffect(() => {
+  //   setDetailPosts(posts);
+  // }, []);
 
   //displayedPosts 올리면 실행
   useEffect(() => {
@@ -52,25 +58,40 @@ const MainPagePosts = ({ posts }) => {
   };
 
   // 좋아요 핸들링 함수
-  const handleLike = async (post, index) => {
-    const isLike = post.is_like;
+  const handleLike = async (index) => {
+    const isLike = detailPosts[index].is_like;
+    let likeCount = detailPosts[index].like_count;
 
     if (isLike) {
-      await supabase.from("likes").delete().match({ user_id: user.id, post_id: post.id });
-      displayedPosts[index].like_count += -1;
+      const { error: likesDeleteError } = await supabase
+        .from("likes")
+        .delete()
+        .match({ user_id: user.id, post_id: detailPosts[index].id });
+
+      if (likesDeleteError) {
+        console.error(likesDeleteError.message);
+      } else {
+        likeCount += -1;
+      }
     } else {
-      await supabase.from("likes").insert({
+      const { error: likesInsertError } = await supabase.from("likes").insert({
         user_id: user.id,
-        post_id: post.id
+        post_id: detailPosts[index].id
       });
-      displayedPosts[index].like_count += 1;
+
+      if (likesInsertError) {
+        console.error(likesInsertError.message);
+      } else {
+        likeCount += 1;
+      }
     }
 
-    // setDisplayedPosts((prevPosts = []) => {
-    //   return prevPosts.map((post, i) => (i === index ? { ...post, is_like: !isLike } : post));
-    // });
+    // posts[index].is_like = !isLike;
+    // posts[index].like_count = likeCount;
 
-    displayedPosts[index].is_like = !isLike;
+    setDetailPosts((prevPosts = []) => {
+      return prevPosts.map((post, i) => (i === index ? { ...post, is_like: !isLike, like_count: likeCount } : post));
+    });
   };
 
   const toggleCommentForm = (index) => {
@@ -83,9 +104,9 @@ const MainPagePosts = ({ posts }) => {
         <StyledPostBox key={post.id} ref={getObserverRef(index, displayedPosts, observerRef)}>
           <h3>
             {post.nickname}
-            <span onClick={() => handleLike(post, index)}>
-              {post.is_like ? `♥` : `♡`}
-              {post.like_count}
+            <span onClick={() => handleLike(index)}>
+              {detailPosts[index]?.is_like ? `♥` : `♡`}
+              {detailPosts[index]?.like_count}
             </span>
           </h3>
           <p>{post.contents}</p>

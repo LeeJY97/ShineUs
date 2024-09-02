@@ -74,7 +74,7 @@ const Home = () => {
   return (
     <>
       <MainPageInput addPosthandler={addPosthandler} />
-      <MainPagePosts posts={posts} />
+      {posts.length && <MainPagePosts posts={posts} />}
     </>
   );
 };
