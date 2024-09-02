@@ -1,7 +1,6 @@
 import { useState } from "react";
 
 const MainPageTag = ({ tags, setTags }) => {
-  // const [tags, setTags] = useState([]); // 전체 태그 배열
   const [tag, setTag] = useState(""); // 개별 태그
 
   const removeTag = (index) => {
@@ -28,7 +27,7 @@ const MainPageTag = ({ tags, setTags }) => {
 
   return (
     <>
-      {tags.map((tag, index) => (
+      {/* {tags.map((tag, index) => (
         <div key={index}>
           <span>#{tag}</span>
           <span
@@ -39,7 +38,7 @@ const MainPageTag = ({ tags, setTags }) => {
             ❌
           </span>
         </div>
-      ))}
+      ))} */}
 
       <input onChange={(e) => addTag(e)} onKeyPress={(e) => handleKeyPress(e)} value={tag} />
     </>
