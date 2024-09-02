@@ -8,6 +8,7 @@ const StyledMyPageContentContainer = styled.div`
   flex: 1;
   padding: 20px;
   background-color: #fff;
+  height: 90vh;
 `;
 
 const Input = styled.input`
@@ -58,7 +59,7 @@ const MyPageContainer = () => {
 
   const handleEditClick = () => {
     setOriginalName(name); // 현재 닉네임을 원래 이름 상태에 저장
-    setIsEditing(true)
+    setIsEditing(true);
   };
 
   const handleSaveClick = async () => {
@@ -87,10 +88,10 @@ const MyPageContainer = () => {
     }
   };
 
-  const handleCancelClick = () => { 
-    setName(originalName);  // 닉네임을 원래 값으로 되돌림
-    setIsEditing(false);    // 수정 모드 종료
-  }
+  const handleCancelClick = () => {
+    setName(originalName); // 닉네임을 원래 값으로 되돌림
+    setIsEditing(false); // 수정 모드 종료
+  };
 
   return (
     <StyledMyPageContentContainer>
