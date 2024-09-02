@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
+// import MainPageTag from "./MainPageTag";
 
 const MainPagePosts = ({ posts }) => {
   const [displayedPosts, setDisplayedPosts] = useState(posts.slice(0, 5));

@@ -5,6 +5,7 @@ import supabase from "../supabaseClient";
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
+  const [tags, setTags] = useState([]); // 전체 태그 배열
 
   // 포스팅 한  DB (이미지 X)
   useEffect(() => {
@@ -24,11 +25,13 @@ const Home = () => {
   }, []);
 
   const addPosthandler = (data) => {
+    console.log("data", data);
     setPosts([data, ...posts]);
   };
+
   return (
     <>
-      <MainPageInput addPosthandler={addPosthandler} />
+      <MainPageInput addPosthandler={addPosthandler} tags={tags} setTags={setTags} />
       <MainPagePosts posts={posts} />
     </>
   );
