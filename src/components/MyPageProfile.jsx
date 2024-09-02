@@ -29,7 +29,7 @@ const MyPageProfile = ({ avatarUrl, setAvatarUrl }) => {
         return;
       }
 
-      const filePath = `${user.id}.jpg`; // 파일 경로 설정
+      const filePath = `avatars/${user.id}.jpg`; // 파일 경로 설정
       const { data, error: downloadError } = await supabase.storage.from("avatars").download(filePath);
 
       if (downloadError) {

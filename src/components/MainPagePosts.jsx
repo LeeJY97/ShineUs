@@ -1,16 +1,23 @@
 import { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
+// import MainPageTag from "./MainPageTag";
+import supabase from "../supabaseClient";
+import { useShine } from "../context/ShineContext";
+import WriteCommentForm from "./WriteCommentForm";
+import CommentList from "./CommentList";
 
 const MainPagePosts = ({ posts }) => {
-  const [displayedPosts, setDisplayedPosts] = useState(posts.slice(0, 10)); // 처음에 10개만 표시
+  const [displayedPosts, setDisplayedPosts] = useState(posts.slice(0, 5));
   const [page, setPage] = useState(1); // 현재 페이지 상태
+  const { user } = useShine();
+  const [isCommentFormVisible, setIsCommentFormVisible] = useState(-1);
 
   const observerRef = useRef(); // 마지막 dom요소를 추적할 ref
 
   // loadMorePosts 함수 선언 - 새로운 포스트 로드
   const loadMorePosts = () => {
     const nextPage = page + 1;
-    const newPosts = posts.slice(0, nextPage * 10);
+    const newPosts = posts.slice(0, nextPage * 5);
     setDisplayedPosts(newPosts);
     setPage(nextPage);
   };
@@ -45,13 +52,49 @@ const MainPagePosts = ({ posts }) => {
     return index === displayedPosts.length - 1 ? observerRef : null;
   };
 
+  // 좋아요 핸들링 함수
+  const handleLike = async (post, index) => {
+    const isLike = post.is_like;
+
+    if (isLike) {
+      await supabase.from("likes").delete().match({ user_id: user.id, post_id: post.id });
+      displayedPosts[index].like_count += -1;
+    } else {
+      await supabase.from("likes").insert({
+        user_id: user.id,
+        post_id: post.id
+      });
+      displayedPosts[index].like_count += 1;
+    }
+
+    // setDisplayedPosts((prevPosts = []) => {
+    //   return prevPosts.map((post, i) => (i === index ? { ...post, is_like: !isLike } : post));
+    // });
+
+    displayedPosts[index].is_like = !isLike;
+  };
+
+  const toggleCommentForm = (index) => {
+    setIsCommentFormVisible(index);
+  };
+
   return (
     <StyledContainer>
       {displayedPosts.map((post, index) => (
         <StyledPostBox key={post.id} ref={getObserverRef(index, displayedPosts, observerRef)}>
-          <h2>{post.user}</h2>
+          <h3>{post.userinfo.nickname}</h3>
+          <h3>
+            {post.userinfo.nickname}
+            <span onClick={() => handleLike(post, index)}>
+              {post.is_like ? `♥` : `♡`}
+              {post.like_count}
+            </span>
+          </h3>
           <p>{post.contents}</p>
           {post.img_url && <StyledImage src={post.img_url} />}
+          <button onClick={() => toggleCommentForm(index)}>댓글 달기</button>
+          {isCommentFormVisible === index && <WriteCommentForm postId={post.id} />}
+          <CommentList postId={post.id}></CommentList>
         </StyledPostBox>
       ))}
     </StyledContainer>
