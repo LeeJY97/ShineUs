@@ -61,6 +61,8 @@ const Home = () => {
         like_count: post.likes.length
       }));
 
+      console.log("postsWithLikes", postsWithLikes);
+
       setPosts(postsWithLikes);
     };
 
@@ -73,7 +75,7 @@ const Home = () => {
   return (
     <>
       <MainPageInput addPostHandler={addPostHandler} tags={tags} setTags={setTags} />
-      <MainPagePosts posts={posts} />
+      {posts.length && <MainPagePosts posts={posts} />}
     </>
   );
 };

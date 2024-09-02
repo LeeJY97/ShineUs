@@ -63,6 +63,8 @@ const MainPagePosts = ({ posts }) => {
     const isLike = detailPosts[index].is_like;
     let likeCount = detailPosts[index].like_count;
 
+    console.log("likeCount", likeCount);
+
     if (isLike) {
       const { error: likesDeleteError } = await supabase
         .from("likes")
@@ -87,17 +89,65 @@ const MainPagePosts = ({ posts }) => {
       }
     }
 
-    // posts[index].is_like = !isLike;
-    // posts[index].like_count = likeCount;
-
     setDetailPosts((prevPosts = []) => {
       return prevPosts.map((post, i) => (i === index ? { ...post, is_like: !isLike, like_count: likeCount } : post));
+    });
+  };
+
+  // 댓글 작성 함수
+  const handleComments = async ({ postId, index, content }) => {
+    const { data: newComments, error: commentsError } = await supabase
+      .from("comments")
+      .insert({
+        user_id: user.id,
+        post_id: postId,
+        content
+      })
+      .select("*");
+
+    if (commentsError) {
+      console.error("Error commentsError => ", commentsError.message);
+    }
+
+    console.log("newComments", newComments);
+    console.log("detailPosts", detailPosts);
+
+    setDetailPosts((prevPosts) => {
+      const newPosts = prevPosts.map((prev, i) => {
+        if (i === index) {
+          // return { ...prev, comment: [...prev.comment, ...newComments] } : prev)}
+          return { ...prev, comments: [...prev.comments, ...newComments] };
+        }
+        return prev;
+      });
+      return newPosts;
     });
   };
 
   const toggleCommentForm = (index) => {
     setIsCommentFormVisible(index);
   };
+
+  /**
+   *
+   * 
+  // {
+  //   [postId] : {
+  //   like_count
+  //   isLike
+  //   },
+  //  }
+
+  {
+"10": ~,
+"12": ~,
+"17": ~,
+}
+
+const likePosts = {}
+likePosts[postId]
+
+   */
 
   return (
     <StyledContainer>
@@ -118,8 +168,10 @@ const MainPagePosts = ({ posts }) => {
           {post.img_url && <StyledImage src={post.img_url} />}
 
           <button onClick={() => toggleCommentForm(index)}>댓글 달기</button>
-          {isCommentFormVisible === index && <WriteCommentForm postId={post.id} />}
-          <CommentList postId={post.id}></CommentList>
+          {isCommentFormVisible === index && ( // index -1 로 바꾸기, comment 내용 날리기
+            <WriteCommentForm postId={post.id} handleComments={handleComments} index={index} />
+          )}
+          <CommentList postId={post.id} comments={detailPosts[index].comments}></CommentList>
         </StyledPostBox>
       ))}
     </StyledContainer>

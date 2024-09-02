@@ -12,25 +12,27 @@ const StyledPostBox = styled.div`
   border-radius: 5px;
 `;
 
-const CommentList = ({ postId }) => {
-  const [commentList, setCommentList] = useState([]);
+const CommentList = ({ postId, comments }) => {
+  // const [commentList, setCommentList] = useState([]);
 
-  useEffect(() => {
-    const fetchComments = async () => {
-      const { data: comments, error: commentsError } = await supabase
-        .from("comments")
-        .select("*")
-        .eq("post_id", postId);
+  // console.log("comments", comments);
 
-      if (comments.length) {
-        setCommentList(comments);
-      } else {
-        setCommentList([]);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchComments = async () => {
+  //     const { data: comments, error: commentsError } = await supabase
+  //       .from("comments")
+  //       .select("*")
+  //       .eq("post_id", postId);
 
-    fetchComments();
-  }, []);
+  //     if (comments.length) {
+  //       setCommentList(comments);
+  //     } else {
+  //       setCommentList([]);
+  //     }
+  //   };
+
+  //   fetchComments();
+  // }, []);
 
   // commentList.map((comment) => {
   //   console.log("comment", comment);
@@ -38,7 +40,7 @@ const CommentList = ({ postId }) => {
 
   return (
     <>
-      {commentList.map((comment) => (
+      {comments.map((comment) => (
         <StyledPostBox key={comment.id}>{comment.content}</StyledPostBox>
       ))}
     </>
