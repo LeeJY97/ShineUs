@@ -2,6 +2,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import supabase from "../supabaseClient";
+import MyPageProfile from "./MyPageProfile";
 
 const StyledMyPageContentContainer = styled.div`
   flex: 1;
@@ -144,14 +145,7 @@ const MyPageContainer = () => {
 
   return (
     <StyledMyPageContentContainer>
-      <h2>My Profile</h2>
-      {avatarUrl ? <img src={avatarUrl} alt="Avatar" width={150} height={150} /> : <div>No image</div>}
-      <div>
-        <input type="file" accept="image/*" onChange={handleFileChange} disabled={uploading} />
-        <button onClick={uploadAvatar} disabled={uploading || !selectedFile}>
-          {uploading ? "Uploading..." : "Upload Image"}
-        </button>
-      </div>
+      <MyPageProfile />
       <Input
         type="text"
         value={name}
