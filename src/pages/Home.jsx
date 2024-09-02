@@ -5,7 +5,22 @@ import supabase from "../supabaseClient";
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
-  const [tags, setTags] = useState([]); // 전체 태그 배열
+  const [tags, setTags] = useState([]);
+  // 포스팅 한  DB (이미지 X)
+  // useEffect(() => {
+  //   const fetchPosts = async () => {
+  //     const { data, error } = await supabase
+  //       .from("posts")
+  //       .select("*, userinfo (*), likes (*)")
+  //       .order("created_at", { ascending: false });
+  //     if (error) {
+  //       console.error("Error fetching posts:", error.message);
+  //     } else {
+  //       setPosts(data);
+  //     }
+  //   };
+  //   fetchPosts();
+  // }, []);
 
   // 포스팅 한 DB (좋아요 누른 사람, 좋아요 개수 포함)
   useEffect(() => {
@@ -17,7 +32,7 @@ const Home = () => {
       // 1. posts및 likes 테이블 조회
       const { data: posts, error: postsError } = await supabase
         .from("posts")
-        .select("*, userinfo (*), likes (*)")
+        .select("*, userinfo (*), likes (*), comments (*)")
         .order("created_at", { ascending: false });
 
       if (postsError) {
@@ -52,14 +67,12 @@ const Home = () => {
     fetchPosts();
   }, []);
 
-  const addPosthandler = (data) => {
-    console.log("data", data);
+  const addPostHandler = (data) => {
     setPosts([data, ...posts]);
   };
-
   return (
     <>
-      <MainPageInput addPosthandler={addPosthandler} tags={tags} setTags={setTags} />
+      <MainPageInput addPostHandler={addPostHandler} tags={tags} setTags={setTags} />
       <MainPagePosts posts={posts} />
     </>
   );
