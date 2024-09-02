@@ -1,11 +1,10 @@
-import FeedHeader from "../components/FeedHeader";
+// import FeedHeader from "../components/FeedHeader";
 import FeedList from "../components/FeedList";
 import styled from "styled-components";
 
 const MyFeed = () => {
   return (
     <StyledContainer>
-      <FeedHeader />
       <FeedList />
     </StyledContainer>
   );
