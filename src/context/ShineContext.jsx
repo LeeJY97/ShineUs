@@ -55,5 +55,7 @@ export function ShineProvider({ children }) {
       data.subscription.unsubscribe();
     };
   });
+
+  // 저장하기
   return <ShineContext.Provider value={{ isLoggedIn, user }}>{children}</ShineContext.Provider>;
 }

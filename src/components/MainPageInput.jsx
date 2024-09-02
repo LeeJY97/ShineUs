@@ -1,8 +1,9 @@
 import { useState } from "react";
 import styled from "styled-components";
 import supabase from "../supabaseClient";
+import MainPageTag from "./MainPageTag";
 
-const MainPageInput = ({ addPosthandler }) => {
+const MainPageInput = ({ addPosthandler, tags, setTags }) => {
   const [postContent, setPostContent] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
@@ -39,10 +40,11 @@ const MainPageInput = ({ addPosthandler }) => {
     const { data: newPost, error: postError } = await supabase
       .from("posts")
       .insert({
+        tags: JSON.stringify(tags),
         contents: postContent,
         img_url: img_url
       })
-      .select("*")
+      .select("* , userinfo (*)")
       .single();
 
     if (postError) {
@@ -55,7 +57,7 @@ const MainPageInput = ({ addPosthandler }) => {
     setPostContent("");
     setPreviewImage(null);
     setSelectedImage(null);
-
+    setTags([]);
     alert("업로드 되었습니다.");
   };
 
@@ -68,6 +70,7 @@ const MainPageInput = ({ addPosthandler }) => {
       )}
       <form method="post" onSubmit={handleSubmit}>
         <label>
+          <MainPageTag tags={tags} setTags={setTags} />
           <textarea
             name="postContent"
             rows={8}

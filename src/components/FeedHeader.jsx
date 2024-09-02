@@ -24,7 +24,6 @@ const StyledContainer = styled.div`
   h4 {
     &:hover {
       font-weight: bold;
-      /* color: #ffc966; */
       position: relative;
     }
     &:hover::after {

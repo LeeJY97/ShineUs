@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
+// import MainPageTag from "./MainPageTag";
 import supabase from "../supabaseClient";
 import { useShine } from "../context/ShineContext";
 import WriteCommentForm from "./WriteCommentForm";
@@ -102,11 +103,13 @@ const MainPagePosts = ({ posts }) => {
     <StyledContainer>
       {displayedPosts.map((post, index) => (
         <StyledPostBox key={post.id} ref={getObserverRef(index, displayedPosts, observerRef)}>
+          <h3>{post.userinfo.nickname}</h3>
           <h3>
             {post.nickname}
             <span onClick={() => handleLike(index)}>
               {detailPosts[index]?.is_like ? `♥` : `♡`}
               {detailPosts[index]?.like_count}
+              {post.userinfo.nickname}
             </span>
           </h3>
           <p>{post.contents}</p>

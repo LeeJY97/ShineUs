@@ -33,7 +33,7 @@ const Home = () => {
       // 1. posts및 likes 테이블 조회
       const { data: posts, error: postsError } = await supabase
         .from("posts")
-        .select("*, userinfo (*), likes (*)")
+        .select("*, userinfo (*), likes (*), ")
         .order("created_at", { ascending: false });
 
       if (postsError) {
