@@ -28,7 +28,7 @@ const MainPageTag = ({ tags, setTags }) => {
 
   return (
     <>
-      {tags.map((tag, index) => (
+      {/* {tags.map((tag, index) => (
         <div key={index}>
           <span>#{tag}</span>
           <span
@@ -39,7 +39,7 @@ const MainPageTag = ({ tags, setTags }) => {
             ❌
           </span>
         </div>
-      ))}
+      ))} */}
 
       <input onChange={(e) => addTag(e)} onKeyPress={(e) => handleKeyPress(e)} value={tag} />
     </>
