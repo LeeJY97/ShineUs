@@ -6,86 +6,95 @@ const ProfileContainer = styled.div`
   margin-bottom: 20px;
 `;
 
-const MyPageProfile = ({ avatarUrl, setAvatarUrl }) => {
-  const [uploading, setUploading] = useState(false);
+const NoImageContainer = styled.div`
+  width: 150px;
+  height: 150px;
+  background-color: #eee;
+  margin: 20px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const MyPageProfile = () => {
+  const [imgUrl, setImgUrl] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
-    if (avatarUrl) {
-      downloadImage();
-    }
-  }, [avatarUrl]);
+    const fetchProfileImage = async () => {
+      try {
+        // 사용자 정보를 가져오는 부분 수정됨
+        const {
+          data: { user },
+          error: userError
+        } = await supabase.auth.getUser();
+        if (user) {
+          const { data, error } = await supabase.from("userinfo").select("img_url").eq("id", user.id).single();
 
-  const downloadImage = async () => {
-    try {
-      const {
-        data: { user },
-        error: authError
-      } = await supabase.auth.getUser();
-      if (authError) throw authError;
-
-      if (!user) {
-        console.error("로그인 되어 있지 않습니다.");
-        return;
+          if (error) {
+            console.error("프로필을 가져오는 중 오류 발생:", error);
+          } else {
+            console.log("Fetched image URL:", data.img_url); // 디버깅 로그
+            setImgUrl(data.img_url || ""); // 이미지 URL 상태 업데이트
+          }
+        } else if (userError) {
+          console.error("사용자를 가져오는 중 오류 발생:", userError);
+        }
+      } catch (error) {
+        console.error("프로필 이미지를 가져오는 중 예외 발생:", error);
       }
+    };
 
-      const filePath = `avatars/${user.id}.jpg`; // 파일 경로 설정
-      const { data, error: downloadError } = await supabase.storage.from("avatars").download(filePath);
+    fetchProfileImage();
+  }, []);
 
-      if (downloadError) {
-        console.error("이미지를 다운로드하는 중 오류 발생:", downloadError.message);
-        return;
-      }
-
-      const url = URL.createObjectURL(data);
-      setAvatarUrl(url);
-    } catch (error) {
-      console.error("이미지를 다운로드하는 중 오류 발생:", error.message);
-    }
-  };
-
-  const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
+  const handleFileChange = (e) => {
+    setSelectedFile(e.target.files[0]);
   };
 
   const uploadAvatar = async () => {
-    if (!selectedFile) {
-      alert("업로드할 이미지를 선택해주세요.");
-      return;
-    }
+    if (!selectedFile) return;
+
+    setUploading(true);
 
     try {
-      setUploading(true);
-
+      // 현재 사용자 가져오기
       const {
         data: { user },
-        error: authError
+        error: userError
       } = await supabase.auth.getUser();
-      if (authError) throw authError;
-
       if (!user) {
-        console.error("로그인 되어 있지 않습니다.");
+        console.error("사용자가 로그인되지 않았습니다.");
+        setUploading(false);
         return;
       }
 
-      const fileExt = selectedFile.name.split(".").pop();
-      const fileName = `${user.id}.${fileExt}`;
-      const filePath = `avatars/${fileName}`;
+      // Supabase 스토리지에 이미지 업로드
+      const fileName = `${user.id}-${selectedFile.name}`;
+      const { error: uploadError } = await supabase.storage
+        .from("avatars")
+        .upload(`avatars/${fileName}`, selectedFile, { upsert: true });
 
-      const { error: uploadError } = await supabase.storage.from("avatars").upload(filePath, selectedFile);
+      if (uploadError) {
+        console.error("이미지 업로드 중 오류 발생:", uploadError);
+        setUploading(false);
+        return;
+      }
 
-      if (uploadError) throw uploadError;
-
-      const { publicURL, error: urlError } = supabase.storage.from("avatars").getPublicUrl(filePath);
-      if (urlError) throw urlError;
-
-      const { error: updateError } = await supabase.from("userinfo").update({ img_url: publicURL }).eq("id", user.id);
-      if (updateError) throw updateError;
-
-      setAvatarUrl(publicURL);
+      // 업로드된 이미지의 공개 URL 가져오기
+      const {
+        data: { publicUrl },
+        error: urlError
+      } = supabase.storage.from("avatars").getPublicUrl(`avatars/${fileName}`);
+      if (urlError) {
+        console.error("공개 URL 가져오는 중 오류 발생:", urlError);
+      } else {
+        setImgUrl(publicUrl);
+        alert("프로필 이미지 변경 완료");
+      }
     } catch (error) {
-      alert("이미지 업로드 오류 발생:", error.message);
-      console.error("Upload Error:", error);
+      console.error("이미지 업로드 중 예외 발생:", error);
     } finally {
       setUploading(false);
       setSelectedFile(null);
@@ -95,11 +104,22 @@ const MyPageProfile = ({ avatarUrl, setAvatarUrl }) => {
   return (
     <ProfileContainer>
       <h2>My Profile</h2>
-      {avatarUrl ? <img src={avatarUrl} alt="Avatar" width={150} height={150} /> : <div>No image</div>}
+      {imgUrl ? (
+        <img src={imgUrl} alt="Avatar" width={150} height={150} />
+      ) : (
+        <NoImageContainer>
+          <img
+            src="https://pjctzvrxutdmmxvfjczt.supabase.co/storage/v1/object/public/avatars/avatars/59d0c974-47d1-41df-8ce2-6e1ad43166b1.jpg"
+            alt="No image"
+            width={150}
+            height={150}
+          />
+        </NoImageContainer>
+      )}
       <div>
         <input type="file" accept="image/*" onChange={handleFileChange} disabled={uploading} />
         <button onClick={uploadAvatar} disabled={uploading || !selectedFile}>
-          {uploading ? "Uploading..." : "Upload Image"}
+          {uploading ? "업로드중..." : "이미지 업로드"}
         </button>
       </div>
     </ProfileContainer>
