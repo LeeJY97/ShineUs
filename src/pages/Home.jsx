@@ -2,11 +2,10 @@ import { useState, useEffect } from "react";
 import MainPageInput from "../components/MainPageInput";
 import MainPagePosts from "../components/MainPagePosts";
 import supabase from "../supabaseClient";
-import { useShine } from "../context/ShineContext";
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
-
+  const [tags, setTags] = useState([]);
   // 포스팅 한  DB (이미지 X)
   // useEffect(() => {
   //   const fetchPosts = async () => {
@@ -68,13 +67,13 @@ const Home = () => {
     fetchPosts();
   }, []);
 
-  const addPosthandler = (data) => {
+  const addPostHandler = (data) => {
     setPosts([data, ...posts]);
   };
   return (
     <>
-      <MainPageInput addPosthandler={addPosthandler} />
-      {posts.length && <MainPagePosts posts={posts} />}
+      <MainPageInput addPostHandler={addPostHandler} tags={tags} setTags={setTags} />
+      <MainPagePosts posts={posts} />
     </>
   );
 };
