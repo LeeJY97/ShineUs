@@ -3,12 +3,18 @@ import supabase from "../supabaseClient";
 
 export const ShineContext = createContext(null);
 
+const initialUserData = {
+  session: {},
+  user: {}
+};
+
 export function useShine() {
   return useContext(ShineContext);
 }
 
 export function ShineProvider({ children }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState(initialUserData);
 
   // 회원정보 가져오기 예시 코드
   // useEffect(() => {
@@ -31,9 +37,11 @@ export function ShineProvider({ children }) {
       } else if (event === "SIGNED_IN") {
         // handle sign in event
         setIsLoggedIn(true);
+        setUser(session.user);
       } else if (event === "SIGNED_OUT") {
         await supabase.auth.signOut();
         setIsLoggedIn(false);
+        setUser(initialUserData);
       } else if (event === "PASSWORD_RECOVERY") {
         // handle password recovery event
       } else if (event === "TOKEN_REFRESHED") {
@@ -49,5 +57,5 @@ export function ShineProvider({ children }) {
   });
 
   // 저장하기
-  return <ShineContext.Provider value={{ isLoggedIn }}>{children}</ShineContext.Provider>;
+  return <ShineContext.Provider value={{ isLoggedIn, user }}>{children}</ShineContext.Provider>;
 }
