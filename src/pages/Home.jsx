@@ -13,8 +13,8 @@ const Home = () => {
 
   // 좋아요 핸들링 함수
   const handleLike = async (postId) => {
-    const isLike = likesAndComments[postId].is_like;
-    let likeCount = likesAndComments[postId].like_count;
+    const isLike = likesAndComments[postId].is_like ?? false;
+    let likeCount = likesAndComments[postId].is_like ?? 0;
 
     if (isLike) {
       const { error: likesDeleteError } = await supabase
@@ -39,12 +39,22 @@ const Home = () => {
         likeCount += 1;
       }
     }
+    // 1. 기존 데이터 가져오기
+    const existingPost = likesAndComments[postId] || {}; // 없는 경우 기본값으로 빈 객체를 사용
 
-    const newTest = {
-      ...likesAndComments,
-      [postId]: { ...likesAndComments[postId], is_like: !isLike, like_count: likeCount }
+    // 2. 업데이트된 포스트 객체 생성
+    const updatedPost = {
+      ...existingPost,
+      is_like: !isLike, // 새로운 is_like 값 설정
+      like_count: likeCount // 새로운 like_count 값 설정
     };
-    setLikesAndComments(newTest);
+
+    // 3. 최종 객체 생성
+    const updatedLikesAndComments = {
+      ...likesAndComments,
+      [postId]: updatedPost
+    };
+    setLikesAndComments(updatedLikesAndComments);
   };
 
   // 댓글 작성 함수
@@ -62,14 +72,32 @@ const Home = () => {
       console.error("Error commentsError => ", commentsError.message);
     }
 
-    const obj = {
-      ...likesAndComments,
-      [postId]: { ...likesAndComments[postId], comments: [...likesAndComments[postId].comments, newComments[0]] }
+    // 불변성 유지 어쩌구 때문에 이렇게 짜야되는거 너무 짜쳐요 진짜 미치겟스빈다
+    const existingPost = likesAndComments[postId];
+
+    // 2. comments 배열 생성
+    const updatedComments = existingPost
+      ? [...(existingPost.comments ?? []), newComments[0]] // 기존 데이터가 있으면 기존 comments에 새 댓글 추가
+      : [newComments[0]]; // 기존 데이터가 없으면 새 배열 생성
+
+    // 3. 업데이트된 포스트 객체 생성
+    const updatedPost = {
+      ...existingPost, // existingPost가 undefined일 때도 문제가 없도록 처리
+      comments: updatedComments
     };
 
-    console.log("obj", obj);
+    // 4. 최종 객체 생성
+    const updatedLikesAndComments = {
+      ...likesAndComments,
+      [postId]: updatedPost
+    };
 
-    setLikesAndComments(obj);
+    // const obj = {
+    //   ...likesAndComments,
+    //   [postId]: { ...likesAndComments[postId], comments: [...likesAndComments[postId].comments, newComments[0]] }
+    // };
+
+    setLikesAndComments(updatedLikesAndComments);
   };
 
   // 포스팅 한 DB (좋아요 누른 사람, 좋아요 개수 포함)
