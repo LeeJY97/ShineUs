@@ -8,6 +8,7 @@ const StyledMyPageContentContainer = styled.div`
   flex: 1;
   padding: 20px;
   background-color: #fff;
+  height: 90vh;
 `;
 
 const Input = styled.input`
@@ -22,16 +23,12 @@ const Input = styled.input`
 const MyPageContainer = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState(null);
-  const [uploading, setUploading] = useState(false);
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [originalName, setOriginalName] = useState("");
 
   useEffect(() => {
     fetchUserData();
-    downloadImage();
   }, []);
 
   const fetchUserData = async () => {
@@ -47,15 +44,12 @@ const MyPageContainer = () => {
         return;
       }
 
-      const { data, error } = await supabase
-        .from("userinfo")
-        .select("nickname, email, img_url")
-        .eq("id", user.id)
-        .single();
+      const { data, error } = await supabase.from("userinfo").select("*").eq("id", user.id).single();
 
       if (error) throw error;
 
       setName(data.nickname || "");
+      setOriginalName(data.nickname || "");
       setEmail(data.email || "");
       setAvatarUrl(data.img_url || "");
     } catch (error) {
@@ -63,7 +57,12 @@ const MyPageContainer = () => {
     }
   };
 
-  const downloadImage = async () => {
+  const handleEditClick = () => {
+    setOriginalName(name); // 현재 닉네임을 원래 이름 상태에 저장
+    setIsEditing(true);
+  };
+
+  const handleSaveClick = async () => {
     try {
       const {
         data: { user },
@@ -76,72 +75,23 @@ const MyPageContainer = () => {
         return;
       }
 
-      const filePath = `avatars/${user.id}.jpg`; // 파일 경로 설정
-      const { data, error: downloadError } = await supabase.storage.from("avatars").download(filePath);
+      const { data, error } = await supabase
+        .from("userinfo")
+        .update({ nickname: name }) // 업데이트할 필드와 값을 지정
+        .eq("id", user.id); // 해당 사용자의 id와 일치하는 행을 업데이트
 
-      if (downloadError) {
-        console.error("이미지를 다운로드하는 중 오류 발생:", downloadError.message);
-        return;
-      }
+      if (error) throw error;
 
-      const url = URL.createObjectURL(data);
-      setAvatarUrl(url);
+      setIsEditing(false); // 수정 모드를 종료
     } catch (error) {
-      console.error("이미지를 다운로드하는 중 오류 발생:", error.message);
+      console.error("닉네임 저장 중 오류 발생:", error.message);
     }
   };
 
-  const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
+  const handleCancelClick = () => {
+    setName(originalName); // 닉네임을 원래 값으로 되돌림
+    setIsEditing(false); // 수정 모드 종료
   };
-
-  const uploadAvatar = async () => {
-    if (!selectedFile) {
-      alert("업로드할 이미지를 선택해주세요.");
-      return;
-    }
-
-    try {
-      setUploading(true);
-
-      const {
-        data: { user },
-        error: authError
-      } = await supabase.auth.getUser();
-      if (authError) throw authError;
-
-      if (!user) {
-        console.error("로그인 되어 있지 않습니다.");
-        return;
-      }
-
-      const fileExt = selectedFile.name.split(".").pop();
-      const fileName = `${user.id}.${fileExt}`;
-      const filePath = `avatars/${fileName}`;
-
-      const { error: uploadError } = await supabase.storage.from("avatars").upload(filePath, selectedFile);
-
-      if (uploadError) throw uploadError;
-
-      const { publicURL, error: urlError } = supabase.storage.from("avatars").getPublicUrl(filePath);
-      if (urlError) throw urlError;
-
-      const { error: updateError } = await supabase.from("userinfo").update({ img_url: publicURL }).eq("id", user.id);
-      if (updateError) throw updateError;
-
-      setAvatarUrl(publicURL);
-    } catch (error) {
-      alert("이미지 업로드 오류 발생:", error.message);
-      console.error("Upload Error:", error);
-    } finally {
-      setUploading(false);
-      setSelectedFile(null);
-    }
-  };
-
-  const handleEditClick = () => setIsEditing(true);
-
-  const handleSaveClick = () => setIsEditing(false);
 
   return (
     <StyledMyPageContentContainer>
@@ -163,6 +113,7 @@ const MyPageContainer = () => {
       {isEditing ? (
         <>
           <button onClick={handleSaveClick}>저장</button>
+          <button onClick={handleCancelClick}>취소</button>
         </>
       ) : (
         <button onClick={handleEditClick}>수정</button>
