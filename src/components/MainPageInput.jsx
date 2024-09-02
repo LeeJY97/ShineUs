@@ -3,7 +3,7 @@ import styled from "styled-components";
 import supabase from "../supabaseClient";
 import MainPageTag from "./MainPageTag";
 
-const MainPageInput = ({ addPosthandler, tags, setTags }) => {
+const MainPageInput = ({ addPostHandler, tags, setTags }) => {
   const [postContent, setPostContent] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
@@ -52,7 +52,7 @@ const MainPageInput = ({ addPosthandler, tags, setTags }) => {
       return;
     }
 
-    addPosthandler(newPost);
+    addPostHandler(newPost);
 
     setPostContent("");
     setPreviewImage(null);

@@ -52,14 +52,14 @@ const Home = () => {
     fetchPosts();
   }, []);
 
-  const addPosthandler = (data) => {
+  const addPostHandler = (data) => {
     console.log("data", data);
     setPosts([data, ...posts]);
   };
 
   return (
     <>
-      <MainPageInput addPosthandler={addPosthandler} tags={tags} setTags={setTags} />
+      <MainPageInput addPosthandler={addPostHandler} tags={tags} setTags={setTags} />
       <MainPagePosts posts={posts} />
     </>
   );
