@@ -17,16 +17,28 @@
 
 <div style="text-align: right;">
   <h2> 🪖 Team Member</h2>
-  <table>
-  <tbody>
-    <tr>
-      <td align="center"><a href=""><img src="width="100px;" alt=""/><br /><sub><b>FE 팀장 : 이준열 </b></sub></a><br /></td>
-      <td align="center"><a href=""><img src="" width="100px;" alt=""/><br /><sub><b>FE 팀원 : 김하영 </b></sub></a><br /></td>
-      <td align="center"><a href=""><img src="" width="100px;" alt=""/><br /><sub><b>FE 팀원 : 박규리 </b></sub></a><br /></td>
-      <td align="center"><a href=""><img src="" width="100px;" alt=""/><br /><sub><b>FE 팀원 : 장세희 </b></sub></a><br /></td>
-     <tr/>
-  </tbody>
+<table>
+   <tr>
+    <td align="center"><b>Frontend</b></td>
+    <td align="center"><b>Frontend</b></td>
+    <td align="center"><b>Frontend</b></td>
+    <td align="center"><b>Frontend</b></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="https://avatars.githubusercontent.com/LeeJY97" width="100px" /></td>
+    <td align="center"><img src="https://avatars.githubusercontent.com/추가예정" width="100px" /></td>
+    <td align="center"><img src="https://avatars.githubusercontent.com/kyulipark" width="100px" /></td>
+    <td align="center"><img src="https://avatars.githubusercontent.com/sehee-jang" width="100px" /></td>
+  </tr>
+  <tr>
+    <td align="center"><b><a href="https://github.com/LeeJY97">팀장 : 이준열</a></b></td>
+    <td align="center"><b><a href="https://github.com/추가예정">팀원 : 김하영</a></b></td>
+    <td align="center"><b><a href="https://github.com/kyulipark">팀원 : 박규리</a></b></td>
+    <td align="center"><b><a href="https://github.com/sehee-jang">팀원 : 장세희</a></b></td>
+  </tr>
 </table>
+
+
 
 
 <div style="text-align: right;">
