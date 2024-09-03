@@ -8,8 +8,10 @@ const StyledLayoutContainer = styled.div`
   justify-content: center;
   gap: 50px;
   width: 100vw;
+  /* height: 90vh; */
   max-width: 1200px;
   min-width: 800px;
+  margin: 0 auto;
 `;
 
 const StyledLayoutNavBox = styled.div`

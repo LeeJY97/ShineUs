@@ -3,6 +3,7 @@ import MainPageInput from "../components/MainPageInput";
 import MainPagePosts from "../components/MainPagePosts";
 import supabase from "../supabaseClient";
 import { useShine } from "../context/ShineContext";
+import styled from "styled-components";
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
@@ -162,6 +163,13 @@ const Home = () => {
 
     setLikesAndComments({ ...likesAndComments, [data.id]: { is_like: false, like_count: 0, comments: [] } });
   };
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  };
   return (
     <div>
       <MainPageInput
@@ -180,8 +188,15 @@ const Home = () => {
           isCommentFormVisible={isCommentFormVisible}
         />
       )}
+      <StyledMoveTopButton onClick={scrollToTop}>Top</StyledMoveTopButton>
     </div>
   );
 };
 
 export default Home;
+
+const StyledMoveTopButton = styled.button`
+  position: fixed;
+  right: 30px;
+  top: 30px;
+`;

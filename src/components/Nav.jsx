@@ -2,10 +2,11 @@ import styled from "styled-components";
 import { useShine } from "../context/ShineContext";
 import supabase from "../supabaseClient";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 const StyledContainer = styled.nav`
   width: 250px;
-  height: 90vh;
+  height: 70vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -15,6 +16,12 @@ const StyledContainer = styled.nav`
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   position: sticky;
   top: 0;
+  box-sizing: border-box;
+
+  &.mainNav {
+    top: 50%;
+    transform: translateY(-50%);
+  }
 `;
 
 const StyledLogo = styled.div`
@@ -30,7 +37,7 @@ const StyledButtonBox = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  gap: 10px;
+  gap: 30px;
 
   button {
     width: 80%;
@@ -44,11 +51,21 @@ const StyledButtonBox = styled.div`
     }
   }
 `;
+
+const StyledBottomBox = styled.div`
+  position: absolute;
+  bottom: 10px;
+  span {
+    font-size: 12px;
+    color: #a3a3a3;
+  }
+`;
 const Nav = () => {
   const { isLoggedIn } = useShine();
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const isCurrentPage = (path) => pathname === path;
+  const [nickname, setNickname] = useState("");
 
   const handlePageMove = (path) => {
     navigate(path);
@@ -64,11 +81,27 @@ const Nav = () => {
     }
   };
 
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const { data: userData, error: userError } = await supabase.auth.getUser();
+      if (userError) {
+        console.error("Error=>:", userError);
+        return;
+      }
+
+      const { data: userInfoData } = await supabase.from("userinfo").select("nickname").eq("id", userData.user.id);
+      setNickname(userInfoData[0].nickname);
+    };
+
+    fetchUserData();
+  });
+
   return (
-    <StyledContainer>
+    <StyledContainer className={pathname === "/" ? "mainNav" : null}>
       <StyledLogo>
         <img onClick={() => handlePageMove("/")} src="./src/assets/images/common/shine-us-logo.png" alt="logo" />
       </StyledLogo>
+      {isLoggedIn && <span>{nickname}</span>}
       <StyledButtonBox>
         {!isLoggedIn && (
           <>
@@ -101,6 +134,9 @@ const Nav = () => {
           </>
         )}
       </StyledButtonBox>
+      <StyledBottomBox>
+        <span>© 2024 React777 . All rights reserved.</span>
+      </StyledBottomBox>
     </StyledContainer>
   );
 };

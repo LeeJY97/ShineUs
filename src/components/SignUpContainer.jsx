@@ -12,9 +12,11 @@ const StyledContainer = styled.div`
   align-items: center;
   margin: 0 auto;
   width: 600px;
-  height: 450px;
+  min-height: 70vh;
   gap: 30px;
   background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 `;
 
 const StyledTopBox = styled.div`
@@ -46,7 +48,7 @@ const StyledBottomBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 10px;
 
   span {
     font-size: 12px;

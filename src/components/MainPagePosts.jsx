@@ -35,7 +35,7 @@ const MainPagePosts = ({
           loadMorePosts();
         }
       },
-      { threshold: 1 }
+      { threshold: 0.2 }
     );
 
     if (observerRef.current) observer.observe(observerRef.current);
