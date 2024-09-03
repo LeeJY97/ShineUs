@@ -55,11 +55,18 @@ const MainPagePosts = ({
     return index === displayedPosts.length - 1 ? observerRef : null;
   };
 
+  console.log("displayedPosts", displayedPosts);
+
   return (
     <StyledContainer>
       {displayedPosts.map((post, index) => (
         <StyledPostBox key={post.id} ref={getObserverRef(index, displayedPosts, observerRef)}>
-          <StyledTitle>{post.userinfo.nickname}</StyledTitle>
+          <StyledTopArea>
+            <img src={post.userinfo.img_url || "./images/common/default-profile.jpg"} alt="프로필사진" />
+            <StyledTitle>{post.userinfo.nickname}</StyledTitle>
+          </StyledTopArea>
+          {/* <StyledTitle>{post.userinfo.nickname}</StyledTitle> */}
+          {/* <img src={post.userinfo.img_url && "./images/common/default-profile.jpg"} alt="프로필사진" /> */}
           <StyledPostTags>
             {post.tags &&
               typeof post.tags === "string" &&
@@ -168,6 +175,19 @@ const StyledLikeBtn = styled.span`
   background-color: #ff5454;
   border-radius: 20px;
   cursor: pointer;
+`;
+
+const StyledTopArea = styled.div`
+  display: flex;
+  align-items: center;
+  height: 30px;
+  gap: 10px;
+
+  img {
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+  }
 `;
 
 const StyledCommentButton = styled.button``;
