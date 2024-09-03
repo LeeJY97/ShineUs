@@ -63,7 +63,7 @@ const MainPagePosts = ({ posts, likesAndComments, handleLike, handleComments }) 
               typeof post.tags === "string" &&
               post.tags.split(", ").map((tag, index) => <span key={index}>#{tag} </span>)}
           </StyledPostTags>
-          <StyledLikeBtn className="likeBtn" onClick={() => handleLike(index)}>
+          <StyledLikeBtn className="likeBtn" onClick={() => handleLike(post.id)}>
             {likesAndComments[post.id]?.is_like ? `♥` : `♡`}
             {likesAndComments[post.id]?.like_count}
           </StyledLikeBtn>

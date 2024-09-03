@@ -13,7 +13,7 @@ const Home = () => {
   // 좋아요 핸들링 함수
   const handleLike = async (postId) => {
     const isLike = likesAndComments[postId].is_like ?? false;
-    let likeCount = likesAndComments[postId].is_like ?? 0;
+    let likeCount = likesAndComments[postId].like_count ?? 0;
 
     if (isLike) {
       const { error: likesDeleteError } = await supabase
@@ -145,7 +145,7 @@ const Home = () => {
         };
       });
 
-      return setLikesAndComments(likesAndComments);
+      setLikesAndComments(likesAndComments);
     };
 
     fetchPosts();
@@ -153,10 +153,17 @@ const Home = () => {
 
   const addPostHandler = (data) => {
     setPosts([data, ...posts]);
+
+    setLikesAndComments({ ...likesAndComments, [data.id]: { is_like: false, like_count: 0, comments: [] } });
   };
   return (
     <div>
-      <MainPageInput addPostHandler={addPostHandler} tags={tags} setTags={setTags} />
+      <MainPageInput
+        addPostHandler={addPostHandler}
+        tags={tags}
+        setTags={setTags}
+        setLikesAndComments={setLikesAndComments}
+      />
       {posts.length && (
         <MainPagePosts
           posts={posts}
