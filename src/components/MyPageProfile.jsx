@@ -1,144 +1,123 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import supabase from "../supabaseClient";
+import MyPageProfileImage from "./MyPageProfileImage";
 
 const ProfileContainer = styled.div`
   margin-bottom: 20px;
 `;
-const NoImageContainer = styled.div`
-  width: 150px;
-  height: 150px;
-  background-color: #eee;
-  margin: 20px auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
 
-const StyledProfileImage = styled.div`
-  margin: 20px 0;
-  img {
-    border-radius: 20px;
-    object-fit: cover;
-  }
-`;
 const MyPageProfile = () => {
-  // 상태 정의
+  // 상태 훅 정의 초기화: 이미지 URL, 파일 선택, 업로드
   const [imgUrl, setImgUrl] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploading, setUploading] = useState(false);
 
-  // 컴포넌트가 처음 렌더링될 때, 또는 상태가 업데이트될 때 실행되는 useEffect
+  // 컴포넌트가 처음 렌더링될 때 프로필 이미지를 가져오는 useEffect 훅
   useEffect(() => {
-    // 프로필 이미지를 가져오는 비동기 함수 정의
     const fetchProfileImage = async () => {
       try {
-        // 현재 로그인된 사용자 정보를 가져옴
+        // Supabase를 사용해 현재 로그인된 사용자의 정보를 가져옴
         const {
-          data: { user },
-          error: userError
-        } = await supabase.auth.getUser();
+          data: { user }, // user 객체에서 데이터를 추출
+          error: userError // 발생한 오류를 userError에 저장
+        } = await supabase.auth.getUser(); // 현재 로그인된 사용자의 정보를 가져오는 Supabase 메서드
         if (user) {
-          // 사용자의 img_url을 데이터베이스에서 가져옴
+          // 사용자가 존재할 경우
+          // userinfo 테이블에서 해당 사용자의 프로필 이미지 URL을 가져옴
           const { data, error } = await supabase.from("userinfo").select("img_url").eq("id", user.id).single();
 
           if (error) {
-            console.error("프로필을 가져오는 중 오류 발생:", error);
+            // 데이터베이스 쿼리 중 오류가 발생한 경우
+            console.error("프로필을 가져오는 중 오류 발생:", error); // 오류 메시지 출력
           } else {
-            console.log("Fetched image URL:", data.img_url); // 디버깅 로그
-            setImgUrl(data.img_url || ""); // 가져온 img_url을 상태로 설정
+            setImgUrl(data.img_url || ""); // imgUrl 상태를 가져온 URL로 설정하거나, 없으면 빈 문자열로 설정
           }
         } else if (userError) {
-          console.error("사용자를 가져오는 중 오류 발생:", userError);
+          // 사용자 정보 가져오는 중 오류가 발생한 경우
+          console.error("사용자를 가져오는 중 오류 발생:", userError); // 오류 메시지 출력
         }
       } catch (error) {
-        console.error("프로필 이미지를 가져오는 중 예외 발생:", error);
+        // 예외가 발생한 경우
+        console.error("프로필 이미지를 가져오는 중 예외 발생:", error); // 예외 메시지 출력
       }
     };
 
-    fetchProfileImage(); // 프로필 이미지 가져오기 함수 실행
-  }, []); // 빈 배열을 두 번째 인수로 전달하여 이 useEffect가 컴포넌트가 처음 렌더링될 때만 실행되도록 함
+    fetchProfileImage();
+  }, []); // 빈 배열을 의존성으로 설정해 컴포넌트가 처음 마운트될 때만 실행되도록 설정
 
-  // 파일 입력 필드의 변경을 처리하는 함수
+  // 파일 선택 시 호출되는 함수
   const handleFileChange = (e) => {
-    setSelectedFile(e.target.files[0]); // 사용자가 선택한 파일을 상태로 설정
+    setSelectedFile(e.target.files[0]); // 선택된 파일을 selectedFile 상태에 설정
   };
 
-  // 아바타 이미지를 업로드하는 비동기 함수 정의
+  // 프로필 이미지를 업로드하는 함수
   const uploadAvatar = async () => {
     if (!selectedFile) return; // 선택된 파일이 없으면 함수 종료
 
-    setUploading(true); // 업로드 중 상태로 설정
+    setUploading(true); // 업로드 상태를 true로 설정해 업로드 중임을 표시
 
     try {
-      // 현재 사용자 가져오기
+      // Supabase를 사용해 현재 로그인된 사용자의 정보를 가져옴
       const {
-        data: { user },
-        error: userError
-      } = await supabase.auth.getUser();
+        data: { user }, // user 객체에서 데이터를 추출
+        error: userError // 발생한 오류를 userError에 저장
+      } = await supabase.auth.getUser(); // 현재 로그인된 사용자의 정보를 가져오는 Supabase 메서드
       if (!user) {
-        console.error("사용자가 로그인되지 않았습니다.");
-        setUploading(false); // 업로드 중 상태를 false로 설정
-        return;
+        // 사용자가 로그인되지 않은 경우
+        console.error("사용자가 로그인되지 않았습니다."); // 오류 메시지 출력
+        setUploading(false); // 업로드 상태를 false로 설정
+        return; // 함수 종료
       }
 
-      // Supabase 스토리지에 이미지 업로드
-      const fileName = `${user.id}-${selectedFile.name}`; // 파일명을 사용자 ID와 파일 이름으로 설정
+      // Supabase 스토리지에 이미지를 업로드
+      const fileName = `${user.id}-${selectedFile.name}`; // 파일 이름을 사용자 ID와 파일 이름으로 설정
       const { error: uploadError } = await supabase.storage
         .from("avatars")
-        .upload(`avatars/${fileName}`, selectedFile, { upsert: true }); // 이미지 업로드 (같은 파일명 있을 시 덮어쓰기)
+        .upload(`avatars/${fileName}`, selectedFile, { upsert: true }); // 'avatars' 버킷에 파일을 업로드, 같은 이름의 파일이 있으면 덮어씌움
 
       if (uploadError) {
-        console.error("이미지 업로드 중 오류 발생:", uploadError);
-        setUploading(false); // 업로드 중 상태를 false로 설정
+        // 업로드 중 오류가 발생한 경우
+        console.error("이미지 업로드 중 오류 발생:", uploadError); // 오류 메시지 출력
+        setUploading(false); // 업로드 상태를 false로 설정
         return;
       }
 
-      // 업로드된 파일의 공개 URL을 가져옴
+      // 업로드된 이미지의 공개 URL을 가져옴
       const {
-        data: { publicUrl },
-        error: urlError
-      } = supabase.storage.from("avatars").getPublicUrl(`avatars/${fileName}`);
+        data: { publicUrl }, // 가져온 공개 URL을 publicUrl에 저장
+        error: urlError // 발생한 오류를 urlError에 저장
+      } = supabase.storage.from("avatars").getPublicUrl(`avatars/${fileName}`); // 업로드된 파일의 공개 URL을 가져옴
       if (urlError) {
-        console.error("공개 URL 가져오는 중 오류 발생:", urlError);
+        // 공개 URL 가져오는 중 오류가 발생한 경우
+        console.error("공개 URL 가져오는 중 오류 발생:", urlError); // 오류 메시지 출력
       } else {
-        // console.log("Data, ", data);
-        // console.log("Public URL:", publicURL); // 디버깅 로그
+        // userinfo 테이블에서 해당 사용자의 프로필 이미지 URL을 업데이트
         const { error: updateError } = await supabase.from("userinfo").update({ img_url: publicUrl }).eq("id", user.id);
 
         if (updateError) {
           console.error("프로필 이미지 URL 업데이트 중 오류 발생", updateError);
         } else {
-          setImgUrl(publicUrl); // imgUrl 상태 업데이트
-          alert("프로필 이미지 변경 완료"); // 업로드 완료 알림
+          setImgUrl(publicUrl); // imgUrl 상태를 새로 가져온 공개 URL로 설정
+          alert("프로필 이미지 변경 완료"); // 성공 메시지 표시
         }
       }
     } catch (error) {
-      console.error("이미지 업로드 중 예외 발생:", error);
+      // 예외가 발생한 경우
+      console.error("이미지 업로드 중 예외 발생:", error); // 예외 메시지 출력
     } finally {
-      setUploading(false); // 업로드 중 상태를 false로 설정
-      setSelectedFile(null); // 선택된 파일 상태 초기화
+      setUploading(false); // 업로드 상태를 false로 설정해 업로드 완료 표시
+      setSelectedFile(null); // 선택된 파일 상태를 초기화
     }
   };
 
   return (
     <ProfileContainer>
       <h2>My Profile</h2>
-      <StyledProfileImage>
-        {imgUrl ? (
-          <img src={imgUrl} alt="Avatar" width={150} height={150} />
-        ) : (
-          <NoImageContainer>
-            <img
-              src="https://pjctzvrxutdmmxvfjczt.supabase.co/storage/v1/object/public/avatars/avatars/59d0c974-47d1-41df-8ce2-6e1ad43166b1.jpg"
-              alt="No image"
-              width={150}
-              height={150}
-            />
-          </NoImageContainer>
-        )}
-      </StyledProfileImage>
-
+      <MyPageProfileImage
+        imgUrl={imgUrl}
+        defaultImageUrl="https://pjctzvrxutdmmxvfjczt.supabase.co/storage/v1/object/public/avatars/avatars/59d0c974-47d1-41df-8ce2-6e1ad43166b1.jpg"
+      />
       <div>
         <input type="file" accept="image/*" onChange={handleFileChange} disabled={uploading} />
         <button onClick={uploadAvatar} disabled={uploading || !selectedFile}>
