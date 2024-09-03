@@ -12,9 +12,9 @@ const StyledContainer = styled.div`
   align-items: center;
   margin: 0 auto;
   width: 600px;
-  height: 400px;
+  height: 450px;
   gap: 30px;
-  background-color: #ffffff;
+  background-color: white;
 `;
 
 const StyledTopBox = styled.div`
@@ -35,8 +35,10 @@ const StyledMiddleBox = styled.div`
   input {
     width: 250px;
     height: 30px;
+    padding: 5px 10px;
     border-radius: 5px;
-    border: 1px solid grey;
+    border: 1px solid #c2c2c2;
+    outline: none;
   }
 `;
 

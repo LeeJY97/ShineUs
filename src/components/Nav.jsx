@@ -21,6 +21,8 @@ const StyledLogo = styled.div`
   img {
     height: 170px;
   }
+
+  cursor: pointer;
 `;
 
 const StyledButtonBox = styled.div`
@@ -36,7 +38,7 @@ const StyledButtonBox = styled.div`
     border-radius: 20px;
 
     &:disabled {
-      background-color: grey;
+      background-color: #ffad16;
       color: black;
       cursor: default;
     }
@@ -69,7 +71,7 @@ const Nav = () => {
   return (
     <StyledContainer>
       <StyledLogo>
-        <img src="./src/assets/images/common/shine-us-logo.png" alt="logo" />
+        <img onClick={() => handlePageMove("/")} src="./src/assets/images/common/shine-us-logo.png" alt="logo" />
       </StyledLogo>
       <StyledButtonBox>
         {!isLoggedIn && (
