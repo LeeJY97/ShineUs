@@ -91,11 +91,6 @@ const Home = () => {
       [postId]: updatedPost
     };
 
-    // const obj = {
-    //   ...likesAndComments,
-    //   [postId]: { ...likesAndComments[postId], comments: [...likesAndComments[postId].comments, newComments[0]] }
-    // };
-
     setLikesAndComments(updatedLikesAndComments);
   };
 
