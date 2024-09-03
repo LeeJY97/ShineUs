@@ -23,7 +23,6 @@ const FeedList = () => {
       const { data: userInfoData } = await supabase.from("userinfo").select("nickname").eq("id", userData.user.id);
 
       console.log("🚀 ~ fetchUserData ~ userInfoData:", userInfoData);
-      // 요기만 잘 했습니다!
       setNickname(userInfoData[0].nickname);
 
       if (checkType == "mine") {
@@ -57,8 +56,9 @@ const FeedList = () => {
   };
 
   // 수정
-  const handleEdit = (id, newContents) => {
-    setMyPosts(myPosts.map((item) => (item.id === id ? { ...item, contents: newContents } : item)));
+  const handleEdit = (id, newContents, newImage, newTags) => {
+    setMyPosts(myPosts.map((item) => (item.id === id ? { ...item, tags: newTags, contents: newContents } : item)));
+    console.log("🚀 ~ handleEdit ~ newTags:", newTags);
   };
 
   const changeType = (type) => {
@@ -83,10 +83,11 @@ export default FeedList;
 
 const StyledContainer = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 20px;
   max-width: 100%;
   padding: 20px;
+  margin-top: 40px;
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
