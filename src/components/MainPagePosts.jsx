@@ -1,18 +1,13 @@
 import { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
-// import MainPageTag from "./MainPageTag";
-import supabase from "../supabaseClient";
-import { useShine } from "../context/ShineContext";
 import WriteCommentForm from "./WriteCommentForm";
 import CommentList from "./CommentList";
 import FeedList from "./FeedList";
 
-const MainPagePosts = ({ posts }) => {
+const MainPagePosts = ({ posts, likesAndComments, handleLike, handleComments }) => {
   const [displayedPosts, setDisplayedPosts] = useState(posts.slice(0, 5));
-  const [detailPosts, setDetailPosts] = useState(posts);
 
   const [page, setPage] = useState(1); // 현재 페이지 상태
-  const { user } = useShine();
   const [isCommentFormVisible, setIsCommentFormVisible] = useState(-1);
 
   const observerRef = useRef(); // 마지막 dom요소를 추적할 ref
@@ -24,10 +19,6 @@ const MainPagePosts = ({ posts }) => {
     setDisplayedPosts(newPosts);
     setPage(nextPage);
   };
-
-  // useEffect(() => {
-  //   setDetailPosts(posts);
-  // }, []);
 
   //displayedPosts 올리면 실행
   useEffect(() => {
@@ -59,120 +50,32 @@ const MainPagePosts = ({ posts }) => {
     return index === displayedPosts.length - 1 ? observerRef : null;
   };
 
-  // 좋아요 핸들링 함수
-  const handleLike = async (index) => {
-    const isLike = detailPosts[index].is_like;
-    let likeCount = detailPosts[index].like_count;
-
-    console.log("likeCount", likeCount);
-
-    if (isLike) {
-      const { error: likesDeleteError } = await supabase
-        .from("likes")
-        .delete()
-        .match({ user_id: user.id, post_id: detailPosts[index].id });
-
-      if (likesDeleteError) {
-        console.error(likesDeleteError.message);
-      } else {
-        likeCount += -1;
-      }
-    } else {
-      const { error: likesInsertError } = await supabase.from("likes").insert({
-        user_id: user.id,
-        post_id: detailPosts[index].id
-      });
-
-      if (likesInsertError) {
-        console.error(likesInsertError.message);
-      } else {
-        likeCount += 1;
-      }
-    }
-
-    setDetailPosts((prevPosts = []) => {
-      return prevPosts.map((post, i) => (i === index ? { ...post, is_like: !isLike, like_count: likeCount } : post));
-    });
-  };
-
-  // 댓글 작성 함수
-  const handleComments = async ({ postId, index, content }) => {
-    const { data: newComments, error: commentsError } = await supabase
-      .from("comments")
-      .insert({
-        user_id: user.id,
-        post_id: postId,
-        content
-      })
-      .select("*");
-
-    if (commentsError) {
-      console.error("Error commentsError => ", commentsError.message);
-    }
-
-    console.log("newComments", newComments);
-    console.log("detailPosts", detailPosts);
-
-    setDetailPosts((prevPosts) => {
-      const newPosts = prevPosts.map((prev, i) => {
-        if (i === index) {
-          // return { ...prev, comment: [...prev.comment, ...newComments] } : prev)}
-          return { ...prev, comments: [...prev.comments, ...newComments] };
-        }
-        return prev;
-      });
-      return newPosts;
-    });
-  };
-
   const toggleCommentForm = (index) => {
     setIsCommentFormVisible(index);
   };
-
-  /**
-   *
-   * 
-  // {
-  //   [postId] : {
-  //   like_count
-  //   isLike
-  //   },
-  //  }
-
-  {
-"10": ~,
-"12": ~,
-"17": ~,
-}
-
-const likePosts = {}
-likePosts[postId]
-
-   */
 
   return (
     <StyledContainer>
       {displayedPosts.map((post, index) => (
         <StyledPostBox key={post.id} ref={getObserverRef(index, displayedPosts, observerRef)}>
-          <div className="display-post-tags">
+          <StyledTitle className="user-id">{post.userinfo.nickname}</StyledTitle>
+          <StyledPostTags className="post-tags">
             {post.tags &&
               typeof post.tags === "string" &&
               post.tags.split(", ").map((tag, index) => <span key={index}>#{tag} </span>)}
-          </div>
-          <h3>{post.nickname}</h3>
-          <span onClick={() => handleLike(index)}>
-            {detailPosts[index]?.is_like ? `♥` : `♡`}
-            {detailPosts[index]?.like_count}
-            {post.userinfo.nickname}
-          </span>
-          <p>{post.contents}</p>
+          </StyledPostTags>
+          <StyledLikeBtn className="likeBtn" onClick={() => handleLike(index)}>
+            {likesAndComments[post.id]?.is_like ? `♥` : `♡`}
+            {likesAndComments[post.id]?.like_count}
+          </StyledLikeBtn>
+          <StyledContent>{post.contents}</StyledContent>
           {post.img_url && <StyledImage src={post.img_url} />}
 
           <button onClick={() => toggleCommentForm(index)}>댓글 달기</button>
           {isCommentFormVisible === index && ( // index -1 로 바꾸기, comment 내용 날리기
             <WriteCommentForm postId={post.id} handleComments={handleComments} index={index} />
           )}
-          <CommentList postId={post.id} comments={detailPosts[index].comments}></CommentList>
+          <CommentList postId={post.id} comments={likesAndComments[post.id]?.comments}></CommentList>
         </StyledPostBox>
       ))}
     </StyledContainer>
@@ -182,18 +85,20 @@ likePosts[postId]
 export default MainPagePosts;
 
 const StyledContainer = styled.div`
-  max-width: 600px;
-  margin: 50px auto;
+  max-width: 650px;
+  margin: 80px auto;
 `;
 
 const StyledPostBox = styled.div`
+  position: relative;
   background-color: white;
-  padding: 30px;
+  padding: 30px 20px;
   margin: 30px 0;
   line-height: 25px;
   word-break: break-all;
   text-align: start;
-  border-radius: 5px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   cursor: default;
 
   &:hover {
@@ -202,9 +107,31 @@ const StyledPostBox = styled.div`
   }
 `;
 const StyledImage = styled.img`
-  width: 100%;
+  max-width: 500px;
   max-height: 400px;
   object-fit: cover;
   margin-top: 15px;
   border-radius: 5px;
+`;
+
+const StyledTitle = styled.h3`
+  font-size: 18px;
+  font-weight: bold;
+`;
+
+const StyledPostTags = styled.div`
+  color: #ffad16;
+  margin: 5px 0;
+`;
+
+const StyledLikeBtn = styled.span`
+  position: absolute;
+  top: 60px;
+  right: 30px;
+  font-size: 20px;
+`;
+
+const StyledContent = styled.p`
+  margin: 20px 0;
+  font-weight: 18px;
 `;
