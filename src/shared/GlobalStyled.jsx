@@ -1,4 +1,5 @@
 import { createGlobalStyle } from "styled-components";
+
 const GlobalStyled = createGlobalStyle`
  body {
     background-color: #FFF3DC;
@@ -28,7 +29,7 @@ const GlobalStyled = createGlobalStyle`
     border:none;
     cursor: pointer;
      padding: 10px 20px;
-      border-radius: 5px;
+      border-radius: 20px;
   }
   button:hover {
   background-color: #ffb84d;

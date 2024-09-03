@@ -1,8 +1,18 @@
 import { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
+import WriteCommentForm from "./WriteCommentForm";
+import CommentList from "./CommentList";
 
-const MainPagePosts = ({ posts }) => {
-  const [displayedPosts, setDisplayedPosts] = useState(posts.slice(0, 10)); // 처음에 10개만 표시
+const MainPagePosts = ({
+  posts,
+  likesAndComments,
+  handleLike,
+  handleComments,
+  toggleCommentForm,
+  isCommentFormVisible
+}) => {
+  const [displayedPosts, setDisplayedPosts] = useState(posts.slice(0, 5));
+
   const [page, setPage] = useState(1); // 현재 페이지 상태
 
   const observerRef = useRef(); // 마지막 dom요소를 추적할 ref
@@ -10,7 +20,7 @@ const MainPagePosts = ({ posts }) => {
   // loadMorePosts 함수 선언 - 새로운 포스트 로드
   const loadMorePosts = () => {
     const nextPage = page + 1;
-    const newPosts = posts.slice(0, nextPage * 10);
+    const newPosts = posts.slice(0, nextPage * 5);
     setDisplayedPosts(newPosts);
     setPage(nextPage);
   };
@@ -49,9 +59,28 @@ const MainPagePosts = ({ posts }) => {
     <StyledContainer>
       {displayedPosts.map((post, index) => (
         <StyledPostBox key={post.id} ref={getObserverRef(index, displayedPosts, observerRef)}>
-          <h2>{post.user}</h2>
-          <p>{post.contents}</p>
-          {post.img_url && <StyledImage src={post.img_url} />}
+          <StyledTitle className="user-id">{post.userinfo.nickname}</StyledTitle>
+          <StyledPostTags className="post-tags">
+            {post.tags &&
+              typeof post.tags === "string" &&
+              post.tags.split(", ").map((tag, index) => <span key={index}>#{tag} </span>)}
+          </StyledPostTags>
+
+          <StyledContent>{post.contents}</StyledContent>
+          <StyledImageBox>{post.img_url && <StyledImage src={post.img_url} />}</StyledImageBox>
+
+          <StyledCommentContainer>
+            <StyledLikeBtn className="likeBtn" onClick={() => handleLike(post.id)}>
+              {likesAndComments[post.id]?.is_like ? `♥` : `♡`}
+              {likesAndComments[post.id]?.like_count}
+            </StyledLikeBtn>
+
+            <StyledCommentButton onClick={() => toggleCommentForm(index)}>댓글 달기</StyledCommentButton>
+          </StyledCommentContainer>
+          {isCommentFormVisible === index && ( // index -1 로 바꾸기, comment 내용 날리기
+            <WriteCommentForm postId={post.id} handleComments={handleComments} index={index} />
+          )}
+          <CommentList postId={post.id} comments={likesAndComments[post.id]?.comments}></CommentList>
         </StyledPostBox>
       ))}
     </StyledContainer>
@@ -61,18 +90,20 @@ const MainPagePosts = ({ posts }) => {
 export default MainPagePosts;
 
 const StyledContainer = styled.div`
-  max-width: 600px;
-  margin: 50px auto;
+  max-width: 650px;
+  margin: 80px auto;
 `;
 
 const StyledPostBox = styled.div`
+  position: relative;
   background-color: white;
-  padding: 30px;
+  padding: 30px 20px;
   margin: 30px 0;
   line-height: 25px;
   word-break: break-all;
   text-align: start;
-  border-radius: 5px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   cursor: default;
 
   &:hover {
@@ -80,10 +111,56 @@ const StyledPostBox = styled.div`
     transform: scale(1.02);
   }
 `;
+
+const StyledContent = styled.p`
+  margin: 20px 0;
+  font-weight: 18px;
+`;
+
+const StyledImageBox = styled.div`
+  width: 500px;
+  height: 500px;
+  margin: 40px auto;
+  position: relative;
+  overflow: hidden;
+`;
+
 const StyledImage = styled.img`
-  width: 100%;
-  max-height: 400px;
-  object-fit: cover;
-  margin-top: 15px;
+  /* width: 90%; */
+  height: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  object-fit: center;
   border-radius: 5px;
+`;
+
+const StyledTitle = styled.h3`
+  font-size: 20px;
+  font-weight: bold;
+`;
+
+const StyledPostTags = styled.div`
+  color: #ffad16;
+  margin: 5px 0;
+`;
+
+const StyledCommentContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const StyledLikeBtn = styled.span`
+  /* position: absolute;
+  top: 80px;
+  right: 30px; */
+  font-size: 20px;
+`;
+
+const StyledCommentButton = styled.button`
+  /* position: absolute;
+  top: 30px;
+  right: 20px; */
 `;

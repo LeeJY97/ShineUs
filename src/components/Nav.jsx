@@ -1,53 +1,105 @@
 import styled from "styled-components";
+import { useShine } from "../context/ShineContext";
+import supabase from "../supabaseClient";
+import { useLocation, useNavigate } from "react-router-dom";
 
-// 전체 (nav) div
-const StyledLoginBar = styled.div`
-  border: 2px solid black;
-  display: inline-block;
-`;
-
-// '빛나리' 문구
-const StyledLoginTitle = styled.h1`
-  font-size: 3rem;
-  text-align: center;
-  text-align: center;
-  font-weight: bold;
-  padding: 15px 0px 25px 15px;
-`;
-
-// 🌟 이모지
-const StyledLoginTitleStarImozi = styled.span`
-  font-size: 23px;
-  padding-right: 10px;
-`;
-
-// 로그인 버튼, 메인 페이지 버튼
-// 감싸는 div
-const StyledLoginAndMainPageDiv = styled.div`
+const StyledContainer = styled.nav`
+  width: 250px;
+  height: 90vh;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 `;
 
-// 로그인 버튼
-const StyledLoginButton = styled.button`
-  width: 180px;
-  height: 53px;
-  cursor: pointer;
+const StyledLogo = styled.div`
+  img {
+    height: 170px;
+  }
+`;
+
+const StyledButtonBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  button {
+    width: 200px;
+    height: 60px;
+    border-radius: 20px;
+
+    &:disabled {
+      background-color: grey;
+      color: black;
+      cursor: default;
+    }
+  }
 `;
 const Nav = () => {
+  const { isLoggedIn } = useShine();
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+
+  console.log("pathname", pathname);
+
+  const isCurrentPage = (path) => pathname === path;
+
+  const handlePageMove = (path) => {
+    console.log("path", path);
+    navigate(path);
+  };
+
+  const handleSignOut = async () => {
+    try {
+      await supabase.auth.signOut();
+      // window.location.reload();
+      navigate("/");
+    } catch (error) {
+      console.error("로그아웃 에러 :", error);
+    }
+  };
+
   return (
-    <StyledLoginBar>
-      {/* 제목 */}
-      <StyledLoginTitle>
-        빛나리<StyledLoginTitleStarImozi>🌟</StyledLoginTitleStarImozi>
-      </StyledLoginTitle>
-      {/* 로그인 버튼*/}
-      <StyledLoginAndMainPageDiv>
-        <StyledLoginButton>로그인</StyledLoginButton>
-        {/* 메인페이지 버튼 */}
-        <StyledLoginButton>메인페이지</StyledLoginButton>
-      </StyledLoginAndMainPageDiv>
-    </StyledLoginBar>
+    <StyledContainer>
+      <StyledLogo>
+        <img src="./src/assets/images/common/shine-us-logo.png" alt="logo" />
+      </StyledLogo>
+      <StyledButtonBox>
+        {!isLoggedIn && (
+          <>
+            <button onClick={() => handlePageMove("/signin")} disabled={isCurrentPage("/signin")}>
+              로그인
+            </button>
+            <button onClick={() => handlePageMove("/signup")} disabled={isCurrentPage("/signup")}>
+              회원가입
+            </button>
+          </>
+        )}
+        <button onClick={() => handlePageMove("/")} disabled={isCurrentPage("/")}>
+          메인페이지
+        </button>
+        {isLoggedIn && (
+          <>
+            <button onClick={() => handlePageMove("/mypage")} disabled={isCurrentPage("/mypage")}>
+              마이페이지
+            </button>
+            <button onClick={() => handlePageMove("/myfeed")} disabled={isCurrentPage("/myfeed")}>
+              마이피드
+            </button>
+            <button
+              onClick={() => {
+                handleSignOut();
+              }}
+            >
+              로그아웃
+            </button>
+          </>
+        )}
+      </StyledButtonBox>
+    </StyledContainer>
   );
 };
 

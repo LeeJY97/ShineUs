@@ -1,3 +1,5 @@
+import supabase from "../supabaseClient";
+
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const passwordRegex = /^(?!.*\s).{7,}$/;
 
@@ -22,4 +24,10 @@ export const showInputError = (error, email, password) => {
   } else {
     alert("이메일이나 비번 틀렷슈");
   }
+}
+
+// 유저 정보 가져오기
+export const getUser = async () => {
+  const { data: { user } } = await supabase.auth.getUser();
+  return user;
 }

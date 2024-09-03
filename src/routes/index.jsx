@@ -11,15 +11,15 @@ import { useShine } from "../context/ShineContext";
 // 인가되지 않은 페이지로 이동할 때 그냥 <Home/> 을 반환하면 렌더링은 되지만
 // path는 그대로 남아있음
 // 그래서 인가되지 않은 페이지일 경우 그냥 '/' 으로 보냄
-function CustomRedirect() {
-  const location = useLocation();
+// function CustomRedirect() {
+//   const location = useLocation();
 
-  if (["/signin", "/signup"].includes(location.pathname)) {
-    return <Navigate to="/" />;
-  }
+//   if (["/signin", "/signup"].includes(location.pathname)) {
+//     return <Navigate to="/" />;
+//   }
 
-  return <Navigate to="/" />;
-}
+//   return <Navigate to="/" />;
+// }
 
 const Routes = () => {
   const { isLoggedIn } = useShine();
@@ -59,7 +59,7 @@ const Routes = () => {
         },
         {
           path: "*",
-          element: <CustomRedirect />
+          element: <Home />
           // element: <Home />
         }
       ]

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import supabase from "../supabaseClient";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import generateRandomNickname from "../common/nicknameConstants";
 import { showInputError } from "../common/utils";
@@ -21,8 +21,8 @@ const StyledTopBox = styled.div`
   display: flex;
   align-items: center;
 
-  h2 {
-    font-size: 26px;
+  img {
+    height: 170px;
   }
 `;
 
@@ -37,6 +37,22 @@ const StyledMiddleBox = styled.div`
     height: 30px;
     border-radius: 5px;
     border: 1px solid grey;
+  }
+`;
+
+const StyledBottomBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+
+  span {
+    font-size: 12px;
+    text-decoration: underline;
+
+    &:hover {
+      font-weight: bold;
+    }
   }
 `;
 
@@ -61,16 +77,41 @@ const SignUpContainer = () => {
     error ? showInputError(error, email, password) : navigate("/");
   };
 
+  const enterKeyHandler = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      signUp();
+    }
+  };
+
   return (
     <StyledContainer>
       <StyledTopBox>
-        <h2>§ 빈대떡 §</h2>
+        <img src="./src/assets/images/common/shine-us-logo.png" alt="logo" />
       </StyledTopBox>
       <StyledMiddleBox>
-        <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="이메일" />
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="비밀번호" />
+        <input
+          type="text"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="이메일"
+          onKeyPress={enterKeyHandler}
+        />
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="비밀번호"
+          onKeyPress={enterKeyHandler}
+        />
       </StyledMiddleBox>
-      <button onClick={() => signUp(email, password)}>회원가입</button>
+
+      <StyledBottomBox>
+        <button onClick={() => signUp(email, password)}>회원가입</button>
+        <Link to="/signin">
+          <span>로그인</span>
+        </Link>
+      </StyledBottomBox>
     </StyledContainer>
   );
 };
