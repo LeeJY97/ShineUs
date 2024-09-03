@@ -36,7 +36,7 @@ const Nav = () => {
   return (
     <StyledContainer>
       <StyledLogo>
-        <img src="./src/assets/images/shine-us-logo.png" alt="logo" />
+        <img src="./src/assets/images/common/shine-us-logo.png" alt="logo" />
       </StyledLogo>
       <StyledButtonBox>
         {!isLoggedIn && (

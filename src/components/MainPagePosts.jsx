@@ -2,7 +2,6 @@ import { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import WriteCommentForm from "./WriteCommentForm";
 import CommentList from "./CommentList";
-import FeedList from "./FeedList";
 
 const MainPagePosts = ({ posts, likesAndComments, handleLike, handleComments }) => {
   const [displayedPosts, setDisplayedPosts] = useState(posts.slice(0, 5));

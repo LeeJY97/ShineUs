@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import MyPageProfile from "./MyPageProfile";
 import MyPageMyInfo from "./MyPageMyInfo";
