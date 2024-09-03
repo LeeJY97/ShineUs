@@ -23,6 +23,11 @@ const StyledContainer = styled.nav`
     top: 50%;
     transform: translateY(-50%);
   }
+
+  span {
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
 `;
 
 const StyledLogo = styled.div`
@@ -102,7 +107,8 @@ const Nav = () => {
       <StyledLogo>
         <img onClick={() => handlePageMove("/")} src="/public/images/common/shine-us-logo.png" alt="logo" />
       </StyledLogo>
-      {isLoggedIn && <span>{nickname}</span>}
+      {isLoggedIn && <span>{nickname}님 반갑습니다!</span>}
+
       <StyledButtonBox>
         {!isLoggedIn && (
           <>
@@ -136,7 +142,7 @@ const Nav = () => {
         )}
       </StyledButtonBox>
       <StyledBottomBox>
-        <span>© 2024 React777 . All rights reserved.</span>
+        <span>© 2024 React777. All rights reserved.</span>
       </StyledBottomBox>
     </StyledContainer>
   );
