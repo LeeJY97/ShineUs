@@ -48,13 +48,9 @@ const Nav = () => {
   const { isLoggedIn } = useShine();
   const { pathname } = useLocation();
   const navigate = useNavigate();
-
-  console.log("pathname", pathname);
-
   const isCurrentPage = (path) => pathname === path;
 
   const handlePageMove = (path) => {
-    console.log("path", path);
     navigate(path);
   };
 
