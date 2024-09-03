@@ -63,18 +63,22 @@ const MainPagePosts = ({ posts, likesAndComments, handleLike, handleComments }) 
               typeof post.tags === "string" &&
               post.tags.split(", ").map((tag, index) => <span key={index}>#{tag} </span>)}
           </StyledPostTags>
-          <StyledLikeBtn className="likeBtn" onClick={() => handleLike(index)}>
-            {likesAndComments[post.id]?.is_like ? `♥` : `♡`}
-            {likesAndComments[post.id]?.like_count}
-          </StyledLikeBtn>
-          <StyledContent>{post.contents}</StyledContent>
-          {post.img_url && <StyledImage src={post.img_url} />}
 
-          <button onClick={() => toggleCommentForm(index)}>댓글 달기</button>
-          {isCommentFormVisible === index && ( // index -1 로 바꾸기, comment 내용 날리기
-            <WriteCommentForm postId={post.id} handleComments={handleComments} index={index} />
-          )}
-          <CommentList postId={post.id} comments={likesAndComments[post.id]?.comments}></CommentList>
+          <StyledContent>{post.contents}</StyledContent>
+          <StyledImageBox>{post.img_url && <StyledImage src={post.img_url} />}</StyledImageBox>
+
+          <StyledCommentContainer>
+            <StyledLikeBtn className="likeBtn" onClick={() => handleLike(index)}>
+              {likesAndComments[post.id]?.is_like ? `♥` : `♡`}
+              {likesAndComments[post.id]?.like_count}
+            </StyledLikeBtn>
+
+            <StyledCommentButton onClick={() => toggleCommentForm(index)}>댓글 달기</StyledCommentButton>
+            {isCommentFormVisible === index && ( // index -1 로 바꾸기, comment 내용 날리기
+              <WriteCommentForm postId={post.id} handleComments={handleComments} index={index} />
+            )}
+            <CommentList postId={post.id} comments={likesAndComments[post.id]?.comments}></CommentList>
+          </StyledCommentContainer>
         </StyledPostBox>
       ))}
     </StyledContainer>
@@ -105,16 +109,33 @@ const StyledPostBox = styled.div`
     transform: scale(1.02);
   }
 `;
+
+const StyledContent = styled.p`
+  margin: 20px 0;
+  font-weight: 18px;
+`;
+
+const StyledImageBox = styled.div`
+  width: 500px;
+  height: 500px;
+  margin: 40px auto;
+  position: relative;
+  overflow: hidden;
+`;
+
 const StyledImage = styled.img`
-  max-width: 500px;
-  max-height: 400px;
-  object-fit: cover;
-  margin-top: 15px;
+  /* width: 90%; */
+  height: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  object-fit: center;
   border-radius: 5px;
 `;
 
 const StyledTitle = styled.h3`
-  font-size: 18px;
+  font-size: 20px;
   font-weight: bold;
 `;
 
@@ -123,14 +144,21 @@ const StyledPostTags = styled.div`
   margin: 5px 0;
 `;
 
+const StyledCommentContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
 const StyledLikeBtn = styled.span`
-  position: absolute;
-  top: 60px;
-  right: 30px;
+  /* position: absolute;
+  top: 80px;
+  right: 30px; */
   font-size: 20px;
 `;
 
-const StyledContent = styled.p`
-  margin: 20px 0;
-  font-weight: 18px;
+const StyledCommentButton = styled.button`
+  /* position: absolute;
+  top: 30px;
+  right: 20px; */
 `;
