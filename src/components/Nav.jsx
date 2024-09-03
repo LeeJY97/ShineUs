@@ -40,6 +40,8 @@ const StyledButton = styled.button`
 `;
 const Nav = () => {
   const { isLoggedIn } = useShine();
+
+  const handlePageMove = (path) => {};
   return (
     <StyledContainer>
       <h1>
@@ -48,15 +50,15 @@ const Nav = () => {
       <StyledButtonBox>
         {!isLoggedIn && (
           <>
-            <StyledButton>로그인</StyledButton>
-            <StyledButton>회원가입</StyledButton>
+            <StyledButton onClick={() => handlePageMove("/signin")}>로그인</StyledButton>
+            <StyledButton onClick={() => handlePageMove("/signup")}>회원가입</StyledButton>
           </>
         )}
-        <StyledButton>메인페이지</StyledButton>
+        <StyledButton onClick={() => handlePageMove("/")}>메인페이지</StyledButton>
         {isLoggedIn && (
           <>
-            <StyledButton>마이페이지</StyledButton>
-            <StyledButton>마이피드</StyledButton>
+            <StyledButton onClick={() => handlePageMove("/mypage")}>마이페이지</StyledButton>
+            <StyledButton onClick={() => handlePageMove("/myfeed")}>마이피드</StyledButton>
           </>
         )}
       </StyledButtonBox>
