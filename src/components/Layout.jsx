@@ -1,23 +1,28 @@
-// Layout.js
-import React from "react";
+import { Outlet } from "react-router-dom";
 import styled from "styled-components";
 import Nav from "../components/Nav";
 
-const LayoutContainer = styled.div`
-  display: flex;
+const StyledLayoutContainer = styled.div`
+  position: relative;
 `;
 
-const Content = styled.div`
-  flex: 1;
-  padding: 20px;
+const StyledLayoutNavBox = styled.div`
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 10;
 `;
 
-const Layout = ({ children }) => {
+const Layout = () => {
   return (
-    <LayoutContainer>
-      <Nav />
-      <Content>{children}</Content>
-    </LayoutContainer>
+    <StyledLayoutContainer>
+      <StyledLayoutNavBox>
+        <Nav />
+      </StyledLayoutNavBox>
+      <>
+        <Outlet />
+      </>
+    </StyledLayoutContainer>
   );
 };
 

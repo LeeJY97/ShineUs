@@ -2,26 +2,10 @@ import { useState, useEffect } from "react";
 import MainPageInput from "../components/MainPageInput";
 import MainPagePosts from "../components/MainPagePosts";
 import supabase from "../supabaseClient";
-import Nav from "../components/Nav";
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
   const [tags, setTags] = useState([]);
-  // 포스팅 한  DB (이미지 X)
-  // useEffect(() => {
-  //   const fetchPosts = async () => {
-  //     const { data, error } = await supabase
-  //       .from("posts")
-  //       .select("*, userinfo (*), likes (*)")
-  //       .order("created_at", { ascending: false });
-  //     if (error) {
-  //       console.error("Error fetching posts:", error.message);
-  //     } else {
-  //       setPosts(data);
-  //     }
-  //   };
-  //   fetchPosts();
-  // }, []);
 
   // 포스팅 한 DB (좋아요 누른 사람, 좋아요 개수 포함)
   useEffect(() => {
@@ -74,10 +58,10 @@ const Home = () => {
     setPosts([data, ...posts]);
   };
   return (
-    <>
+    <div>
       <MainPageInput addPostHandler={addPostHandler} tags={tags} setTags={setTags} />
       {posts.length && <MainPagePosts posts={posts} />}
-    </>
+    </div>
   );
 };
 
