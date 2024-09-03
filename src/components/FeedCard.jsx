@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-// import { FaHeart } from "react-icons/fa";
+import { FaHeart } from "react-icons/fa";
 import styled from "styled-components";
 import supabase from "../supabaseClient";
 
@@ -8,7 +8,7 @@ const FeedCard = ({ data, onDelete, onEdit, type }) => {
   const [newContents, setNewContents] = useState(data.contents);
   const [newImage, setNewImage] = useState("");
   const [nickname, setNickname] = useState("");
-  // const [isLiked, setIsLiked] = useState(true);
+  const [isLiked, setIsLiked] = useState(true);
 
   useEffect(() => {
     if (data) {
@@ -17,8 +17,6 @@ const FeedCard = ({ data, onDelete, onEdit, type }) => {
   }, [data]);
 
   const init = () => {
-    // console.log("====");
-    // console.log(data);
     if (type === "mine") {
       setNickname(data.userinfo.nickname);
       setNewImage(data.img_url);
@@ -32,10 +30,10 @@ const FeedCard = ({ data, onDelete, onEdit, type }) => {
     }
   };
 
-  //좋아요(기존)
-  // const toggleHeart = () => {
-  //   setIsFilled(!isFilled);
-  // };
+  // 좋아요(토글)
+  const toggleHeart = () => {
+    setIsLiked(!isLiked);
+  };
 
   //글자 수 제한
   const handleContentChange = (e) => {
@@ -111,18 +109,16 @@ const FeedCard = ({ data, onDelete, onEdit, type }) => {
       console.error("Error =>", error);
       alert("좋아요 제거 중 오류가 발생.");
     } else {
-      alert("좋아요가 취소되었습니다. 새로고침 후에 반영된다구욧!!!!");
+      alert("좋아요가 취소되었습니다.");
       onDelete(data.posts.id);
+      toggleHeart();
     }
   };
 
   return (
     <StyledContainer>
       <div>
-        <h6>
-          {nickname}
-          {/* <HeartIcon onClick={toggleHeart} filled={isFilled ? 1 : 0} /> */}
-        </h6>
+        <h6>{nickname}</h6>
         {isEditing ? (
           <textarea value={newContents} onChange={handleContentChange} rows="4" cols="34" maxLength={200} />
         ) : (
@@ -153,8 +149,7 @@ const FeedCard = ({ data, onDelete, onEdit, type }) => {
         </div>
       ) : (
         <div className="buttonStyle">
-          <button onClick={handleRemoveLikeClick}>좋아요 취소</button>
-          {/* <button onClick={handleRemoveLikeClick}> {isLiked ? "♥" : "♡"}</button> */}
+          <HeartIcon onClick={handleRemoveLikeClick} filled={isLiked ? 1 : 0} />
         </div>
       )}
     </StyledContainer>
@@ -191,6 +186,9 @@ const StyledContainer = styled.div`
     line-height: 1.3;
   }
 
+  span {
+    cursor: pointer;
+  }
   .buttonStyle {
     display: flex;
     justify-content: flex-end;
@@ -210,16 +208,16 @@ const StyledContainer = styled.div`
   }
 `;
 
-// const HeartIcon = styled(FaHeart).attrs(({ filled }) => ({
-//   color: filled ? "#ffc966" : "gray"
-// }))`
-//   font-size: 20px;
-//   color: ${({ isFilled }) => (isFilled ? "#ffc966" : "gray")};
-//   cursor: pointer;
-//   transition: color 0.3s ease;
-//   display: flex;
-//   justify-content: flex-end;
-// `;
+const HeartIcon = styled(FaHeart).attrs(({ filled }) => ({
+  color: filled ? "#ffc966" : "gray"
+}))`
+  font-size: 20px;
+  color: ${({ isLiked }) => (isLiked ? "#ffc966" : "gray")};
+  cursor: pointer;
+  transition: color 0.3s ease;
+  display: flex;
+  justify-content: flex-end;
+`;
 
 const ImageContainer = styled.div`
   position: relative;

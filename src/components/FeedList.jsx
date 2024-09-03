@@ -17,7 +17,6 @@ const FeedList = () => {
         console.error("Error=>:", userError);
         return;
       }
-      // setUser(userData.user);
       setNickname(userData.user.user_metadata.nickname);
 
       if (checkType == "mine") {
