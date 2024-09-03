@@ -68,25 +68,28 @@ const MainPageInput = ({ addPostHandler, tags, setTags }) => {
 
   return (
     <StyledContainer>
-      {previewImage && (
-        <div>
-          <StyledImage src={previewImage} alt="이미지 미리보기" />
-        </div>
-      )}
+      {/* {previewImage && <StyledImage src={previewImage} alt="이미지 미리보기" />} */}
       <form method="post" onSubmit={handleSubmit}>
         <label>
           <MainPageTag tags={tags} setTags={setTags} />
-          <textarea
-            name="postContent"
-            rows={8}
-            cols={50}
-            placeholder="내용을 입력해주세요."
-            value={postContent}
-            maxLength={200}
-            onChange={(e) => {
-              setPostContent(e.target.value);
-            }}
-          />
+          <div className="contentsWrap">
+            <textarea
+              name="postContent"
+              rows={8}
+              cols={50}
+              placeholder="내용을 입력해주세요."
+              value={postContent}
+              maxLength={200}
+              onChange={(e) => {
+                setPostContent(e.target.value);
+              }}
+            />
+            {previewImage && (
+              <div>
+                <StyledImage src={previewImage} alt="이미지 미리보기" />
+              </div>
+            )}
+          </div>
           <StyledButtonsBox>
             <input type="file" onChange={handleImageChange} accept="image/*"></input>
             <button type="submit">자랑하기</button>
@@ -108,19 +111,65 @@ const StyledContainer = styled.div`
     position: relative;
   }
 
-  textarea {
-    width: 600px;
-    height: 150px;
-    font-size: 16px;
-    padding: 20px;
-    outline: none;
-    resize: none;
-    border: 1px solid #eeeeee;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  .contentsWrap {
+    position: relative;
 
-    &:focus::placeholder {
-      color: transparent;
+    textarea {
+      width: 600px;
+      height: 200px;
+      font-size: 16px;
+      padding: 20px;
+      outline: none;
+      resize: none;
+      border: 1px solid #eeeeee;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+      padding-right: 120px;
+      box-sizing: border-box;
+      font-size: 12px;
+      &::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Opera*/
+      }
+
+      &:focus::placeholder {
+        color: transparent;
+      }
+    }
+
+    div {
+      position: absolute;
+      right: 10px;
+      bottom: 10px;
+      z-index: 1;
+      width: 75px;
+      height: 75px;
+      border-radius: 12px;
+      /* border: 1px solid rgba(0, 0, 0, 0.15); */
+      /* box-shadow: 0.5px 0.5px 10px rgba(0, 0, 0, 0.15); */
+      padding: 10px;
+      transition: all 0.4s ease;
+      transform-origin: center center;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &:hover {
+        /* width: 80px;
+        height: 80px; */
+        transform: scale(1.05);
+      }
+
+      img {
+        width: 100%;
+        /* height: 65px; */
+        box-sizing: border-box;
+        position: absolute;
+        right: 0;
+        /* object-fit: cover; */
+        border-radius: 5px;
+        box-shadow: 1px 1px 10px rgba(0, 0, 0, 1);
+      }
     }
   }
 `;
@@ -152,9 +201,9 @@ const StyledButtonsBox = styled.div`
 `;
 
 const StyledImage = styled.img`
-  position: absolute;
-  right: 0;
-  max-width: 250px;
-  object-fit: cover;
-  border-radius: 5px;
+  /* border: 1px solid rgba(0, 0, 0, 0.15);
+  box-shadow: 0.5px 0.5px 10px rgba(0, 0, 0, 0.15); */
+
+  &:hover {
+  }
 `;
