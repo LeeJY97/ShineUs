@@ -63,7 +63,11 @@ const MainPagePosts = ({
           <StyledPostTags>
             {post.tags &&
               typeof post.tags === "string" &&
-              post.tags.split(", ").map((tag, index) => <span key={index}>#{tag} </span>)}
+              post.tags.split(", ").map((tag, index) => (
+                <span className="tags" key={index}>
+                  #{tag}{" "}
+                </span>
+              ))}
           </StyledPostTags>
 
           <StyledContent>{post.contents}</StyledContent>
@@ -139,11 +143,13 @@ const StyledImage = styled.img`
 const StyledTitle = styled.h3`
   font-size: 20px;
   font-weight: bold;
+  font-family: "Paperlogy-8ExtraBold";
 `;
 
 const StyledPostTags = styled.div`
   color: #ffad16;
   margin: 5px 0;
+  font-family: "Paperlogy-8ExtraBold";
 `;
 
 const StyledCommentContainer = styled.div`

@@ -16,13 +16,13 @@ const validatePassword = (password) => {
 export const showInputError = (error, email, password) => {
 
   if (!validateEmail(email)) {
-    alert("이메일 형식을 확인하쇼");
+    alert("이메일 형식을 확인해주세요.");
   } else if (!validatePassword(password)) {
-    alert("비밀번호 제대로 입력하슈");
+    alert("비밀번호를 확인해주세요.");
   } else if (error.message.includes("already")) {
-    alert("이메일이 이미 있슈");
+    alert("중복된 이메일이 있습니다.");
   } else {
-    alert("이메일이나 비번 틀렷슈");
+    alert("이메일이나 비밀번호가 ");
   }
 }
 

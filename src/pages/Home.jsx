@@ -198,5 +198,5 @@ export default Home;
 const StyledMoveTopButton = styled.button`
   position: fixed;
   right: 30px;
-  top: 30px;
+  bottom: 30px;
 `;
