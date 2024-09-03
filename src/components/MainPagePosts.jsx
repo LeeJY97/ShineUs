@@ -74,11 +74,11 @@ const MainPagePosts = ({ posts, likesAndComments, handleLike, handleComments }) 
             </StyledLikeBtn>
 
             <StyledCommentButton onClick={() => toggleCommentForm(index)}>댓글 달기</StyledCommentButton>
-            {isCommentFormVisible === index && ( // index -1 로 바꾸기, comment 내용 날리기
-              <WriteCommentForm postId={post.id} handleComments={handleComments} index={index} />
-            )}
-            <CommentList postId={post.id} comments={likesAndComments[post.id]?.comments}></CommentList>
           </StyledCommentContainer>
+          {isCommentFormVisible === index && ( // index -1 로 바꾸기, comment 내용 날리기
+            <WriteCommentForm postId={post.id} handleComments={handleComments} index={index} />
+          )}
+          <CommentList postId={post.id} comments={likesAndComments[post.id]?.comments}></CommentList>
         </StyledPostBox>
       ))}
     </StyledContainer>
