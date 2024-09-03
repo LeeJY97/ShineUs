@@ -45,6 +45,7 @@ const Nav = () => {
     try {
       await supabase.auth.signOut();
       // window.location.reload();
+      navigate("/");
     } catch (error) {
       console.error("로그아웃 에러 :", error);
     }
@@ -69,7 +70,6 @@ const Nav = () => {
             <button
               onClick={() => {
                 handleSignOut();
-                // window.location.reload();
               }}
             >
               로그아웃

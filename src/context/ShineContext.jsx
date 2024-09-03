@@ -39,7 +39,7 @@ export function ShineProvider({ children }) {
         setIsLoggedIn(true);
         setUser(session.user);
       } else if (event === "SIGNED_OUT") {
-        await supabase.auth.signOut();
+        // await supabase.auth.signOut();
         setIsLoggedIn(false);
         setUser(initialUserData);
       } else if (event === "PASSWORD_RECOVERY") {
