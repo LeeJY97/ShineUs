@@ -1,36 +1,6 @@
 import styled from "styled-components";
 import { useShine } from "../context/ShineContext";
 
-// 전체 (nav) div
-// const StyledContainer = styled.div`
-//   border: 2px solid black;
-//   display: inline-block;
-//   position: fixed;
-//   left: 0;
-//   width: 300px;
-// `;
-
-// const StyledLogo = styled.div`
-//   /* width: 200px;
-//   height: 200px; */
-// `;
-
-// const StyledButtonBox = styled.div`
-//   display: flex;
-//   width: 60%;
-//   flex-direction: column;
-//   margin: 0 auto;
-//   /* background-color: black; */
-//   gap: 20px;
-//   align-items: center;
-// `;
-
-// const StyledButton = styled.button`
-//   width: 180px;
-//   height: 53px;
-//   cursor: pointer;
-// `;
-
 const StyledContainer = styled.nav`
   width: 250px;
   height: 90vh;
