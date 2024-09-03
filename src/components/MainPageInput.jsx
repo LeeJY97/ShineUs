@@ -98,12 +98,6 @@ const StyledContainer = styled.div`
   display: flex;
   justify-content: center;
 
-  /* form {
-    display: flex;
-    align-items: end;
-    gap: 20px;
-  } */
-
   label {
     position: relative;
   }
