@@ -107,7 +107,13 @@ const Nav = () => {
       <StyledLogo>
         <img onClick={() => handlePageMove("/")} src="./src/assets/images/common/shine-us-logo.png" alt="logo" />
       </StyledLogo>
-      {isLoggedIn && <span>{nickname}님 반갑습니다!</span>}
+      {isLoggedIn && (
+        <span>
+          {nickname}님
+          <br />
+          반갑습니다!
+        </span>
+      )}
 
       <StyledButtonBox>
         {!isLoggedIn && (
