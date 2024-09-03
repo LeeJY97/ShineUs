@@ -27,7 +27,8 @@ const MyPageProfileImage = ({ imgUrl, defaultImageUrl }) => {
       ) : (
         // imgUrl이 없는 경우
         <NoImageContainer>
-          <img src={defaultImageUrl} alt="No image" width={150} height={150} />
+          {/* <img src={defaultImageUrl} alt="No image" width={150} height={150} /> */}
+          <img src="./images/common/default-profile.jpg" alt="No image" width={150} height={150} />
         </NoImageContainer>
       )}
     </StyledProfileImage>
