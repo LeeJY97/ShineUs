@@ -43,7 +43,7 @@ const StyledContainer = styled.div`
   gap: 10px;
 
   textarea {
-    width: 580px;
+    width: 500px;
     height: 50px;
     padding: 10px;
     outline: none;
@@ -51,6 +51,7 @@ const StyledContainer = styled.div`
     border: 1px solid #eeeeee;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    margin: 0px auto;
 
     &:focus::placeholder {
       color: transparent;
