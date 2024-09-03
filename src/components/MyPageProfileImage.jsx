@@ -23,8 +23,9 @@ const MyPageProfileImage = ({ imgUrl, defaultImageUrl }) => {
   return (
     <StyledProfileImage>
       {imgUrl ? (
-        <img src={imgUrl} alt="Avatar" width={150} height={150} />
+        <img src={imgUrl} alt="Avatar" width={150} height={150} /> // imgUrl로 프로필 이미지 표시
       ) : (
+        // imgUrl이 없는 경우
         <NoImageContainer>
           <img src={defaultImageUrl} alt="No image" width={150} height={150} />
         </NoImageContainer>

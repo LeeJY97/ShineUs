@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import MyPageProfile from "./MyPageProfile";
 import MyPageMyInfo from "./MyPageMyInfo";
+import MyPagePasswordReset from "./MyPagePasswordReset";
 
 const StyledMyPageContentContainer = styled.div`
   padding: 20px;
@@ -19,6 +20,7 @@ const MyPageContainer = () => {
     <StyledMyPageContentContainer>
       <MyPageProfile />
       <MyPageMyInfo />
+      <MyPagePasswordReset />
     </StyledMyPageContentContainer>
   );
 };
