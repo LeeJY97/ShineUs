@@ -3,11 +3,17 @@ import styled from "styled-components";
 import WriteCommentForm from "./WriteCommentForm";
 import CommentList from "./CommentList";
 
-const MainPagePosts = ({ posts, likesAndComments, handleLike, handleComments }) => {
+const MainPagePosts = ({
+  posts,
+  likesAndComments,
+  handleLike,
+  handleComments,
+  toggleCommentForm,
+  isCommentFormVisible
+}) => {
   const [displayedPosts, setDisplayedPosts] = useState(posts.slice(0, 5));
 
   const [page, setPage] = useState(1); // 현재 페이지 상태
-  const [isCommentFormVisible, setIsCommentFormVisible] = useState(-1);
 
   const observerRef = useRef(); // 마지막 dom요소를 추적할 ref
 
@@ -49,10 +55,6 @@ const MainPagePosts = ({ posts, likesAndComments, handleLike, handleComments }) 
     return index === displayedPosts.length - 1 ? observerRef : null;
   };
 
-  const toggleCommentForm = (index) => {
-    setIsCommentFormVisible(index);
-  };
-
   return (
     <StyledContainer>
       {displayedPosts.map((post, index) => (
@@ -68,7 +70,7 @@ const MainPagePosts = ({ posts, likesAndComments, handleLike, handleComments }) 
           <StyledImageBox>{post.img_url && <StyledImage src={post.img_url} />}</StyledImageBox>
 
           <StyledCommentContainer>
-            <StyledLikeBtn className="likeBtn" onClick={() => handleLike(index)}>
+            <StyledLikeBtn className="likeBtn" onClick={() => handleLike(post.id)}>
               {likesAndComments[post.id]?.is_like ? `♥` : `♡`}
               {likesAndComments[post.id]?.like_count}
             </StyledLikeBtn>
