@@ -59,8 +59,8 @@ const MainPagePosts = ({
     <StyledContainer>
       {displayedPosts.map((post, index) => (
         <StyledPostBox key={post.id} ref={getObserverRef(index, displayedPosts, observerRef)}>
-          <StyledTitle className="user-id">{post.userinfo.nickname}</StyledTitle>
-          <StyledPostTags className="post-tags">
+          <StyledTitle>{post.userinfo.nickname}</StyledTitle>
+          <StyledPostTags>
             {post.tags &&
               typeof post.tags === "string" &&
               post.tags.split(", ").map((tag, index) => <span key={index}>#{tag} </span>)}
@@ -70,7 +70,7 @@ const MainPagePosts = ({
           <StyledImageBox>{post.img_url && <StyledImage src={post.img_url} />}</StyledImageBox>
 
           <StyledCommentContainer>
-            <StyledLikeBtn className="likeBtn" onClick={() => handleLike(post.id)}>
+            <StyledLikeBtn onClick={() => handleLike(post.id)}>
               {likesAndComments[post.id]?.is_like ? `♥` : `♡`}
               {likesAndComments[post.id]?.like_count}
             </StyledLikeBtn>
@@ -148,19 +148,20 @@ const StyledPostTags = styled.div`
 
 const StyledCommentContainer = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: end;
   align-items: center;
 `;
 
 const StyledLikeBtn = styled.span`
-  /* position: absolute;
-  top: 80px;
-  right: 30px; */
-  font-size: 20px;
+  width: 50px;
+  text-align: center;
+  padding: 5px;
+  margin-right: 20px;
+  font-size: 18px;
+  color: white;
+  background-color: #ff5454;
+  border-radius: 20px;
+  cursor: pointer;
 `;
 
-const StyledCommentButton = styled.button`
-  /* position: absolute;
-  top: 30px;
-  right: 20px; */
-`;
+const StyledCommentButton = styled.button``;

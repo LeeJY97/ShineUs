@@ -1,13 +1,4 @@
 import styled from "styled-components";
-const StyledPostBox = styled.div`
-  background-color: white;
-  padding: 30px;
-  margin: 30px 0;
-  line-height: 25px;
-  word-break: break-all;
-  text-align: start;
-  border-radius: 5px;
-`;
 
 const CommentList = ({ comments = [] }) => {
   return (
@@ -20,3 +11,10 @@ const CommentList = ({ comments = [] }) => {
 };
 
 export default CommentList;
+
+const StyledPostBox = styled.div`
+  margin: 20px 0;
+  padding-bottom: 5px;
+  word-break: break-all;
+  text-align: start;
+`;

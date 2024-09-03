@@ -21,6 +21,11 @@ const MainPageInput = ({ addPostHandler, tags, setTags }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!selectedImage) {
+      alert("사진을 선택해주세요.");
+      return;
+    }
+
     let img_url = null;
 
     // 이미지가 선택 시 Supabase Storage에 업로드
@@ -77,6 +82,7 @@ const MainPageInput = ({ addPostHandler, tags, setTags }) => {
             cols={50}
             placeholder="내용을 입력해주세요."
             value={postContent}
+            maxLength={200}
             onChange={(e) => {
               setPostContent(e.target.value);
             }}
@@ -105,7 +111,7 @@ const StyledContainer = styled.div`
   textarea {
     width: 600px;
     height: 150px;
-    font-size: 18px;
+    font-size: 16px;
     padding: 20px;
     outline: none;
     resize: none;

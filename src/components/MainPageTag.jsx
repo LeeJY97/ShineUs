@@ -61,6 +61,7 @@ const StyledContainer = styled.div`
   flex-wrap: wrap;
   align-items: center;
   margin-bottom: 10px;
+  gap: 10px;
 `;
 
 const StyledTagInput = styled.input`
