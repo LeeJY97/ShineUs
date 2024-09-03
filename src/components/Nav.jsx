@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { useShine } from "../context/ShineContext";
+import supabase from "../supabaseClient";
 
 const StyledContainer = styled.nav`
   width: 250px;
@@ -49,6 +50,13 @@ const Nav = () => {
           <>
             <button>마이페이지</button>
             <button>마이피드</button>
+            <button
+              onClick={async () => {
+                await supabase.auth.signOut();
+              }}
+            >
+              로그아웃
+            </button>
           </>
         )}
       </StyledButtonBox>

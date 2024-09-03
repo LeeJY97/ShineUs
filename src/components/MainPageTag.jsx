@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
+import { TiDelete } from "react-icons/ti";
 
 const MainPageTag = ({ tags, setTags }) => {
   const [tag, setTag] = useState(""); // 개별 태그
@@ -20,7 +21,6 @@ const MainPageTag = ({ tags, setTags }) => {
   };
 
   const handleKeyPress = (e) => {
-    // console.log(e.key);
     if (e.key === "Enter") {
       e.preventDefault();
       onClickTagHandler();
@@ -28,35 +28,61 @@ const MainPageTag = ({ tags, setTags }) => {
   };
 
   return (
-    <>
+    <StyledContainer>
+      <StyledTagInput
+        onChange={(e) => addTag(e)}
+        onKeyPress={(e) => handleKeyPress(e)}
+        value={tag}
+        placeholder="태그 입력 후 '엔터' 를 눌러주세요."
+      />
       {tags.map((tag, index) => (
         <div key={index}>
-          <span>#{tag}</span>
-          <span
-            onClick={() => {
-              removeTag(index);
-            }}
-          >
-            ❌
-          </span>
+          <StyledTag>
+            #{tag}
+            <span
+              onClick={() => {
+                removeTag(index);
+              }}
+            >
+              <TiDelete size="22" color="#ffc966" />
+            </span>
+          </StyledTag>
         </div>
       ))}
-
-      <StyledTagInput onChange={(e) => addTag(e)} onKeyPress={(e) => handleKeyPress(e)} value={tag} />
-    </>
+    </StyledContainer>
   );
 };
 
 export default MainPageTag;
 
+const StyledContainer = styled.div`
+  max-width: 600px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 10px;
+`;
+
 const StyledTagInput = styled.input`
-  width: 200px;
+  width: 250px;
   height: 25px;
-  position: absolute;
-  bottom: 20px;
-  left: 20px;
+  margin-right: 20px;
   padding: 5px 10px;
   border-radius: 10px;
   outline: none;
-  border: 1px solid #ffb84d;
+  border: 1px solid #ffc966;
+
+  &:focus::placeholder {
+    color: transparent;
+  }
+`;
+
+const StyledTag = styled.span`
+  display: flex;
+  align-items: center;
+  outline: 1px solid #ffc966;
+  padding: 5px 10px;
+  border-radius: 100px;
+  margin-right: 20px;
+  color: #333;
 `;

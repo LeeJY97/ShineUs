@@ -1,7 +1,4 @@
-import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import supabase from "../supabaseClient";
-
 const StyledPostBox = styled.div`
   background-color: white;
   padding: 30px;
@@ -12,32 +9,7 @@ const StyledPostBox = styled.div`
   border-radius: 5px;
 `;
 
-const CommentList = ({ postId, comments }) => {
-  // const [commentList, setCommentList] = useState([]);
-
-  // console.log("comments", comments);
-
-  // useEffect(() => {
-  //   const fetchComments = async () => {
-  //     const { data: comments, error: commentsError } = await supabase
-  //       .from("comments")
-  //       .select("*")
-  //       .eq("post_id", postId);
-
-  //     if (comments.length) {
-  //       setCommentList(comments);
-  //     } else {
-  //       setCommentList([]);
-  //     }
-  //   };
-
-  //   fetchComments();
-  // }, []);
-
-  // commentList.map((comment) => {
-  //   console.log("comment", comment);
-  // });
-
+const CommentList = ({ comments = [] }) => {
   return (
     <>
       {comments.map((comment) => (
