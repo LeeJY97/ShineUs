@@ -20,8 +20,8 @@ const StyledTopBox = styled.div`
   display: flex;
   align-items: center;
 
-  h2 {
-    font-size: 26px;
+  img {
+    height: 170px;
   }
 `;
 
@@ -47,10 +47,14 @@ const SignInContainer = () => {
   const path = state?.redirectedFrom || "/";
 
   const signIn = async () => {
-    const { error } = await supabase.auth.signInWithPassword({ email: "te@te.com", password: "1234567" });
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
 
     error ? showInputError(error, email, password) : navigate(path);
     // error ? showInputError(error, email, password) : navigate("/");
+  };
+
+  const signOut = async () => {
+    await supabase.auth.signOut();
   };
 
   // 글 작성 예시 코드
@@ -84,13 +88,14 @@ const SignInContainer = () => {
   return (
     <StyledContainer>
       <StyledTopBox>
-        <h2>§ 빈날이 §</h2>
+        <img src="./src/assets/images/shine-us-logo.png" alt="logo" />
       </StyledTopBox>
       <StyledMiddleBox>
         <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="이메일" />
         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="비밀번호" />
       </StyledMiddleBox>
       <button onClick={() => signIn(email, password)}>로그인</button>
+      <button onClick={() => signOut(email, password)}>로그아웃</button>
       <button onClick={createPost}>작성</button>
       <button onClick={selectPost}>조회</button>
       <button onClick={deletePost}>삭제</button>

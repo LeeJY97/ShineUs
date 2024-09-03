@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import supabase from "../supabaseClient";
+import MainPageTag from "./MainPageTag";
 
-const MainPageInput = ({ addPosthandler }) => {
+const MainPageInput = ({ addPostHandler, tags, setTags }) => {
   const [postContent, setPostContent] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
@@ -15,70 +16,75 @@ const MainPageInput = ({ addPosthandler }) => {
       setPreviewImage(URL.createObjectURL(imgFile));
     }
   };
-  //********* Supabase Storage에 이미지를 업로드하고 URL을 받아온 후 생성
 
   // 업로드
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // 이미지 FormData
-    const formData = new FormData();
-    formData.append("text", postContent);
-    formData.append("user", "익명");
-    formData.append("image", selectedImage);
-
     let img_url = null;
 
-    const { data } = await supabase
+    // 이미지가 선택 시 Supabase Storage에 업로드
+    if (selectedImage) {
+      const fileName = `post_img_${Date.now()}.png`;
+      const { data, error } = await supabase.storage.from("post_img").upload(fileName, selectedImage);
+
+      if (error) {
+        console.error("Error uploading image:", error.message);
+        return;
+      }
+
+      img_url = `https://pjctzvrxutdmmxvfjczt.supabase.co/storage/v1/object/public/${data.fullPath}`;
+    }
+
+    // 게시글 데이터 생성 및 Supabase에 저장
+    const { data: newPost, error: postError } = await supabase
       .from("posts")
       .insert({
+        tags: tags.join(", "),
         contents: postContent,
-        img_url
+        img_url: img_url
       })
-      .select("*");
+      .select("* , userinfo (*)")
+      .single();
 
-    // console.log("data", data);
+    if (postError) {
+      console.error("Error inserting post:", postError.message);
+      return;
+    }
 
-    addPosthandler(data[0]);
+    addPostHandler({ ...newPost });
 
     setPostContent("");
     setPreviewImage(null);
     setSelectedImage(null);
-
+    setTags([]);
     alert("업로드 되었습니다.");
   };
-
-  useEffect(() => {
-    const testUser = async () => {
-      const {
-        data: { user }
-      } = await supabase.auth.getUser();
-
-      console.log("user", user);
-    };
-    testUser();
-  }, []);
 
   return (
     <StyledContainer>
       {previewImage && (
         <div>
-          <StyledImage src={previewImage} alt="이미지 미리보기" style={{ maxWidth: "100%", height: "auto" }} />
+          <StyledImage src={previewImage} alt="이미지 미리보기" />
         </div>
       )}
       <form method="post" onSubmit={handleSubmit}>
         <label>
+          <MainPageTag tags={tags} setTags={setTags} />
           <textarea
             name="postContent"
             rows={8}
             cols={50}
+            placeholder="내용을 입력해주세요."
             value={postContent}
             onChange={(e) => {
               setPostContent(e.target.value);
             }}
           />
-          <input type="file" onChange={handleImageChange} accept="image/*"></input>
-          <button type="submit">자랑하기</button>
+          <StyledButtonsBox>
+            <input type="file" onChange={handleImageChange} accept="image/*"></input>
+            <button type="submit">자랑하기</button>
+          </StyledButtonsBox>
         </label>
       </form>
     </StyledContainer>
@@ -88,49 +94,56 @@ const MainPageInput = ({ addPosthandler }) => {
 export default MainPageInput;
 
 const StyledContainer = styled.div`
-  margin: 30px 0 20px;
+  margin-top: 40px;
   display: flex;
   justify-content: center;
-
-  form {
-    display: flex;
-    align-items: end;
-    gap: 20px;
-  }
 
   label {
     position: relative;
   }
 
-  input[type="file"] {
-    position: absolute;
-    bottom: 40px;
-    right: 40px;
-  }
-
   textarea {
     width: 600px;
-    height: 200px;
-    border: 1px solid #eeeeee;
+    height: 150px;
+    font-size: 18px;
     padding: 20px;
     outline: none;
     resize: none;
+    border: 1px solid #eeeeee;
     border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+
+    &:focus::placeholder {
+      color: transparent;
+    }
+  }
+`;
+
+const StyledButtonsBox = styled.div`
+  position: absolute;
+  bottom: -60px;
+  right: 10px;
+  height: 40px;
+  border-radius: 30px;
+  transition: 0.3s;
+
+  input[type="file"] {
+    width: 200px;
   }
 
-  button {
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-    height: 40px;
+  input[type="file"]::file-selector-button {
+    padding: 10px 20px;
+    background: #ffc966;
     border-radius: 30px;
-    transition: 0.3s;
+    border: none;
+    cursor: pointer;
   }
 `;
 
 const StyledImage = styled.img`
-  max-width: 500px;
+  position: absolute;
+  right: 0;
+  max-width: 250px;
   object-fit: cover;
-  /* margin-top: 15px;
-  border-radius: 5px; */
+  border-radius: 5px;
 `;

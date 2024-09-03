@@ -21,8 +21,8 @@ const StyledTopBox = styled.div`
   display: flex;
   align-items: center;
 
-  h2 {
-    font-size: 26px;
+  img {
+    height: 170px;
   }
 `;
 
@@ -64,7 +64,7 @@ const SignUpContainer = () => {
   return (
     <StyledContainer>
       <StyledTopBox>
-        <h2>§ 빈대떡 §</h2>
+        <img src="./src/assets/images/shine-us-logo.png" alt="logo" />
       </StyledTopBox>
       <StyledMiddleBox>
         <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="이메일" />
