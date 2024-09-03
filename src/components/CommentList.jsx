@@ -9,7 +9,7 @@ const StyledPostBox = styled.div`
   border-radius: 5px;
 `;
 
-const CommentList = ({ postId, comments = [] }) => {
+const CommentList = ({ comments = [] }) => {
   return (
     <>
       {comments.map((comment) => (
