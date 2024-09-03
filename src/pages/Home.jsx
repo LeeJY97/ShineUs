@@ -9,6 +9,7 @@ const Home = () => {
   const [tags, setTags] = useState([]);
   const { user } = useShine();
   const [likesAndComments, setLikesAndComments] = useState();
+  const [isCommentFormVisible, setIsCommentFormVisible] = useState(-1);
 
   // 좋아요 핸들링 함수
   const handleLike = async (postId) => {
@@ -92,6 +93,11 @@ const Home = () => {
     };
 
     setLikesAndComments(updatedLikesAndComments);
+    toggleCommentForm(-1);
+  };
+
+  const toggleCommentForm = (index) => {
+    setIsCommentFormVisible(index);
   };
 
   // 포스팅 한 DB (좋아요 누른 사람, 좋아요 개수 포함)
@@ -170,6 +176,8 @@ const Home = () => {
           likesAndComments={likesAndComments}
           handleLike={handleLike}
           handleComments={handleComments}
+          toggleCommentForm={toggleCommentForm}
+          isCommentFormVisible={isCommentFormVisible}
         />
       )}
     </div>
