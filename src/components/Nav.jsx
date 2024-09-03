@@ -105,7 +105,9 @@ const Nav = () => {
   return (
     <StyledContainer className={pathname === "/" ? "mainNav" : null}>
       <StyledLogo>
-        <img onClick={() => handlePageMove("/")} src="/public/images/common/shine-us-logo.png" alt="logo" />
+        <img onClick={() => handlePageMove("/")} src="../../public/assets/shine-us-logo.png" alt="logo" />
+        <img onClick={() => handlePageMove("/")} src="../public/assets/shine-us-logo.png" alt="logo" />
+        <img onClick={() => handlePageMove("/")} src="/public/assets/shine-us-logo.png" alt="logo" />
       </StyledLogo>
       {isLoggedIn && <span>{nickname}님 반갑습니다!</span>}
 
