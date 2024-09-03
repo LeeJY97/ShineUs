@@ -3,14 +3,21 @@ import styled from "styled-components";
 import Nav from "../components/Nav";
 
 const StyledLayoutContainer = styled.div`
-  position: relative;
+  /* position: relative; */
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  width: 100vw;
+  max-width: 1200px;
+  min-width: 800px;
 `;
 
 const StyledLayoutNavBox = styled.div`
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  z-index: 10;
+  /* width: 400px; */
+`;
+
+const StyledMainBox = styled.div`
+  width: 600px;
 `;
 
 const Layout = () => {
@@ -19,9 +26,9 @@ const Layout = () => {
       <StyledLayoutNavBox>
         <Nav />
       </StyledLayoutNavBox>
-      <>
+      <StyledMainBox>
         <Outlet />
-      </>
+      </StyledMainBox>
     </StyledLayoutContainer>
   );
 };
