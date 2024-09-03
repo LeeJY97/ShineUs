@@ -23,7 +23,7 @@ const FeedCard = ({ data, onDelete, onEdit, type }) => {
       setNewContents(data.contents);
     } else {
       if (data.posts) {
-        setNickname(data.posts.userinfo?.nickname);
+        setNickname(data.posts.userinfo.nickname);
         setNewImage(data.posts.img_url);
         setNewContents(data.posts.contents);
       }
