@@ -13,6 +13,8 @@ const StyledContainer = styled.nav`
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
 `;
 
 const StyledLogo = styled.div`
@@ -24,10 +26,12 @@ const StyledLogo = styled.div`
 const StyledButtonBox = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
+  width: 100%;
   gap: 10px;
 
   button {
-    width: 200px;
+    width: 80%;
     height: 60px;
     border-radius: 20px;
 
