@@ -5,6 +5,7 @@ import supabase from "../supabaseClient";
 
 const FeedCard = ({ data, onDelete, onEdit, type }) => {
   const [isEditing, setIsEditing] = useState(false);
+  const [newTags, setNewTags] = useState("");
   const [newContents, setNewContents] = useState(data.contents);
   const [newImage, setNewImage] = useState("");
   const [nickname, setNickname] = useState("");
@@ -19,11 +20,13 @@ const FeedCard = ({ data, onDelete, onEdit, type }) => {
   const init = () => {
     if (type === "mine") {
       setNickname(data.userinfo.nickname);
+      setNewTags(data.tags);
       setNewImage(data.img_url);
       setNewContents(data.contents);
     } else {
       if (data.posts) {
         setNickname(data.posts.userinfo.nickname);
+        setNewTags(data.posts.tags);
         setNewImage(data.posts.img_url);
         setNewContents(data.posts.contents);
       }
@@ -39,10 +42,10 @@ const FeedCard = ({ data, onDelete, onEdit, type }) => {
   const handleContentChange = (e) => {
     e.preventDefault();
     const input = e.target.value;
-    if (input.length <= 80) {
+    if (input.length <= 200) {
       setNewContents(input);
     } else {
-      alert(`내용은 80자 이내로 작성해주세요.`);
+      alert(`내용은 200자 이내로 작성해주세요.`);
     }
   };
 
@@ -76,12 +79,18 @@ const FeedCard = ({ data, onDelete, onEdit, type }) => {
     setIsEditing(true);
   };
 
+  //태그 수정
+  const handleTagChange = (e) => {
+    setNewTags(e.target.value);
+  };
+
   // supabase수정
   const handleEditSaveClick = async () => {
     const { error } = await supabase
       .from("posts")
       .update({
         contents: newContents,
+        tags: newTags,
         img_url: newImage
       })
       .eq("id", data.id);
@@ -90,7 +99,8 @@ const FeedCard = ({ data, onDelete, onEdit, type }) => {
       console.error("Error =>:", error);
       alert("업데이트 중 오류가 발생.");
     } else {
-      onEdit(data.id, newContents, newImage);
+      onEdit(data.id, newContents, newImage, newTags);
+      console.log("🚀 ~ handleEditSaveClick ~ newTags:", newTags);
       setIsEditing(false);
       alert("수정되었습니다.");
     }
@@ -118,7 +128,16 @@ const FeedCard = ({ data, onDelete, onEdit, type }) => {
   return (
     <StyledContainer>
       <div>
-        <h6>{nickname}</h6>
+        <h3>{nickname}</h3>
+        <h6>
+          {isEditing ? (
+            <input type="text" value={newTags} onChange={handleTagChange} />
+          ) : (
+            newTags &&
+            typeof newTags === "string" &&
+            newTags.split(", ").map((tag, index) => <span key={index}>#{tag} </span>)
+          )}
+        </h6>
         {isEditing ? (
           <textarea value={newContents} onChange={handleContentChange} rows="4" cols="34" maxLength={200} />
         ) : (
@@ -159,42 +178,57 @@ const FeedCard = ({ data, onDelete, onEdit, type }) => {
 export default FeedCard;
 
 const StyledContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: 30px;
-  padding: 0px 20px 0px 20px;
+  position: relative;
   background-color: white;
-  width: 300px;
-  height: 400px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
+  padding: 20px 20px;
+  line-height: 25px;
+  word-break: break-all;
+  text-align: start;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  cursor: default;
+
+  width: 100%;
+  max-width: 300px;
+
+  h3 {
+    font-size: 20px;
+    font-weight: bold;
+  }
 
   h6 {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: flex-start;
     color: #ffc966;
     text-align: justify;
     margin: 10px 0px 10px 0px;
     width: 300px;
   }
 
-  p {
-    text-align: justify;
-    line-height: 1.3;
+  h6 input {
+    color: #ffc966;
+    border-radius: 5px;
+    padding: 5px;
+    border: 1px solid #ffc966;
   }
 
-  span {
-    cursor: pointer;
+  p {
+    margin: 20px 0;
+    font-weight: 18px;
+    text-align: justify;
   }
+
   .buttonStyle {
     display: flex;
     justify-content: flex-end;
     gap: 10px;
-    margin-bottom: 10px;
+    margin-top: 20px;
     width: 100%;
+
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
 
     button {
       background-color: transparent;
@@ -223,6 +257,7 @@ const ImageContainer = styled.div`
   position: relative;
   width: 100%;
   height: 200px;
+  padding-bottom: 70px;
 
   img {
     width: 100%;

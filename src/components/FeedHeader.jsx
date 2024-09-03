@@ -19,8 +19,12 @@ const StyledHeaderContainer = styled.div`
   display: flex;
   justify-content: flex-start;
   flex-direction: row;
-  width: 100vh;
+  /* width: 100vh; */
   gap: 10px;
+  margin-top: 30px;
+
+  position: fixed;
+  top: 0;
 `;
 
 const StyledH5 = styled.h5`
