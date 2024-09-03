@@ -91,7 +91,7 @@ const SignUpContainer = () => {
   return (
     <StyledContainer>
       <StyledTopBox>
-        <img src="/assets/shine-us-logo.png" alt="logo" />
+        <img src="./images/common/shine-us-logo.png" alt="logo" />
       </StyledTopBox>
       <StyledMiddleBox>
         <input

@@ -83,7 +83,7 @@ const SignInContainer = () => {
   return (
     <StyledContainer>
       <StyledTopBox>
-        <img src="/assets/shine-us-logo.png" alt="logo" />
+        <img src="./images/common/shine-us-logo.png" alt="logo" />
       </StyledTopBox>
       <StyledMiddleBox>
         {/* <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="이메일"/>
