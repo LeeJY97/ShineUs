@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import MainPageInput from "../components/MainPageInput";
 import MainPagePosts from "../components/MainPagePosts";
 import supabase from "../supabaseClient";
-import Nav from "../components/Nav";
 import { useShine } from "../context/ShineContext";
 
 const Home = () => {
@@ -161,7 +160,7 @@ const Home = () => {
     setPosts([data, ...posts]);
   };
   return (
-    <>
+    <div>
       <MainPageInput addPostHandler={addPostHandler} tags={tags} setTags={setTags} />
       {posts.length && (
         <MainPagePosts
@@ -171,7 +170,7 @@ const Home = () => {
           handleComments={handleComments}
         />
       )}
-    </>
+    </div>
   );
 };
 

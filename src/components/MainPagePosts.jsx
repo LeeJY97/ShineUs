@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
-// import MainPageTag from "./MainPageTag";
 import supabase from "../supabaseClient";
 import { useShine } from "../context/ShineContext";
 import WriteCommentForm from "./WriteCommentForm";
@@ -22,10 +21,6 @@ const MainPagePosts = ({ posts, likesAndComments, handleLike, handleComments }) 
     setDisplayedPosts(newPosts);
     setPage(nextPage);
   };
-
-  // useEffect(() => {
-  //   setDetailPosts(posts);
-  // }, []);
 
   //displayedPosts 올리면 실행
   useEffect(() => {
@@ -65,18 +60,17 @@ const MainPagePosts = ({ posts, likesAndComments, handleLike, handleComments }) 
     <StyledContainer>
       {displayedPosts.map((post, index) => (
         <StyledPostBox key={post.id} ref={getObserverRef(index, displayedPosts, observerRef)}>
-          <div className="display-post-tags">
+          <StyledTitle className="user-id">{post.userinfo.nickname}</StyledTitle>
+          <StyledPostTags className="post-tags">
             {post.tags &&
               typeof post.tags === "string" &&
               post.tags.split(", ").map((tag, index) => <span key={index}>#{tag} </span>)}
-          </div>
-          <h3>{post.nickname}</h3>
-          <span onClick={() => handleLike(post.id)}>
+          </StyledPostTags>
+          <StyledLikeBtn className="likeBtn" onClick={() => handleLike(index)}>
             {likesAndComments[post.id]?.is_like ? `♥` : `♡`}
             {likesAndComments[post.id]?.like_count}
-            {post.userinfo.nickname}
-          </span>
-          <p>{post.contents}</p>
+          </StyledLikeBtn>
+          <StyledContent>{post.contents}</StyledContent>
           {post.img_url && <StyledImage src={post.img_url} />}
 
           <button onClick={() => toggleCommentForm(index)}>댓글 달기</button>
@@ -93,18 +87,20 @@ const MainPagePosts = ({ posts, likesAndComments, handleLike, handleComments }) 
 export default MainPagePosts;
 
 const StyledContainer = styled.div`
-  max-width: 600px;
-  margin: 50px auto;
+  max-width: 650px;
+  margin: 80px auto;
 `;
 
 const StyledPostBox = styled.div`
+  position: relative;
   background-color: white;
-  padding: 30px;
+  padding: 30px 20px;
   margin: 30px 0;
   line-height: 25px;
   word-break: break-all;
   text-align: start;
-  border-radius: 5px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   cursor: default;
 
   &:hover {
@@ -113,9 +109,31 @@ const StyledPostBox = styled.div`
   }
 `;
 const StyledImage = styled.img`
-  width: 100%;
+  max-width: 500px;
   max-height: 400px;
   object-fit: cover;
   margin-top: 15px;
   border-radius: 5px;
+`;
+
+const StyledTitle = styled.h3`
+  font-size: 18px;
+  font-weight: bold;
+`;
+
+const StyledPostTags = styled.div`
+  color: #ffad16;
+  margin: 5px 0;
+`;
+
+const StyledLikeBtn = styled.span`
+  position: absolute;
+  top: 60px;
+  right: 30px;
+  font-size: 20px;
+`;
+
+const StyledContent = styled.p`
+  margin: 20px 0;
+  font-weight: 18px;
 `;
