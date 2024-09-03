@@ -2,6 +2,7 @@ import styled from "styled-components";
 import FeedCard from "./FeedCard";
 import { useEffect, useState } from "react";
 import supabase from "../supabaseClient";
+import FeedHeader from "./FeedHeader";
 
 const FeedList = () => {
   const [myPosts, setMyPosts] = useState([]);
@@ -33,7 +34,7 @@ const FeedList = () => {
       } else {
         const { data: postsData, error: postsError } = await supabase
           .from("likes")
-          .select("post_id, posts(*),userinfo(nickname)")
+          .select("post_id, posts(id, img_url, contents, created_at, tags, userinfo(nickname))")
           .eq("user_id", userData.user.id);
         if (postsError) {
           console.error("Error=>:", postsError);
@@ -62,10 +63,7 @@ const FeedList = () => {
 
   return (
     <div>
-      <StyledHeaderContainer>
-        <h5 onClick={() => changeType("mine")}>{nickname} 님의 글</h5>
-        <h5 onClick={() => changeType("like")}>좋아요</h5>
-      </StyledHeaderContainer>
+      <FeedHeader nickname={nickname} changeType={changeType} activeType={checkType} />
       <StyledContainer>
         {myPosts.map((card) => (
           <FeedCard key={card.id} data={card} onDelete={handleDelete} onEdit={handleEdit} type={checkType} />
@@ -83,38 +81,4 @@ const StyledContainer = styled.div`
   gap: 10px;
   max-width: 100%;
   padding: 20px;
-`;
-
-const StyledHeaderContainer = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  flex-direction: row;
-  width: 100vh;
-  gap: 10px;
-
-  cursor: pointer;
-
-  h5 {
-    margin-left: 20px;
-    &:hover {
-      font-weight: bold;
-      position: relative;
-    }
-    &:hover::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: -3px;
-      width: 100%;
-      height: 4px;
-      background-color: #ffc966;
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform 0.3s ease-in-out;
-    }
-
-    &:hover::after {
-      transform: scaleX(1);
-    }
-  }
 `;

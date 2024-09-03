@@ -8,6 +8,7 @@ const FeedCard = ({ data, onDelete, onEdit, type }) => {
   const [newContents, setNewContents] = useState(data.contents);
   const [newImage, setNewImage] = useState("");
   const [nickname, setNickname] = useState("");
+  // const [isLiked, setIsLiked] = useState(true);
 
   useEffect(() => {
     if (data) {
@@ -66,7 +67,7 @@ const FeedCard = ({ data, onDelete, onEdit, type }) => {
 
     if (error) {
       console.error("Error=>", error);
-      alert("삭제 중 오류가 발생했습니다.");
+      alert("삭제 중 오류가 발생.");
     } else {
       onDelete(data.id);
       alert("삭제되었습니다.");
@@ -102,6 +103,19 @@ const FeedCard = ({ data, onDelete, onEdit, type }) => {
     return <p>데이터를 불러오는 중입니다...</p>;
   }
 
+  //좋아요 취소
+  const handleRemoveLikeClick = async () => {
+    const { error } = await supabase.from("likes").delete().match({ post_id: data.posts.id });
+
+    if (error) {
+      console.error("Error =>", error);
+      alert("좋아요 제거 중 오류가 발생.");
+    } else {
+      alert("좋아요가 취소되었습니다. 새로고침 후에 반영된다구욧!!!!");
+      onDelete(data.posts.id);
+    }
+  };
+
   return (
     <StyledContainer>
       <div>
@@ -126,7 +140,7 @@ const FeedCard = ({ data, onDelete, onEdit, type }) => {
         <img src={newImage} alt={data.title} />
       </ImageContainer>
 
-      {type !== "like" && (
+      {type !== "like" ? (
         <div className="buttonStyle">
           {isEditing ? (
             <button onClick={handleEditSaveClick}>저장</button>
@@ -136,6 +150,11 @@ const FeedCard = ({ data, onDelete, onEdit, type }) => {
               <button onClick={handleDelete}>삭제</button>
             </>
           )}
+        </div>
+      ) : (
+        <div className="buttonStyle">
+          <button onClick={handleRemoveLikeClick}>좋아요 취소</button>
+          {/* <button onClick={handleRemoveLikeClick}> {isLiked ? "♥" : "♡"}</button> */}
         </div>
       )}
     </StyledContainer>
