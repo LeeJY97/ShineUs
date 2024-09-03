@@ -107,6 +107,7 @@ const Nav = () => {
       <StyledLogo>
         <img onClick={() => handlePageMove("/")} src="../../public/assets/shine-us-logo.png" alt="logo" />
         <img onClick={() => handlePageMove("/")} src="../public/assets/shine-us-logo.png" alt="logo" />
+        <img onClick={() => handlePageMove("/")} src="/assets/shine-us-logo.png" alt="logo" />
         <img onClick={() => handlePageMove("/")} src="/src/assets/images/common/shine-us-logo.png" alt="logo" />
         <img onClick={() => handlePageMove("/")} src="../assets/images/common/shine-us-logo.png" alt="logo" />
       </StyledLogo>
