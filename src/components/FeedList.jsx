@@ -7,17 +7,24 @@ import FeedHeader from "./FeedHeader";
 const FeedList = () => {
   const [myPosts, setMyPosts] = useState([]);
   const [nickname, setNickname] = useState("");
-  const [checkType, setCheckType] = useState("like");
+  const [checkType, setCheckType] = useState("mine");
 
   useEffect(() => {
     // 현재 로그인한 사용자 정보 가져오기
     const fetchUserData = async () => {
+      // fetchUserData
       const { data: userData, error: userError } = await supabase.auth.getUser();
       if (userError) {
         console.error("Error=>:", userError);
         return;
       }
-      setNickname(userData.user.user_metadata.nickname);
+
+      console.log("userData", userData);
+      const { data: userInfoData } = await supabase.from("userinfo").select("nickname").eq("id", userData.user.id);
+
+      console.log("🚀 ~ fetchUserData ~ userInfoData:", userInfoData);
+      // 요기만 잘 했습니다!
+      setNickname(userInfoData[0].nickname);
 
       if (checkType == "mine") {
         // 로그인한 사용자의 포스트와 닉네임 가져오기
@@ -77,7 +84,11 @@ export default FeedList;
 const StyledContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
+  gap: 20px;
   max-width: 100%;
   padding: 20px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
 `;

@@ -47,7 +47,7 @@ const SignInContainer = () => {
   const path = state?.redirectedFrom || "/";
 
   const signIn = async () => {
-    const { error } = await supabase.auth.signInWithPassword({ email: "te@te.com", password: "1234567" });
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
 
     error ? showInputError(error, email, password) : navigate(path);
     // error ? showInputError(error, email, password) : navigate("/");
