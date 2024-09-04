@@ -141,7 +141,7 @@ https://shine-us.vercel.app/
     - [x] 프로필 사진 업로드
 - [x] 공통
   - [x] styled components
-  - [x] supabase
+  - [x] supabase
 
 
 <div style="text-align: right;">
