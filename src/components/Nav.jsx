@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 const StyledContainer = styled.nav`
   width: 250px;
   height: 700px;
-  margin-top: 60px;
+  /* margin-top: 60px; */
   display: flex;
   flex-direction: column;
   align-items: center;

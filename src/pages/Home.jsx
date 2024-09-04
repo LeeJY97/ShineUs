@@ -171,7 +171,7 @@ const Home = () => {
     });
   };
   return (
-    <div>
+    <StyledMainContainer>
       <MainPageInput
         addPostHandler={addPostHandler}
         tags={tags}
@@ -189,7 +189,7 @@ const Home = () => {
         />
       )}
       <StyledMoveTopButton onClick={scrollToTop}>Top</StyledMoveTopButton>
-    </div>
+    </StyledMainContainer>
   );
 };
 
@@ -199,4 +199,8 @@ const StyledMoveTopButton = styled.button`
   position: fixed;
   right: 30px;
   bottom: 30px;
+`;
+
+const StyledMainContainer = styled.div`
+  margin-top: 40px;
 `;
