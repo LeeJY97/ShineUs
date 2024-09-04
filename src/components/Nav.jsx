@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 const StyledContainer = styled.nav`
   width: 250px;
   height: 700px;
-  margin-top: 60px;
+  /* margin-top: 60px; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -107,7 +107,12 @@ const Nav = () => {
       <StyledLogo>
         <img onClick={() => handlePageMove("/")} src="/public/images/common/shine-us-logo.png" alt="logo" />
       </StyledLogo>
-      {isLoggedIn && <span>{nickname}님 반갑습니다!</span>}
+      {isLoggedIn && (
+        <span>
+          {" "}
+          {nickname}님 <br /> 반갑습니다!{" "}
+        </span>
+      )}
 
       <StyledButtonBox>
         {!isLoggedIn && (

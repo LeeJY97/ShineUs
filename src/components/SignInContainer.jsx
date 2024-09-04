@@ -11,6 +11,7 @@ const StyledContainer = styled.div`
   align-items: center;
   margin: 0 auto;
   width: 600px;
+  height: 700px;
   min-height: 70vh;
   gap: 30px;
   background-color: white;

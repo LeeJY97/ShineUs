@@ -68,11 +68,6 @@ const MainPageInput = ({ addPostHandler, tags, setTags }) => {
 
   return (
     <StyledContainer>
-      {previewImage && (
-        <div>
-          <StyledImage src={previewImage} alt="이미지 미리보기" />
-        </div>
-      )}
       <form method="post" onSubmit={handleSubmit}>
         <label>
           <MainPageTag tags={tags} setTags={setTags} />
@@ -87,6 +82,11 @@ const MainPageInput = ({ addPostHandler, tags, setTags }) => {
               setPostContent(e.target.value);
             }}
           />
+          {previewImage && (
+            <StyledImageWrapper>
+              <StyledImage src={previewImage} alt="이미지 미리보기" />
+            </StyledImageWrapper>
+          )}
           <StyledButtonsBox>
             <input type="file" onChange={handleImageChange} accept="image/*"></input>
             <button type="submit">자랑하기</button>
@@ -100,17 +100,17 @@ const MainPageInput = ({ addPostHandler, tags, setTags }) => {
 export default MainPageInput;
 
 const StyledContainer = styled.div`
-  margin-top: 40px;
-  display: flex;
-  justify-content: center;
+  /* display: flex;
+  justify-content: center; */
+  
 
   label {
     position: relative;
   }
 
   textarea {
-    width: 600px;
-    height: 150px;
+    width: 560px;
+    height: 200px;
     font-size: 16px;
     padding: 20px;
     outline: none;
@@ -126,9 +126,19 @@ const StyledContainer = styled.div`
 `;
 
 const StyledButtonsBox = styled.div`
-  position: absolute;
+  /* position: absolute;
   bottom: -60px;
   right: 10px;
+  height: 40px;
+  border-radius: 30px;
+  transition: 0.3s; */
+  position: absolute;
+  width: 300px;
+  bottom: 10px; /* 텍스트 영역 하단에 배치 */
+  right: 10px; /* 텍스트 영역의 오른쪽 끝으로 정렬 */
+  display: flex; /* 요소들을 가로로 배치 */
+  justify-content: space-between; /* 요소들 사이에 공간을 균등하게 배치 */
+  align-items: center; /* 요소들을 수직으로 가운데 정렬 */
   height: 40px;
   border-radius: 30px;
   transition: 0.3s;
@@ -146,10 +156,20 @@ const StyledButtonsBox = styled.div`
   }
 `;
 
-const StyledImage = styled.img`
+const StyledImageWrapper = styled.div`
   position: absolute;
+  top: 60px;
+  right: -0;
+`;
+
+const StyledImage = styled.img`
+  /* position: absolute;
   right: 0;
   max-width: 250px;
   object-fit: cover;
+  border-radius: 5px; */
+  max-width: 100px;
+  object-fit: cover;
   border-radius: 5px;
+  margin-right: 10px;
 `;
