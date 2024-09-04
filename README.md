@@ -162,7 +162,9 @@ https://shine-us.vercel.app/
 <div style="text-align: right;">
   <h2>  💫 빛나리  미리보기 </h2>
 
-  - home 
+  - home
+  - 
+  
   - signin
   - signup
   - mypage
