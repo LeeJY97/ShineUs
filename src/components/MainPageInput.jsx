@@ -153,6 +153,11 @@ const StyledButtonsBox = styled.div`
     border-radius: 30px;
     border: none;
     cursor: pointer;
+    font-family: "Paperlogy-8ExtraBold";
+
+    &:hover {
+      background-color: #ffb84d;
+    }
   }
 `;
 

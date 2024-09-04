@@ -114,10 +114,7 @@ const MyPageProfile = () => {
   return (
     <ProfileContainer>
       <h2>My Profile</h2>
-      <MyPageProfileImage
-        imgUrl={imgUrl}
-        defaultImageUrl="https://pjctzvrxutdmmxvfjczt.supabase.co/storage/v1/object/public/avatars/avatars/59d0c974-47d1-41df-8ce2-6e1ad43166b1.jpg"
-      />
+      <MyPageProfileImage imgUrl={imgUrl} defaultImageUrl="./images/common/default-profile.jpg" />
       <div>
         <input type="file" accept="image/*" onChange={handleFileChange} disabled={uploading} />
         <button onClick={uploadAvatar} disabled={uploading || !selectedFile}>

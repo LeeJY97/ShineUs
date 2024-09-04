@@ -199,8 +199,11 @@ const StyledMoveTopButton = styled.button`
   position: fixed;
   right: 30px;
   bottom: 30px;
+<<<<<<< HEAD
 `;
 
 const StyledMainContainer = styled.div`
   margin-top: 40px;
+=======
+>>>>>>> 649609c19e382cb8c16cfd6c6958a5527b11fdf5
 `;
