@@ -144,8 +144,6 @@ const StyledContainer = styled.div`
       width: 75px;
       height: 75px;
       border-radius: 12px;
-      /* border: 1px solid rgba(0, 0, 0, 0.15); */
-      /* box-shadow: 0.5px 0.5px 10px rgba(0, 0, 0, 0.15); */
       padding: 10px;
       transition: all 0.4s ease;
       transform-origin: center center;
@@ -153,22 +151,21 @@ const StyledContainer = styled.div`
       display: flex;
       align-items: center;
       justify-content: center;
+      overflow: hidden;
 
       &:hover {
-        /* width: 80px;
-        height: 80px; */
         transform: scale(1.05);
       }
 
       img {
         width: 100%;
-        /* height: 65px; */
+        /* height: 100%; */
         box-sizing: border-box;
         position: absolute;
         right: 0;
-        /* object-fit: cover; */
+        object-fit: contain;
         border-radius: 5px;
-        box-shadow: 1px 1px 10px rgba(0, 0, 0, 1);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       }
     }
   }

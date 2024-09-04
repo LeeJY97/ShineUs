@@ -108,7 +108,7 @@ const Nav = () => {
         <img onClick={() => handlePageMove("/")} src="./images/common/shine-us-logo.png" />
       </StyledLogo>
       {isLoggedIn && (
-        <span>
+        <span style={{ lineHeight: "1.3" }}>
           {nickname}님
           <br />
           반갑습니다!
