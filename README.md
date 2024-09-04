@@ -75,7 +75,8 @@ https://shine-us.vercel.app/
 
 <div style="text-align: right;">
   <h2>🗂️ 파일 구조 </h2>
-
+  
+```text
 📦src
  ┣ 📂assets
  ┃ ┗ 📂images
@@ -115,7 +116,7 @@ https://shine-us.vercel.app/
  ┣ 📜main.jsx
  ┣ 📜mock.js
  ┗ 📜supabaseClient.js
-
+```
 
 <div style="text-align: right;">
   <h2> 🛠️ 구현 기능 </h2>
