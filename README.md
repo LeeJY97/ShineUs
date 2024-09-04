@@ -1,15 +1,25 @@
-<h6>(// 수정중.....///)</h6>
+<div style="text-align: right;">
+  <h2> 💫  빛나리 Project </h2>
 
-<h1> 💫 빛나리 </h1> 
-나의 자랑거리를 마음껏 공유하고 자랑할 수 있는 웹사이트입니다!
+<h4> ✰ 프로젝트 주제</h4>
+  "빛나리"는 사용자들이 자신의 자랑스러운 순간들을 자유롭게 공유할 수 있는 소셜 플랫폼입니다. 이 프로젝트는 사람들이 자신의 성취, 특별한 경험, 또는 자랑하고 싶은 모든 것을 빛나게 보여줄 수 있는 공간을 제공합니다. 사용자는 자랑하고 싶은 특별한 순간들을 공유하며, 이를 통해 긍정적이고 자부심을 느낄 수 있는 소통의 장을 마련합니다.
 
+<h4> ✰ 선정 배경</h4>
+  현대 사회에서는 SNS를 통해 자신의 일상을 공유하고, 타인의 피드백을 받는 것이 일상이 되었습니다. 그러나, 기존의 많은 SNS 플랫폼은 단순히 일상을 기록하거나 소통하는 데 집중되어 있어, 특별히 자랑하고 싶은 순간을 강조하기엔 부족함이 있었습니다. 빛나리는 이러한 부분에 착안하여, 사용자가 자랑스러운 순간들을 더욱 빛나게 표현할 수 있는 공간을 제공하기 위해 기획되었습니다.
+
+<h4> ✰ 기획 의도</h4>
+
+  - 특화 포인트
+  <br/>: 빛나리는 사용자가 자랑하고 싶은 순간을 사진이나 글과 함께 게시할 수 있으며, 다른 사용자들과 소통할 수 있는 기능을 강화하였습니다. 특히, 자랑하고 싶은 순간을 중심으로 한 SNS 플랫폼이라는 점에서 차별화를 두고 있습니다.
+
+  - 차별화된 내용
+  <br/>:기존의 유사한 SNS 서비스와 달리 빛나리는 '자랑'이라는 주제에 초점을 맞추어, 긍정적이고 자부심을 느낄 수 있는 콘텐츠 공유에 중점을 둡니다. 이로 인해 사용자들은 더 자랑스럽고 특별한 순간들을 공유하고, 그로 인해 더욱 의미 있는 피드백을 받을 수 있습니다.
 
 <div style="text-align: right;">
   <h2>📚 STACKS</h2>
 
  <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black"> <img src="https://img.shields.io/badge/vite-646CFF?style=for-the-badge&logo=vite&logoColor=white"> <img src="https://img.shields.io/badge/dotenv-ECD53F?style=for-the-badge&logo=dotenv&logoColor=white"> <img src="https://img.shields.io/badge/reactrouter-CA4245?style=for-the-badge&logo=reactrouter&logoColor=white"> <img src="https://img.shields.io/badge/supabase-3FCF8E?style=for-the-badge&logo=supabase&logoColor=white"> <img src="https://img.shields.io/badge/styledcomponents-DB7093?style=for-the-badge&logo=styledcomponents&logoColor=white"> <img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white"> <img src="https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white"><img src="https://img.shields.io/badge/css-1572B6?style=for-the-badge&logo=css3&logoColor=white"> <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black">  <img src="https://img.shields.io/badge/jquery-0769AD?style=for-the-badge&logo=jquery&logoColor=white"> <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white"> <img src="https://img.shields.io/badge/vercel-000000?style=for-the-badge&logo=vercel&logoColor=white">
 </div>
-
 
 <div style="text-align: right;">
   <h2>📅 Date </h2>
@@ -43,7 +53,7 @@
   <h2> 👓 Role Division </h2>
   
 - <h4>준열</h4>
- 로그인, 로그아웃, 배포 : Supabase를 활용한 로그인, 로그아웃, 회원 가입과 메인 페이지의 좋아요, 댓글, Top버튼 + RRD(React Router DOM)</h5>
+   <h5>로그인, 로그아웃, 배포 : Supabase를 활용한 로그인, 로그아웃, 회원 가입과 메인 페이지의 좋아요, 댓글, Top버튼 + RRD(React Router DOM)</h5>
 
 - <h4>하영</h4>
   <h5>메인 페이지 : Supabase를 활용한 인풋 데이터 관리, 이미지, 포스트 글, 태그, 무한스크롤 + RRD(React Router DOM)</h5>
@@ -102,7 +112,7 @@
 <div style="text-align: right;">
   <h2> 🛠️ Function </h2>
 
-- [x] 페이지 분리 (Home, Dex, Detail)
+- [x] 페이지 분리 (Home, SingUp, SingIn, MyFeed, MyPage, Nav)
   - [x] 페이지 라우팅
 - [x] **`home` 페이지**
   - [x] 게시글 조회
@@ -126,6 +136,7 @@
     - [x] 프로필 사진 업로드
 - [x] 공통
   - [x] styled components
+  - [x] supabase
 
 
 <div style="text-align: right;">
