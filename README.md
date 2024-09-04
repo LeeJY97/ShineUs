@@ -163,12 +163,18 @@ https://shine-us.vercel.app/
   <h2>  💫 빛나리  미리보기 </h2>
 
   - home
-  - 
-  
+  <img width="70%" alt="Home" src="https://github.com/user-attachments/assets/70310ab4-a92d-4097-b816-654826f61fd0">
+ 
   - signin
+ <img width="70%" alt="signin" src="https://github.com/user-attachments/assets/265a4313-f607-439e-9303-cb51eebc6641">
+   
   - signup
+ <img width="70%" alt="signup" src="https://github.com/user-attachments/assets/ae6bc5f1-0ebf-4153-adf6-194486b9b2c9">
+  
   - mypage
+  <img width="70%" alt="mypage" src="https://github.com/user-attachments/assets/186a278d-dd80-4c21-8fbc-1f8f3a42bc98">
+   
   - myfeed
+  <img width="70%" alt="myfeed" src="https://github.com/user-attachments/assets/bef22a3b-472f-4b0e-ba49-12f79aea760d">
 
-이미지 추가예정...
   
