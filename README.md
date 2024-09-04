@@ -26,19 +26,17 @@
   </tr>
   <tr>
     <td align="center"><img src="https://avatars.githubusercontent.com/LeeJY97" width="100px" /></td>
-    <td align="center"><img src="https://avatars.githubusercontent.com/추가예정" width="100px" /></td>
+    <td align="center"><img src="https://avatars.githubusercontent.com/duddlfkd02" width="100px" /></td>
     <td align="center"><img src="https://avatars.githubusercontent.com/kyulipark" width="100px" /></td>
     <td align="center"><img src="https://avatars.githubusercontent.com/sehee-jang" width="100px" /></td>
   </tr>
   <tr>
     <td align="center"><b><a href="https://github.com/LeeJY97">팀장 : 이준열</a></b></td>
-    <td align="center"><b><a href="https://github.com/추가예정">팀원 : 김하영</a></b></td>
+    <td align="center"><b><a href="https://github.com/duddlfkd02">팀원 : 김하영</a></b></td>
     <td align="center"><b><a href="https://github.com/kyulipark">팀원 : 박규리</a></b></td>
     <td align="center"><b><a href="https://github.com/sehee-jang">팀원 : 장세희</a></b></td>
   </tr>
 </table>
-
-
 
 
 <div style="text-align: right;">
