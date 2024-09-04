@@ -17,8 +17,9 @@
 
 
 <div style="text-align: right;">
-  <h2> 💻 Site </h2>
+  <h2> 💻 배포 사이트 </h2>
 https://shine-us.vercel.app/
+
 
 <div style="text-align: right;">
   <h2>📚 STACKS</h2>
@@ -26,12 +27,14 @@ https://shine-us.vercel.app/
  <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black"> <img src="https://img.shields.io/badge/vite-646CFF?style=for-the-badge&logo=vite&logoColor=white"> <img src="https://img.shields.io/badge/dotenv-ECD53F?style=for-the-badge&logo=dotenv&logoColor=white"> <img src="https://img.shields.io/badge/reactrouter-CA4245?style=for-the-badge&logo=reactrouter&logoColor=white"> <img src="https://img.shields.io/badge/supabase-3FCF8E?style=for-the-badge&logo=supabase&logoColor=white"> <img src="https://img.shields.io/badge/styledcomponents-DB7093?style=for-the-badge&logo=styledcomponents&logoColor=white"> <img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white"> <img src="https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white"><img src="https://img.shields.io/badge/css-1572B6?style=for-the-badge&logo=css3&logoColor=white"> <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black">  <img src="https://img.shields.io/badge/jquery-0769AD?style=for-the-badge&logo=jquery&logoColor=white"> <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white"> <img src="https://img.shields.io/badge/vercel-000000?style=for-the-badge&logo=vercel&logoColor=white">
 </div>
 
-<div style="text-align: right;">
-  <h2>📅 Date </h2>
-    2024.08.28 ~ 2024.09.04
 
 <div style="text-align: right;">
-  <h2> 🪖 Team Member</h2>
+  <h2>📅 프로젝트 기간 </h2>
+    2024.08.28 ~ 2024.09.04
+
+
+<div style="text-align: right;">
+  <h2> 🪖 팀원 </h2>
 <table>
    <tr>
     <td align="center"><b>Frontend</b></td>
@@ -55,7 +58,7 @@ https://shine-us.vercel.app/
 
 
 <div style="text-align: right;">
-  <h2> 👓 Role Division </h2>
+  <h2> 👓 개별 담당 </h2>
   
 - <h4>준열</h4>
    <h5>로그인, 로그아웃, 배포 : Supabase를 활용한 로그인, 로그아웃, 회원 가입과 메인 페이지의 좋아요, 댓글, Top버튼 + RRD(React Router DOM)</h5>
@@ -71,7 +74,7 @@ https://shine-us.vercel.app/
 
 
 <div style="text-align: right;">
-  <h2>🗂️ File Setting </h2>
+  <h2>🗂️ 파일 구조 </h2>
 
 📦src
  ┣ 📂assets
@@ -115,7 +118,7 @@ https://shine-us.vercel.app/
 
 
 <div style="text-align: right;">
-  <h2> 🛠️ Function </h2>
+  <h2> 🛠️ 구현 기능 </h2>
 
 - [x] 페이지 분리 (Home, SingUp, SingIn, MyFeed, MyPage, Nav)
   - [x] 페이지 라우팅
@@ -161,6 +164,7 @@ https://shine-us.vercel.app/
    
   - myfeed
   <img width="70%" alt="myfeed" src="https://github.com/user-attachments/assets/bef22a3b-472f-4b0e-ba49-12f79aea760d">
+
 
   <div style="text-align: right;">
   <h2> ‼️ Issue </h2>
