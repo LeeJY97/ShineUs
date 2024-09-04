@@ -151,7 +151,7 @@ const StyledContainer = styled.div`
       display: flex;
       align-items: center;
       justify-content: center;
-      overflow: hidden;
+      /* overflow: hidden; */
 
       &:hover {
         transform: scale(1.05);
@@ -159,7 +159,7 @@ const StyledContainer = styled.div`
 
       img {
         width: 100%;
-        /* height: 100%; */
+        height: 100%;
         box-sizing: border-box;
         position: absolute;
         right: 0;
