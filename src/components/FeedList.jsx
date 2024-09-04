@@ -57,7 +57,11 @@ const FeedList = () => {
 
   // 수정
   const handleEdit = (id, newContents, newImage, newTags) => {
-    setMyPosts(myPosts.map((item) => (item.id === id ? { ...item, tags: newTags, contents: newContents } : item)));
+    setMyPosts(
+      myPosts.map((item) =>
+        item.id === id ? { ...item, tags: newTags, contents: newContents, img_url: newImage } : item
+      )
+    );
     console.log("🚀 ~ handleEdit ~ newTags:", newTags);
   };
 
