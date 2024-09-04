@@ -76,7 +76,7 @@ https://shine-us.vercel.app/
 <div style="text-align: right;">
   <h2>🗂️ 파일 구조 </h2>
 
-📦src
+  📦src
  ┣ 📂assets
  ┃ ┗ 📂images
  ┃   ┗ 📂common
