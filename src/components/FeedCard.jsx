@@ -100,13 +100,10 @@ const FeedCard = ({ data, onDelete, onEdit, type }) => {
       alert("업데이트 중 오류가 발생.");
     } else {
       onEdit(data.id, newContents, newImage, newTags);
-      console.log("🚀 ~ handleEditSaveClick ~ newTags:", newTags);
       setIsEditing(false);
       alert("수정되었습니다.");
     }
   };
-  console.log(">>>>>>");
-  console.log(data);
   if (!data) {
     return <p>데이터를 불러오는 중입니다...</p>;
   }

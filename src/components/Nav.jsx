@@ -80,7 +80,6 @@ const Nav = () => {
   const handleSignOut = async () => {
     try {
       await supabase.auth.signOut();
-      // window.location.reload();
       navigate("/");
     } catch (error) {
       console.error("로그아웃 에러 :", error);

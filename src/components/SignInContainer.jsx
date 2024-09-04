@@ -70,7 +70,6 @@ const SignInContainer = () => {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
 
     error ? showInputError(error, email, password) : navigate(path);
-    // error ? showInputError(error, email, password) : navigate("/");
   };
 
   const enterKeyHandler = (e) => {
@@ -86,8 +85,6 @@ const SignInContainer = () => {
         <img src="./images/common/shine-us-logo.png" alt="logo" />
       </StyledTopBox>
       <StyledMiddleBox>
-        {/* <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="이메일"/>
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="비밀번호" /> */}
         <input
           type="text"
           value={email}

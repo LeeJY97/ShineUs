@@ -81,7 +81,7 @@ const MainPagePosts = ({
 
             <StyledCommentButton onClick={() => toggleCommentForm(index)}>댓글 달기</StyledCommentButton>
           </StyledCommentContainer>
-          {isCommentFormVisible === index && ( // index -1 로 바꾸기, comment 내용 날리기
+          {isCommentFormVisible === index && (
             <WriteCommentForm postId={post.id} handleComments={handleComments} index={index} />
           )}
           <CommentList postId={post.id} comments={likesAndComments[post.id]?.comments}></CommentList>
@@ -130,7 +130,6 @@ const StyledImageBox = styled.div`
 `;
 
 const StyledImage = styled.img`
-  /* width: 90%; */
   height: 100%;
   position: absolute;
   top: 50%;
@@ -170,4 +169,6 @@ const StyledLikeBtn = styled.span`
   cursor: pointer;
 `;
 
-const StyledCommentButton = styled.button``;
+const StyledCommentButton = styled.button`
+  //button 기본 css 속성 방지용
+`;

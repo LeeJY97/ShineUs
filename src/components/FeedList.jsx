@@ -19,10 +19,7 @@ const FeedList = () => {
         return;
       }
 
-      console.log("userData", userData);
       const { data: userInfoData } = await supabase.from("userinfo").select("nickname").eq("id", userData.user.id);
-
-      console.log("🚀 ~ fetchUserData ~ userInfoData:", userInfoData);
       setNickname(userInfoData[0].nickname);
 
       if (checkType == "mine") {
@@ -58,12 +55,9 @@ const FeedList = () => {
   // 수정
   const handleEdit = (id, newContents, newImage, newTags) => {
     setMyPosts(myPosts.map((item) => (item.id === id ? { ...item, tags: newTags, contents: newContents } : item)));
-    console.log("🚀 ~ handleEdit ~ newTags:", newTags);
   };
 
   const changeType = (type) => {
-    console.log("내가 누른 헤더 >>> ");
-    console.log(type);
     setCheckType(type);
   };
 

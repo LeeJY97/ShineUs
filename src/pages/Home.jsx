@@ -73,7 +73,6 @@ const Home = () => {
       console.error("Error commentsError => ", commentsError.message);
     }
 
-    // 불변성 유지 어쩌구 때문에 이렇게 짜야되는거 너무 짜쳐요 진짜 미치겟스빈다
     const existingPost = likesAndComments[postId];
 
     // 2. comments 배열 생성

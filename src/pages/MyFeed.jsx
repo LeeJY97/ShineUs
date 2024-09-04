@@ -1,4 +1,3 @@
-// import FeedHeader from "../components/FeedHeader";
 import FeedList from "../components/FeedList";
 import styled from "styled-components";
 

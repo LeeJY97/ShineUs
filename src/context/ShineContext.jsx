@@ -16,17 +16,6 @@ export function ShineProvider({ children }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(initialUserData);
 
-  // 회원정보 가져오기 예시 코드
-  // useEffect(() => {
-  //   const testUser = async () => {
-  //     const {
-  //       data: { user }
-  //     } = await supabase.auth.getUser();
-
-  //     console.log("user", user);
-  //   };
-  // }, []);
-
   // 유저의 auth 상태가 변경되면
   useEffect(() => {
     const { data } = supabase.auth.onAuthStateChange(async (event, session) => {

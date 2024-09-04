@@ -8,17 +8,6 @@ const WriteCommentForm = ({ postId, index, handleComments }) => {
     setContent(e.target.value);
   };
 
-  // setCommentList([...commentList, newComments[0]]);
-  //   setCommentList((prevComments) => {
-  //     console.log("prevComments", prevComments);
-  //     console.log("newComments", newComments);
-  //     const updatedComments = [...prevComments, newComments[0]];
-  //     console.log("updatedComments", updatedComments);
-
-  //     return updatedComments;
-  //   });
-  // };
-
   return (
     <StyledContainer>
       <textarea onChange={handleChangeContent} value={content} placeholder="댓글을 남겨주세요."></textarea>
